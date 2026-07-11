@@ -17,7 +17,7 @@ const WINDOWS = [
   { x: 250, y: 300, w: 28, h: 50 }, // door
 ] as const;
 
-/** Peaceful nighttime villa, lights glowing — the premium ending. */
+/** Peaceful nighttime villa, lights glowing, the premium ending. */
 export function Footer() {
   return (
     <footer className="relative w-full overflow-hidden bg-gradient-to-b from-ink to-[#06080d]">
@@ -86,6 +86,17 @@ export function Footer() {
       <div className="relative border-t border-text/10 px-6 py-6 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-muted/60 md:px-12">
         © {new Date().getFullYear()} {site.name} · {site.location.city},{" "}
         {site.location.region} · BuildOS™
+        <br className="md:hidden" />
+        <span className="hidden md:inline"> · </span>
+        Developed by{" "}
+        <a
+          href="https://www.linkedin.com/in/syedmukheeth/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-muted/80 underline decoration-copper/40 underline-offset-2 transition-colors hover:text-copper"
+        >
+          Sampeer Studio
+        </a>
       </div>
     </footer>
   );

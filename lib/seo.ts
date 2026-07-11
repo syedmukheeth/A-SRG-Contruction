@@ -4,8 +4,8 @@ import { site } from "./site";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — 46 Years of Building Trust`,
-    template: `%s — ${site.name}`,
+    default: `${site.name} · 46 Years of Building Trust`,
+    template: `%s · ${site.name}`,
   },
   description: site.description,
   keywords: [
@@ -22,12 +22,12 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: site.url,
     siteName: site.name,
-    title: `${site.name} — 46 Years of Building Trust`,
+    title: `${site.name} · 46 Years of Building Trust`,
     description: site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — 46 Years of Building Trust`,
+    title: `${site.name} · 46 Years of Building Trust`,
     description: site.description,
   },
   robots: { index: true, follow: true },

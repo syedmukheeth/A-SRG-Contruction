@@ -5,7 +5,7 @@ import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { processSteps } from "@/lib/site";
 
-/** Interactive build timeline — a copper progress line grows as you scroll. */
+/** Interactive build timeline, a copper progress line grows as you scroll. */
 export function Process() {
   const root = useRef<HTMLDivElement>(null);
   const fill = useRef<HTMLSpanElement>(null);

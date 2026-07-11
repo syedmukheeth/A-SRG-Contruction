@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 /**
  * Luxury-villa architectural elevation, drawn as a blueprint.
  * Strokes tagged data-draw self-draw on scroll; data-glow elements
- * light up once the structure is complete. Purely presentational —
+ * light up once the structure is complete. Purely presentational,
  * animation is orchestrated by the parent Hero.
  */
 export function BlueprintVilla({ className }: { className?: string }) {
@@ -20,6 +20,32 @@ export function BlueprintVilla({ className }: { className?: string }) {
       strokeLinejoin="round"
       aria-hidden
     >
+      <defs>
+        <filter id="villaGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="6" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <radialGradient id="villaAmbient" cx="50%" cy="55%" r="55%">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      {/* ambient ground glow */}
+      <ellipse
+        data-glow
+        cx="420"
+        cy="360"
+        rx="360"
+        ry="180"
+        fill="url(#villaAmbient)"
+        stroke="none"
+        opacity="0"
+      />
+
       {/* ground */}
       <line data-draw x1="20" y1="430" x2="780" y2="430" strokeWidth={1.4} />
 
@@ -46,7 +72,9 @@ export function BlueprintVilla({ className }: { className?: string }) {
 
       {/* upper windows (storey 2) */}
       <path data-draw d="M200 150 H300 V178 H200 Z" />
+      <line data-draw x1="250" y1="150" x2="250" y2="178" strokeWidth={0.6} />
       <path data-draw d="M340 150 H440 V178 H340 Z" />
+      <line data-draw x1="390" y1="150" x2="390" y2="178" strokeWidth={0.6} />
 
       {/* ground-floor picture windows */}
       <path data-draw d="M410 250 H500 V330 H410 Z" />
@@ -74,12 +102,12 @@ export function BlueprintVilla({ className }: { className?: string }) {
         <line data-draw x1="53" y1="430" x2="67" y2="430" />
       </g>
 
-      {/* glow surfaces — windows light up at completion */}
-      <g fill="currentColor" stroke="none">
-        <rect data-glow x="200" y="150" width="100" height="28" opacity="0" />
-        <rect data-glow x="340" y="150" width="100" height="28" opacity="0" />
-        <rect data-glow x="410" y="250" width="90" height="80" opacity="0" />
-        <rect data-glow x="545" y="280" width="135" height="130" opacity="0" />
+      {/* glow surfaces, windows light up at completion */}
+      <g fill="currentColor" stroke="none" filter="url(#villaGlow)">
+        <rect data-glow x="200" y="150" width="100" height="28" rx="2" opacity="0" />
+        <rect data-glow x="340" y="150" width="100" height="28" rx="2" opacity="0" />
+        <rect data-glow x="410" y="250" width="90" height="80" rx="2" opacity="0" />
+        <rect data-glow x="545" y="280" width="135" height="130" rx="2" opacity="0" />
       </g>
     </svg>
   );

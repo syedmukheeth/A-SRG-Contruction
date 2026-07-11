@@ -88,7 +88,7 @@ export function Journey() {
         },
       });
 
-      // beat 0 — blueprint draws
+      // beat 0, blueprint draws
       if (blueprintStrokes && blueprintStrokes.length) {
         tl.to(blueprintStrokes, {
           strokeDashoffset: 0,
@@ -97,7 +97,7 @@ export function Journey() {
           stagger: 0.05,
         });
       }
-      // beats 1–6 — built layers
+      // beats 1–6, built layers
       built.forEach((b) => {
         const el = layer(b);
         if (!el) return;

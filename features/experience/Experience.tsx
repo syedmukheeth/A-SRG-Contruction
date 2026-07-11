@@ -2,7 +2,7 @@ import { Section } from "@/components/Section";
 import { stats } from "@/lib/site";
 import { StatCounter } from "./StatCounter";
 
-/** Cinematic numbers — 46 years, 500+ projects, 1000+ families. */
+/** Cinematic numbers, 46 years, 500+ projects, 1000+ families. */
 export function Experience() {
   return (
     <Section id="experience" className="surface-concrete">

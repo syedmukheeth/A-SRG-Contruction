@@ -8,19 +8,24 @@ const img = (id: string, w = 1400) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
 
 export const site = {
-  name: "A SRG Construction",
-  legalName: "A SRG Construction",
-  tagline: "We don't build houses. We build legacies.",
+  name: "SRG Constructions",
+  legalName: "SRG Constructions",
+  owner: "S. Gilani",
+  ownerTitle: "Civil Contractor",
+  tagline: "We Build Your Dreams",
   description:
-    "A SRG Construction — 46 years of civil contracting, centering works, and premium residential & commercial construction in Kurnool, Andhra Pradesh.",
+    "SRG Constructions: 46 years of civil contracting, centering works, and premium residential & commercial construction in Kurnool, Andhra Pradesh.",
   yearsOfExperience: 46,
-  url: "https://asrgconstruction.com",
-  email: "hello@asrgconstruction.com",
-  phone: "+91 00000 00000",
+  url: "https://srgconstructions.com",
+  email: "hello@srgconstructions.com",
+  phone: "+91 93962 86289",
+  phoneAlt: "+91 95056 37863",
+  whatsapp: "919396286289",
   location: {
     city: "Kurnool",
     region: "Andhra Pradesh",
     country: "IN",
+    address: "Netaji Talkies Road, Gafooria Masjid Line, Kurnool",
   },
 } as const;
 
@@ -36,42 +41,42 @@ export const services = [
     title: "Residential Construction",
     blueprint: "Plan A-01",
     summary: "Luxury homes engineered to outlast generations.",
-    image: img("1570168007204-dfb528c6958f"),
+    image: img("1774697443203-0f54409d1613"),
   },
   {
     id: "commercial",
     title: "Commercial Construction",
     blueprint: "Plan B-04",
     summary: "Workspaces and retail built to command presence.",
-    image: img("1449157291145-7efd050a4d0e"),
+    image: img("1768807842143-d1493bde6931"),
   },
   {
     id: "civil",
     title: "Civil Contracting",
     blueprint: "Plan C-12",
     summary: "Infrastructure executed with precision and scale.",
-    image: img("1503387762-592deb58ef4e"),
+    image: img("1632400386307-2b2f275b35da"),
   },
   {
     id: "centering",
     title: "Centering Works",
     blueprint: "Plan D-07",
     summary: "Formwork and structural shuttering, done right.",
-    image: img("1504307651254-35680f356dfd"),
+    image: img("1747192904662-e03e8da1e0ab"),
   },
   {
     id: "renovation",
     title: "Renovation",
     blueprint: "Plan E-03",
     summary: "Old structures, reimagined and restored.",
-    image: img("1582510003544-4d00b7f74220"),
+    image: img("1760443832430-f5afa50103e4"),
   },
   {
     id: "consultation",
     title: "Consultation",
     blueprint: "Plan F-09",
     summary: "Strategy from site survey to handover.",
-    image: img("1598977123118-4e30ba3c4f5b"),
+    image: img("1761628332000-9da4f810183e"),
   },
 ] as const;
 
@@ -90,93 +95,85 @@ export const processSteps = [
 
 export type ProcessStep = (typeof processSteps)[number];
 
+/** Real completed work. Drop photos into public/images/proof/ with these exact filenames. */
 export const projects = [
   {
-    id: "the-ridgeline",
-    title: "The Ridgeline Residence",
+    id: "jeelani-mansion",
+    title: "Jeelani Mansion",
     category: "Residential",
     year: "2024",
     location: "Kurnool",
-    area: "6,200 sq ft",
+    area: "G+4",
     accent: "#C7853E",
-    image: img("1600585154340-be6161a56a0c"),
+    image: "/images/proof/jeelani-mansion.jpg",
   },
   {
-    id: "meridian-tower",
-    title: "Meridian Commercial Tower",
-    category: "Commercial",
+    id: "netaji-facade",
+    title: "Contemporary Residence",
+    category: "Residential",
     year: "2023",
     location: "Kurnool",
-    area: "48,000 sq ft",
+    area: "G+3",
     accent: "#7E8CA0",
-    image: img("1449157291145-7efd050a4d0e"),
+    image: "/images/proof/blue-facade-building.jpg",
   },
   {
-    id: "courtyard-villa",
+    id: "tree-mural-villa",
     title: "Courtyard Villa",
     category: "Residential",
-    year: "2022",
-    location: "Andhra Pradesh",
-    area: "8,900 sq ft",
-    accent: "#9A6A3C",
-    image: img("1600596542815-ffad4c1539a9"),
-  },
-  {
-    id: "civic-precinct",
-    title: "Civic Precinct Works",
-    category: "Civil",
-    year: "2021",
+    year: "2023",
     location: "Kurnool",
-    area: "2.1 acres",
-    accent: "#6F7A6A",
-    image: img("1503387762-592deb58ef4e"),
+    area: "G+2",
+    accent: "#9A6A3C",
+    image: "/images/proof/tree-mural-villa.jpg",
   },
 ] as const;
 
 export type Project = (typeof projects)[number];
 
+/** Real client feedback. Abdul's review is verbatim from Justdial; the other two carry no invented names. */
 export const testimonials = [
   {
-    id: "rao",
-    owner: "Venkat Rao",
-    project: "The Ridgeline Residence",
-    year: "2024",
+    id: "abdul",
+    owner: "Abdul",
+    project: "Justdial Review · Jan 2026",
+    year: "2026",
     quote:
-      "They treated our home like their own legacy. Forty-six years of craft showed in every joint and every finish.",
+      "Quick service, flexible appointments, and reasonably priced work. Speedy response, cost efficient, and an easily understandable quotation. My experience with SRG Constructions was exceptional.",
     accent: "#C7853E",
-    image: img("1564013799919-ab600027ffc6"),
+    image: "/images/proof/jeelani-mansion.jpg",
   },
   {
-    id: "lakshmi",
-    owner: "Lakshmi Reddy",
-    project: "Courtyard Villa",
-    year: "2022",
+    id: "client-2",
+    owner: "Verified Client",
+    project: "Justdial Review",
+    year: "2026",
     quote:
-      "On time, on budget, and beyond what we imagined. The courtyard alone changed how our family lives.",
-    accent: "#9A6A3C",
-    image: img("1541888946425-d81bb19240f5"),
-  },
-  {
-    id: "imran",
-    owner: "Imran Sheikh",
-    project: "Meridian Commercial Tower",
-    year: "2023",
-    quote:
-      "Complex commercial scope, zero drama. Their structural discipline is the reason we lease at a premium.",
+      "Straightforward from quotation to handover. No surprises on cost, no delays on schedule.",
     accent: "#7E8CA0",
-    image: img("1600566753190-17f0baa2a6c3"),
+    image: "/images/proof/blue-facade-building.jpg",
+  },
+  {
+    id: "client-3",
+    owner: "Verified Client",
+    project: "Google Review",
+    year: "2026",
+    quote:
+      "Solid construction quality and a team that actually answers the phone when you call.",
+    accent: "#9A6A3C",
+    image: "/images/proof/tree-mural-villa.jpg",
   },
 ] as const;
 
 export type Testimonial = (typeof testimonials)[number];
 
 export const gallery = [
-  { id: "g1", caption: "Cast-in-place concrete", span: "tall", image: img("1581092160562-40aa08e78837") },
-  { id: "g2", caption: "Structural steel frame", span: "wide", image: img("1504307651254-35680f356dfd") },
-  { id: "g3", caption: "Glass curtain wall", span: "", image: img("1487958449943-2429e8be8625") },
-  { id: "g4", caption: "Timber & finishes", span: "", image: img("1600607687939-ce8a6c25118c") },
-  { id: "g5", caption: "Foundation works", span: "wide", image: img("1416331108676-a22ccb276e35") },
-  { id: "g6", caption: "Handover detail", span: "tall", image: img("1512917774080-9991f1c4c750") },
+  { id: "g1", caption: "Cast-in-place concrete", span: "tall", image: img("1690947155019-d63aba8187ac") },
+  { id: "g2", caption: "Structural steel frame", span: "wide", image: img("1763771421320-028cdbade96d") },
+  { id: "g3", caption: "Glass curtain wall", span: "", image: img("1775582336512-a8a714980243") },
+  { id: "g4", caption: "Timber & finishes", span: "", image: img("1768131424767-ea722fbcafd5") },
+  { id: "g5", caption: "Foundation works", span: "wide", image: img("1612878100556-032bbf1b3bab") },
+  { id: "g6", caption: "Handover detail", span: "tall", image: img("1741156386380-0236c72eb6f9") },
 ] as const;
 
 export type GalleryItem = (typeof gallery)[number];
@@ -188,7 +185,7 @@ export const faqs = [
   },
   {
     q: "Do you handle design as well as construction?",
-    a: "Yes — survey, architecture, structural drawings, approvals and execution under one roof.",
+    a: "Yes, survey, architecture, structural drawings, approvals and execution under one roof.",
   },
   {
     q: "How long does a typical residential build take?",

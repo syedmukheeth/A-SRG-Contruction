@@ -42,13 +42,12 @@ export function Testimonials() {
               type="button"
               layoutId={`villa-${t.id}`}
               onClick={() => setActive(t)}
-              data-cursor="cta"
               className="group flex flex-col overflow-hidden rounded-lg border border-text/10 bg-ink-2 text-left"
             >
               <div className="relative h-44 overflow-hidden">
                 <Image
                   src={t.image}
-                  alt={`${t.project} — ${t.owner}`}
+                  alt={`${t.project} · ${t.owner}`}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover soft-img group-hover:scale-105"
@@ -92,7 +91,7 @@ export function Testimonials() {
               <div className="relative h-52 overflow-hidden">
                 <Image
                   src={active.image}
-                  alt={`${active.project} — ${active.owner}`}
+                  alt={`${active.project} · ${active.owner}`}
                   fill
                   sizes="(max-width: 768px) 100vw, 42rem"
                   className="object-cover"
@@ -108,14 +107,13 @@ export function Testimonials() {
                   “{active.quote}”
                 </blockquote>
                 <p className="mt-8 font-mono text-sm uppercase tracking-[0.18em] text-muted">
-                  — {active.owner}
+                  {active.owner}
                 </p>
               </div>
               <button
                 type="button"
                 aria-label="Close story"
                 onClick={() => setActive(null)}
-                data-cursor="cta"
                 className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full border border-text/20 text-text transition-colors hover:border-copper hover:text-copper"
               >
                 ✕

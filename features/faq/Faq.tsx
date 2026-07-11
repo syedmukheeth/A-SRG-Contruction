@@ -37,7 +37,6 @@ export function Faq() {
                   type="button"
                   aria-expanded={isOpen}
                   onClick={() => setOpen(isOpen ? null : i)}
-                  data-cursor="cta"
                   className="flex w-full items-center justify-between gap-6 py-7 text-left"
                 >
                   <span className="font-display text-xl font-semibold uppercase text-text md:text-2xl">

@@ -33,7 +33,6 @@ export function Nav() {
       <nav className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 md:px-12">
         <a
           href="#hero"
-          data-cursor="cta"
           className="font-display text-lg font-bold uppercase tracking-tight text-text"
         >
           A SRG<span className="text-copper">.</span>
@@ -54,7 +53,6 @@ export function Nav() {
 
         <a
           href="#contact"
-          data-cursor="cta"
           className="group relative overflow-hidden rounded-full border border-copper/50 px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-copper transition-colors duration-500 hover:text-ink"
         >
           <span className="absolute inset-0 z-0 origin-left scale-x-0 bg-copper transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-x-100" />

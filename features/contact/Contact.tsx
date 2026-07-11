@@ -1,31 +1,10 @@
-"use client";
-
-import { useState } from "react";
-import { gsap } from "@/lib/gsap";
 import { site } from "@/lib/site";
 
-const FIELDS = [
-  { name: "name", label: "Your name", type: "text" },
-  { name: "email", label: "Email", type: "email" },
-  { name: "phone", label: "Phone", type: "tel" },
-] as const;
-
-/**
- * Blueprint-paper contact. Client-only for this milestone — wiring to
- * Resend lands later. Submit shows an in-place confirmation.
- */
+/** Blueprint-paper contact. Direct phone/email/WhatsApp, no form. */
 export function Contact() {
-  const [sent, setSent] = useState(false);
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSent(true);
-    gsap.fromTo(
-      "#contact-confirm",
-      { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-    );
-  };
+  const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
+    `Hi ${site.name}, I'd like to enquire about a project.`,
+  )}`;
 
   return (
     <section
@@ -46,65 +25,58 @@ export function Contact() {
             years to the table.
           </p>
           <div className="mt-12 space-y-2 font-mono text-sm text-muted">
-            <p>{site.email}</p>
+            <p>{site.location.address}</p>
             <p>
               {site.location.city}, {site.location.region}
             </p>
           </div>
         </div>
 
-        {sent ? (
-          <div
-            id="contact-confirm"
-            className="flex flex-col justify-center rounded-lg border border-copper/40 bg-ink-2/60 p-10"
+        <div className="flex flex-col justify-center gap-8">
+          <a
+            href={`tel:${site.phone.replace(/\s+/g, "")}`}
+            className="group flex items-center justify-between border-b border-text/20 pb-6 transition-colors hover:border-copper"
           >
-            <span className="font-mono text-xs uppercase tracking-[0.25em] text-copper">
-              Received
-            </span>
-            <p className="mt-4 font-display text-3xl font-bold uppercase text-text">
-              We&apos;ll be in touch.
-            </p>
-            <p className="mt-3 text-muted">
-              Your enquiry is logged. Expect a call within one working day.
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={onSubmit} className="flex flex-col gap-8">
-            {FIELDS.map((f) => (
-              <label key={f.name} className="group block">
-                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted">
-                  {f.label}
-                </span>
-                <input
-                  required
-                  type={f.type}
-                  name={f.name}
-                  className="mt-3 w-full border-b border-text/20 bg-transparent pb-3 text-lg text-text outline-none transition-colors placeholder:text-muted/40 focus:border-copper"
-                  placeholder="—"
-                />
-              </label>
-            ))}
-            <label className="block">
+            <div>
               <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted">
-                Your project
+                Call us
               </span>
-              <textarea
-                required
-                name="message"
-                rows={3}
-                className="mt-3 w-full resize-none border-b border-text/20 bg-transparent pb-3 text-lg text-text outline-none transition-colors placeholder:text-muted/40 focus:border-copper"
-                placeholder="—"
-              />
-            </label>
-            <button
-              type="submit"
-              data-cursor="cta"
-              className="mt-4 self-start rounded-full bg-copper px-10 py-5 font-mono text-xs uppercase tracking-[0.25em] text-ink transition-colors hover:bg-text"
-            >
-              Build My Dream
-            </button>
-          </form>
-        )}
+              <p className="mt-3 font-display text-3xl font-bold text-text transition-colors group-hover:text-copper">
+                {site.phone}
+              </p>
+              <p className="mt-1 font-mono text-sm text-muted">{site.phoneAlt}</p>
+            </div>
+            <span className="font-mono text-copper transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </a>
+
+          <a
+            href={`mailto:${site.email}`}
+            className="group flex items-center justify-between border-b border-text/20 pb-6 transition-colors hover:border-copper"
+          >
+            <div>
+              <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted">
+                Email us
+              </span>
+              <p className="mt-3 font-display text-2xl font-bold text-text transition-colors group-hover:text-copper">
+                {site.email}
+              </p>
+            </div>
+            <span className="font-mono text-copper transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </a>
+
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 flex items-center justify-center gap-3 self-start rounded-full bg-copper px-10 py-5 font-mono text-xs uppercase tracking-[0.25em] text-ink transition-colors hover:bg-text"
+          >
+            Chat on WhatsApp
+          </a>
+        </div>
       </div>
     </section>
   );

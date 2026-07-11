@@ -5,9 +5,9 @@ import "./globals.css";
 import { metadata as siteMetadata, constructionJsonLd } from "@/lib/seo";
 import { LoadProvider } from "@/components/providers/LoadProvider";
 import { LenisProvider } from "@/components/providers/LenisProvider";
-import { CustomCursor } from "@/features/cursor";
 import { LoadingScreen } from "@/features/loading";
 import { Nav } from "@/components/nav";
+import { WhatsAppButton } from "@/features/whatsapp";
 
 const display = Archivo({
   variable: "--font-display",
@@ -53,12 +53,12 @@ export default function RootLayout({
         </a>
         <LoadProvider>
           <LenisProvider>
-            <CustomCursor />
             <LoadingScreen />
             <Nav />
             <main id="main">{children}</main>
           </LenisProvider>
         </LoadProvider>
+        <WhatsAppButton />
         <div className="vignette" aria-hidden />
         <div className="grain" aria-hidden />
       </body>

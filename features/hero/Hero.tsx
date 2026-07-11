@@ -18,7 +18,7 @@ export function Hero() {
   const headline = useRef<HTMLHeadingElement>(null);
   const villaWrap = useRef<HTMLDivElement>(null);
 
-  /* Headline intro — fires once the loader has lifted. */
+  /* Headline intro, fires once the loader has lifted. */
   useEffect(() => {
     if (!isLoaded || !headline.current) return;
     if (reduced) {
@@ -117,12 +117,9 @@ export function Hero() {
           <BlueprintVilla className="w-[88vw] max-w-[1100px]" />
         </div>
 
-        {/* annotations (desktop only — avoid colliding with headline on phones) */}
+        {/* annotation (desktop only, avoid colliding with headline on phones) */}
         <span className="eyebrow absolute left-6 top-28 hidden md:left-12 md:block">
-          Elevation — {site.name}
-        </span>
-        <span className="eyebrow absolute right-6 top-28 hidden md:right-12 md:block">
-          Scale 1:100
+          {site.name}
         </span>
 
         {/* headline + CTAs */}

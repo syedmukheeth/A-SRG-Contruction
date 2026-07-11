@@ -41,7 +41,6 @@ export function GalleryTile({ item }: { item: GalleryItem }) {
   return (
     <div
       ref={frame}
-      data-cursor="image"
       className={cn(
         "group relative overflow-hidden rounded-lg border border-text/10",
         spanClass[item.span] ?? "",
@@ -62,7 +61,7 @@ export function GalleryTile({ item }: { item: GalleryItem }) {
         <div className="absolute inset-0 bg-ink/25 transition-colors duration-500 group-hover:bg-ink/10" />
       </div>
       <div className="absolute inset-x-0 bottom-0 z-10 h-1/2 bg-linear-to-t from-ink/85 to-transparent" />
-      <span className="absolute bottom-4 left-4 z-10 translate-y-2 font-mono text-[11px] uppercase tracking-[0.2em] text-text/90 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+      <span className="absolute bottom-4 left-4 z-10 translate-y-2 font-mono text-[11px] uppercase tracking-[0.2em] text-text/90 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100">
         {item.caption}
       </span>
     </div>

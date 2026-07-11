@@ -21,7 +21,7 @@ export function BuildingVilla({ className }: { className?: string }) {
       {/* ground */}
       <line x1="40" y1="470" x2="960" y2="470" stroke="#2a2d33" strokeWidth={2} />
 
-      {/* 0 — blueprint wireframe (thin copper, self-draws) */}
+      {/* 0, blueprint wireframe (thin copper, self-draws) */}
       <g data-layer="blueprint" stroke="#c7853e" strokeOpacity={0.4} strokeWidth={1.1}>
         <path data-draw d="M320 470 V200 H620 V470" />
         <path data-draw d="M350 200 V150 H590 V200" />
@@ -31,7 +31,7 @@ export function BuildingVilla({ className }: { className?: string }) {
         <path data-draw d="M460 470 V395 H520 V470" />
       </g>
 
-      {/* 1 — foundation */}
+      {/* 1, foundation */}
       <g data-layer="foundation">
         <rect x="300" y="458" width="540" height="16" fill="#15171b" stroke="#2c2f36" />
         <rect x="330" y="470" width="24" height="20" fill="#101216" />
@@ -39,7 +39,7 @@ export function BuildingVilla({ className }: { className?: string }) {
         <rect x="780" y="470" width="24" height="20" fill="#101216" />
       </g>
 
-      {/* 2 — steel structure */}
+      {/* 2, steel structure */}
       <g data-layer="steel" stroke="#c7853e" strokeWidth={3}>
         <line x1="340" y1="458" x2="340" y2="200" />
         <line x1="600" y1="458" x2="600" y2="200" />
@@ -51,7 +51,7 @@ export function BuildingVilla({ className }: { className?: string }) {
         <line x1="650" y1="300" x2="810" y2="300" />
       </g>
 
-      {/* 3 — walls */}
+      {/* 3, walls */}
       <g data-layer="walls">
         <rect x="320" y="200" width="300" height="270" fill="#1b1d22" stroke="#2c2f36" />
         <rect x="350" y="150" width="240" height="50" fill="#1b1d22" stroke="#2c2f36" />
@@ -68,14 +68,14 @@ export function BuildingVilla({ className }: { className?: string }) {
         </g>
       </g>
 
-      {/* 4 — roof / parapet */}
+      {/* 4, roof / parapet */}
       <g data-layer="roof">
         <rect x="338" y="138" width="264" height="16" fill="#101216" stroke="#2c2f36" />
         <rect x="308" y="190" width="324" height="14" fill="#101216" stroke="#2c2f36" />
         <rect x="612" y="292" width="216" height="12" fill="#101216" stroke="#2c2f36" />
       </g>
 
-      {/* 5 — glass / windows */}
+      {/* 5, glass / windows */}
       <g data-layer="glass">
         <rect x="375" y="158" width="80" height="30" fill="#0d0f13" stroke="#3a3d44" />
         <rect x="485" y="158" width="80" height="30" fill="#0d0f13" stroke="#3a3d44" />
@@ -88,7 +88,7 @@ export function BuildingVilla({ className }: { className?: string }) {
         <rect x="460" y="395" width="60" height="75" fill="#0d0f13" stroke="#3a3d44" />
       </g>
 
-      {/* 6 — finish: warm light + landscape */}
+      {/* 6, finish: warm light + landscape */}
       <g data-layer="finish">
         <g fill="#f3c98b">
           <rect x="375" y="158" width="80" height="30" opacity={0.85} />

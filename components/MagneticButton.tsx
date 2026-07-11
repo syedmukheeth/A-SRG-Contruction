@@ -12,7 +12,6 @@ interface MagneticButtonProps {
 
 /**
  * Magnetic CTA. Primary = filled copper; ghost = hairline outline.
- * Marked data-cursor="cta" so the custom cursor reacts.
  */
 export function MagneticButton({
   href = "#",
@@ -26,7 +25,6 @@ export function MagneticButton({
     <a
       ref={ref}
       href={href}
-      data-cursor="cta"
       className={cn(
         "group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full px-8 py-4 font-mono text-xs uppercase tracking-[0.22em] transition-colors duration-500 will-change-transform",
         variant === "primary"

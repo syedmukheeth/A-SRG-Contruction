@@ -83,27 +83,30 @@ export function LoadingScreen() {
           >
             {/* ground line */}
             <line x1="10" y1="160" x2="230" y2="160" />
-            {/* house body */}
-            <path d="M40 160 V70 H200 V160" />
-            {/* roof */}
-            <path d="M28 78 L120 22 L212 78" />
-            {/* door */}
-            <path d="M104 160 V112 H136 V160" />
-            {/* windows */}
-            <path d="M58 92 H86 V118 H58 Z" />
-            <path d="M154 92 H182 V118 H154 Z" />
-            {/* window mullions */}
-            <line x1="72" y1="92" x2="72" y2="118" />
-            <line x1="168" y1="92" x2="168" y2="118" />
+            {/* skyline mark: stepped tower silhouette, echoes the SRG building icon */}
+            <path d="M60 160 V96 H92 V160" />
+            <path d="M92 160 V60 H140 V160" />
+            <path d="M140 160 V84 H180 V160" />
+            <path d="M108 60 L116 44 L124 60" />
+            {/* tower windows */}
+            <line x1="76" y1="112" x2="76" y2="144" />
+            <line x1="108" y1="76" x2="108" y2="144" />
+            <line x1="124" y1="76" x2="124" y2="144" />
+            <line x1="160" y1="100" x2="160" y2="144" />
             {/* measurement tick */}
-            <line x1="40" y1="172" x2="200" y2="172" />
+            <line x1="60" y1="172" x2="180" y2="172" />
           </svg>
 
-          <div className="relative mt-10 flex w-[42vw] max-w-[360px] items-end justify-between">
-            <span className="eyebrow">{site.name}</span>
-            <span className="font-mono text-4xl font-medium tabular-nums text-text">
-              {pct}
-              <span className="text-copper">%</span>
+          <div className="relative mt-10 flex w-[42vw] max-w-[360px] flex-col gap-1">
+            <div className="flex items-end justify-between">
+              <span className="eyebrow">{site.name}</span>
+              <span className="font-mono text-4xl font-medium tabular-nums text-text">
+                {pct}
+                <span className="text-copper">%</span>
+              </span>
+            </div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+              {site.owner} · {site.ownerTitle}
             </span>
           </div>
         </motion.div>

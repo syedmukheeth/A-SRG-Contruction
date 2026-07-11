@@ -46,7 +46,6 @@ export function ProjectRow({ project, index }: { project: Project; index: number
     >
       {/* media */}
       <div
-        data-cursor="image"
         className={`group relative h-[60vh] overflow-hidden rounded-lg border border-text/10 lg:col-span-8 lg:h-[80vh] ${
           flip ? "lg:order-2" : ""
         }`}

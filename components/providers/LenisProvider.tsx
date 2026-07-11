@@ -17,7 +17,7 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       lerp: 0.1, // lower latency than a fixed duration; snappy yet smooth
       wheelMultiplier: 1,
       smoothWheel: true,
-      syncTouch: false, // native scrolling on touch — no jank on mobile
+      syncTouch: false, // native scrolling on touch, no jank on mobile
       touchMultiplier: 1.6,
     });
 

@@ -43,7 +43,7 @@ export default function Home() {
           </h2>
           <p className="mt-10 max-w-xl text-lg text-muted">
             A SRG Construction has shaped homes, workplaces and civic landmarks
-            across Kurnool for nearly half a century — civil contracting,
+            across Kurnool for nearly half a century: civil contracting,
             centering works, residential and commercial builds, delivered with
             the same standard since day one.
           </p>
