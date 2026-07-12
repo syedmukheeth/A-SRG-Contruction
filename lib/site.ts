@@ -17,7 +17,7 @@ export const site = {
   description:
     "SRG Constructions: 46 years of civil contracting, centering works, and premium residential & commercial construction in Kurnool, Andhra Pradesh.",
   yearsOfExperience: 46,
-  url: "https://srgconstructions.com",
+  url: "https://a-srg-contruction.vercel.app",
   email: "jelanisrg@gmail.com",
   phone: "+91 93962 86289",
   phoneAlt: "+91 95056 37863",
