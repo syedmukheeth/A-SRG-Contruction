@@ -10,8 +10,9 @@ const img = (id: string, w = 1400) =>
 export const site = {
   name: "SRG Constructions",
   legalName: "SRG Constructions",
-  owner: "S. Gilani",
-  ownerTitle: "Civil Contractor",
+  owner: "Jeelani Shaik",
+  ownerTitle: "Founder & Civil Contractor",
+  ownerImage: "/images/owner/jeelani-shaik.jpg",
   tagline: "We Build Your Dreams",
   description:
     "SRG Constructions: 46 years of civil contracting, centering works, and premium residential & commercial construction in Kurnool, Andhra Pradesh.",
