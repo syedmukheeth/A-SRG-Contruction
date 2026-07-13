@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { site } from "./site";
+import { site, services, type Service } from "./site";
+import { organizationNode, websiteNode, pageGraph } from "./schema";
 
-const titleDefault = `${site.name} · 46 Years of Building Trust`;
+const titleDefault = "ASRG Construction | Premium Construction Company in Andhra Pradesh";
+const ogDescription = "Premium Construction Company";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -11,13 +13,20 @@ export const metadata: Metadata = {
   },
   description: site.description,
   keywords: [
-    "construction company Kurnool",
+    site.name,
+    "Construction Company",
+    "Residential Construction",
+    "Commercial Construction",
+    "Builders",
+    "Civil Contractors",
+    "Interior Design",
+    "Architecture",
+    "Construction Company Andhra Pradesh",
+    "Construction Company Kurnool",
     "civil contractors Andhra Pradesh",
-    "residential construction",
-    "commercial construction",
     "centering contractors",
     "building contractors Kurnool",
-    site.name,
+    ...services.map((s) => `${s.title} Kurnool`),
   ],
   authors: [{ name: site.owner }],
   creator: site.owner,
@@ -30,8 +39,8 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: site.url,
     siteName: site.name,
-    title: titleDefault,
-    description: site.description,
+    title: site.name,
+    description: ogDescription,
     images: [
       {
         url: "/opengraph-image",
@@ -61,41 +70,33 @@ export const metadata: Metadata = {
   category: "construction",
 };
 
-/** schema.org GeneralContractor / LocalBusiness structured data. */
-export const constructionJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "GeneralContractor",
-  "@id": `${site.url}/#organization`,
-  name: site.name,
-  legalName: site.legalName,
-  description: site.description,
-  url: site.url,
-  image: `${site.url}${site.ownerImage}`,
-  logo: `${site.url}/favicon.ico`,
-  email: site.email,
-  telephone: site.phone,
-  priceRange: "₹₹",
-  foundingDate: String(new Date().getFullYear() - site.yearsOfExperience),
-  founder: {
-    "@type": "Person",
-    name: site.owner,
-    jobTitle: site.ownerTitle,
-  },
-  areaServed: {
-    "@type": "City",
-    name: site.location.city,
-  },
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: site.location.address,
-    addressLocality: site.location.city,
-    addressRegion: site.location.region,
-    addressCountry: site.location.country,
-  },
-  knowsAbout: [
-    "Civil Contracting",
-    "Centering Works",
-    "Residential Construction",
-    "Commercial Construction",
-  ],
-} as const;
+/** Root schema.org graph — Organization + WebSite, emitted once in app/layout.tsx. */
+export const rootJsonLd = pageGraph([organizationNode(), websiteNode()]);
+
+/** Shared metadata builder for each /services/[slug] page. */
+export function buildServiceMetadata(service: Service): Metadata {
+  const title = `${service.title} in ${site.location.city}, ${site.location.region}`;
+  const description = `${service.summary} ASRG Construction delivers ${service.title.toLowerCase()} across ${site.location.city} and ${site.location.region}, backed by ${site.yearsOfExperience} years of building experience.`;
+  const url = `${site.url}/services/${service.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      locale: "en_IN",
+      url,
+      siteName: site.name,
+      title: `${service.title} · ${site.name}`,
+      description,
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${service.title} · ${site.name}`,
+      description,
+      images: ["/opengraph-image"],
+    },
+  };
+}

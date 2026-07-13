@@ -8,7 +8,7 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { site } from "@/lib/site";
 import { BlueprintVilla } from "./BlueprintVilla";
 
-const HEADLINE = ["46 YEARS", "OF BUILDING", "TRUST"];
+const HEADLINE = ["46 YEARS", "OF CONSTRUCTION", "EXPERIENCE"];
 
 export function Hero() {
   const { isLoaded } = useLoad();

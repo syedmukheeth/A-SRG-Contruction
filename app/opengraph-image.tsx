@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { site } from "@/lib/site";
 
-export const alt = `${site.name} · 46 Years of Building Trust`;
+export const alt = `${site.name} · 46 Years of Construction Experience`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -52,7 +52,7 @@ export default function OgImage() {
           </div>
           <div
             style={{
-              fontSize: 130,
+              fontSize: 110,
               fontWeight: 800,
               lineHeight: 0.9,
               color: "#c7853e",
@@ -60,7 +60,7 @@ export default function OgImage() {
               letterSpacing: "-0.03em",
             }}
           >
-            Of Building Trust
+            Of Construction Experience
           </div>
         </div>
 
@@ -79,6 +79,8 @@ export default function OgImage() {
           <span>Residential</span>
           <span style={{ color: "#c7853e" }}>·</span>
           <span>Commercial</span>
+          <span style={{ color: "#c7853e" }}>·</span>
+          <span>Renovation</span>
         </div>
       </div>
     ),

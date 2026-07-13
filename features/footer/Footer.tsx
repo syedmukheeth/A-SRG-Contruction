@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site } from "@/lib/site";
 
 // Deterministic star field (avoids hydration mismatch).
@@ -78,9 +79,10 @@ export function Footer() {
           <p className="mt-3 max-w-xs text-sm text-muted">{site.tagline}</p>
         </div>
         <div className="flex gap-12 font-mono text-xs uppercase tracking-[0.18em] text-muted">
-          <a href="#projects" className="transition-colors hover:text-copper">Work</a>
-          <a href="#process" className="transition-colors hover:text-copper">Process</a>
-          <a href="#contact" className="transition-colors hover:text-copper">Contact</a>
+          <Link href="/services" className="transition-colors hover:text-copper">Services</Link>
+          <Link href="/#projects" className="transition-colors hover:text-copper">Work</Link>
+          <Link href="/#process" className="transition-colors hover:text-copper">Process</Link>
+          <Link href="/#contact" className="transition-colors hover:text-copper">Contact</Link>
         </div>
       </div>
       <div className="relative border-t border-text/10 px-6 py-6 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-muted/60 md:px-12">

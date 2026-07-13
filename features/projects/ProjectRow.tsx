@@ -53,7 +53,7 @@ export function ProjectRow({ project, index }: { project: Project; index: number
         <div ref={media} className="absolute inset-x-0 -top-[12%] h-[124%]">
           <Image
             src={project.image}
-            alt={project.title}
+            alt={`${project.title}, a ${project.category.toLowerCase()} project (${project.area}) by ASRG Construction in ${project.location}`}
             fill
             sizes="(max-width: 1024px) 100vw, 66vw"
             className="object-cover soft-img"

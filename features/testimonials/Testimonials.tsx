@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { testimonials, type Testimonial } from "@/lib/site";
+import { site, testimonials, type Testimonial } from "@/lib/site";
 
 /**
  * Luxury-villa testimonial cards. Click a villa and it opens into a
@@ -47,7 +47,7 @@ export function Testimonials() {
               <div className="relative h-44 overflow-hidden">
                 <Image
                   src={t.image}
-                  alt={`${t.project} · ${t.owner}`}
+                  alt={`ASRG Construction project referenced in ${t.owner}'s testimonial, ${site.location.city}`}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover soft-img group-hover:scale-105"
@@ -91,7 +91,7 @@ export function Testimonials() {
               <div className="relative h-52 overflow-hidden">
                 <Image
                   src={active.image}
-                  alt={`${active.project} · ${active.owner}`}
+                  alt={`ASRG Construction project referenced in ${active.owner}'s testimonial, ${site.location.city}`}
                   fill
                   sizes="(max-width: 768px) 100vw, 42rem"
                   className="object-cover"

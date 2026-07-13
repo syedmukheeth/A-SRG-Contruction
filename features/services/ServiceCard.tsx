@@ -1,22 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import type { Service } from "@/lib/site";
+import Link from "next/link";
+import { site, type Service } from "@/lib/site";
 
 /**
  * Service card. The project photograph is always visible but desaturated;
  * on hover it warms into full colour and the summary rises in, restrained,
- * editorial, premium.
+ * editorial, premium. Links through to the dedicated service page.
  */
 export function ServiceCard({ service, index }: { service: Service; index: number }) {
   return (
-    <article
-      className="group relative aspect-[4/5] overflow-hidden rounded-lg border border-text/10 bg-ink-2 transition-transform duration-300 active:scale-[0.98]"
+    <Link
+      href={`/services/${service.slug}`}
+      className="group relative block aspect-[4/5] overflow-hidden rounded-lg border border-text/10 bg-ink-2 transition-transform duration-300 active:scale-[0.98]"
     >
       {/* photo, always visible, grayscale at rest, colour on hover */}
       <Image
         src={service.image}
-        alt={service.title}
+        alt={`${service.title} by ASRG Construction in ${site.location.city}, ${site.location.region}`}
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         className="object-cover soft-img group-hover:scale-105 [@media(hover:none)]:scale-100"
@@ -44,6 +46,6 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
           </p>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }

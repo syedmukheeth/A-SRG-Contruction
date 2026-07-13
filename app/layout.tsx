@@ -2,12 +2,13 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-import { metadata as siteMetadata, constructionJsonLd } from "@/lib/seo";
+import { metadata as siteMetadata, rootJsonLd } from "@/lib/seo";
 import { LoadProvider } from "@/components/providers/LoadProvider";
 import { LenisProvider } from "@/components/providers/LenisProvider";
 import { LoadingScreen } from "@/features/loading";
 import { Nav } from "@/components/nav";
 import { WhatsAppButton } from "@/features/whatsapp";
+import { Footer } from "@/features/footer";
 
 const display = Archivo({
   variable: "--font-display",
@@ -45,7 +46,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(constructionJsonLd),
+            __html: JSON.stringify(rootJsonLd),
           }}
         />
         <a href="#main" className="skip-link">
@@ -56,6 +57,7 @@ export default function RootLayout({
             <LoadingScreen />
             <Nav />
             <main id="main">{children}</main>
+            <Footer />
           </LenisProvider>
         </LoadProvider>
         <WhatsAppButton />

@@ -1,6 +1,10 @@
 /**
- * Static, typed company data for A SRG Construction.
+ * Static, typed company data for ASRG Construction.
  * Shaped to swap to a CMS later with no component changes.
+ *
+ * Brand name is always "ASRG Construction" (correct spelling) — the
+ * "asrgcontruction.com" domain's missing "s" is a URL-only quirk and must
+ * never leak into visible copy, schema `name` fields, or alt text.
  */
 
 /** Unsplash image URL builder (swap host/source when real photography lands). */
@@ -8,16 +12,16 @@ const img = (id: string, w = 1400) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
 
 export const site = {
-  name: "SRG Constructions",
-  legalName: "SRG Constructions",
+  name: "ASRG Construction",
+  legalName: "ASRG Construction",
   owner: "Jeelani Shaik",
   ownerTitle: "Founder & Civil Contractor",
   ownerImage: "/images/owner/jeelani-shaik.jpg",
   tagline: "We Build Your Dreams",
   description:
-    "SRG Constructions: 46 years of civil contracting, centering works, and premium residential & commercial construction in Kurnool, Andhra Pradesh.",
+    "ASRG Construction is a trusted construction company in Kurnool, Andhra Pradesh, specializing in residential and commercial construction, civil contracting, centering works, renovation, and design consultation for over 46 years.",
   yearsOfExperience: 46,
-  url: "https://a-srg-contruction.vercel.app",
+  url: "https://asrgcontruction.com",
   email: "jelanisrg@gmail.com",
   phone: "+91 93962 86289",
   phoneAlt: "+91 95056 37863",
@@ -27,6 +31,11 @@ export const site = {
     region: "Andhra Pradesh",
     country: "IN",
     address: "Netaji Talkies Road, Gafooria Masjid Line, Kurnool",
+    /** Approximate Kurnool city-centre coordinates — replace with the exact site location if precision matters. */
+    geo: {
+      latitude: 15.8281,
+      longitude: 78.0373,
+    },
   },
 } as const;
 
@@ -39,6 +48,7 @@ export const stats = [
 export const services = [
   {
     id: "residential",
+    slug: "residential-construction",
     title: "Residential Construction",
     blueprint: "Plan A-01",
     summary: "Luxury homes engineered to outlast generations.",
@@ -46,6 +56,7 @@ export const services = [
   },
   {
     id: "commercial",
+    slug: "commercial-construction",
     title: "Commercial Construction",
     blueprint: "Plan B-04",
     summary: "Workspaces and retail built to command presence.",
@@ -53,6 +64,7 @@ export const services = [
   },
   {
     id: "civil",
+    slug: "civil-contracting",
     title: "Civil Contracting",
     blueprint: "Plan C-12",
     summary: "Infrastructure executed with precision and scale.",
@@ -60,6 +72,7 @@ export const services = [
   },
   {
     id: "centering",
+    slug: "centering-works",
     title: "Centering Works",
     blueprint: "Plan D-07",
     summary: "Formwork and structural shuttering, done right.",
@@ -67,6 +80,7 @@ export const services = [
   },
   {
     id: "renovation",
+    slug: "renovation",
     title: "Renovation",
     blueprint: "Plan E-03",
     summary: "Old structures, reimagined and restored.",
@@ -74,6 +88,7 @@ export const services = [
   },
   {
     id: "consultation",
+    slug: "consultation",
     title: "Consultation",
     blueprint: "Plan F-09",
     summary: "Strategy from site survey to handover.",
@@ -199,6 +214,26 @@ export const faqs = [
   {
     q: "How do payments work?",
     a: "Transparent, stage-linked milestones tied to verified progress. No surprises.",
+  },
+  {
+    q: "Why choose ASRG Construction?",
+    a: "46 years on the ground in Kurnool, transparent stage-linked billing, a dated schedule agreed up front, and a track record of client reviews from real completed projects.",
+  },
+  {
+    q: "Do you provide turnkey construction projects?",
+    a: "Yes. From site survey and design through structure, finishing and handover, we run the full build as one accountable team rather than handing off between contractors.",
+  },
+  {
+    q: "Do you build commercial and industrial projects, or only homes?",
+    a: "Both. Commercial construction runs alongside our residential work, with scale, structure and finish tailored to the use of the building.",
+  },
+  {
+    q: "What is included in your renovation service?",
+    a: "Structural assessment, remedial works, and finishing on existing structures, carried out under the same quality controls as a new build.",
+  },
+  {
+    q: "Can I get a consultation before committing to a project?",
+    a: "Yes. Our consultation service covers site survey and strategy so you have a clear plan and budget before any construction begins.",
   },
 ] as const;
 

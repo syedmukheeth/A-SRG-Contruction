@@ -83,7 +83,7 @@ export function LoadingScreen() {
           >
             {/* ground line */}
             <line x1="10" y1="160" x2="230" y2="160" />
-            {/* skyline mark: stepped tower silhouette, echoes the SRG building icon */}
+            {/* skyline mark: stepped tower silhouette, echoes the ASRG building icon */}
             <path d="M60 160 V96 H92 V160" />
             <path d="M92 160 V60 H140 V160" />
             <path d="M140 160 V84 H180 V160" />

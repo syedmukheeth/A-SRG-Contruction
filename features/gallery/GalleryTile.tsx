@@ -5,7 +5,7 @@ import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
-import type { GalleryItem } from "@/lib/site";
+import { site, type GalleryItem } from "@/lib/site";
 
 const spanClass: Record<string, string> = {
   tall: "row-span-2",
@@ -52,7 +52,7 @@ export function GalleryTile({ item }: { item: GalleryItem }) {
       >
         <Image
           src={item.image}
-          alt={item.caption}
+          alt={`${item.caption} — ASRG Construction, ${site.location.city}`}
           fill
           sizes="(max-width: 640px) 50vw, 25vw"
           className="object-cover soft-img"
