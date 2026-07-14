@@ -16,7 +16,12 @@ export function WhatsAppButton() {
       aria-label="Chat on WhatsApp"
       className="group fixed bottom-6 right-6 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-[0_8px_30px_rgba(37,211,102,0.45)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95 sm:h-16 sm:w-16"
     >
-      <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-[#25D366]/50" />
+      {/* Finite ping: an infinite one keeps the compositor busy for the
+          page's whole lifetime on a fixed always-on-top layer. */}
+      <span
+        className="absolute inset-0 -z-10 animate-ping rounded-full bg-[#25D366]/50"
+        style={{ animationIterationCount: 4 }}
+      />
       <svg
         viewBox="0 0 32 32"
         aria-hidden

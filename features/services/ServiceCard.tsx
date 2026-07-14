@@ -27,7 +27,7 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
       {/* tint, lifts on hover; plus bottom gradient for text. Touch devices get the lifted state at rest. */}
       <div className="absolute inset-0 bg-ink/45 transition-colors duration-700 group-hover:bg-ink/15 [@media(hover:none)]:bg-ink/25" />
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-ink via-ink/40 to-transparent" />
-      <div className="blueprint-grid-fine absolute inset-0 opacity-15 mix-blend-soft-light" />
+      <div className="blueprint-grid-fine absolute inset-0 opacity-[0.07]" />
 
       {/* content */}
       <div className="relative flex h-full flex-col justify-between p-6">

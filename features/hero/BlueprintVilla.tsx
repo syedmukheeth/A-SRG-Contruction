@@ -21,15 +21,12 @@ export function BlueprintVilla({ className }: { className?: string }) {
       aria-hidden
     >
       <defs>
-        <filter id="villaGlow" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation="6" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
         <radialGradient id="villaAmbient" cx="50%" cy="55%" r="55%">
           <stop offset="0%" stopColor="currentColor" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="windowHalo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0.55" />
           <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
         </radialGradient>
       </defs>
@@ -102,11 +99,17 @@ export function BlueprintVilla({ className }: { className?: string }) {
         <line data-draw x1="53" y1="430" x2="67" y2="430" />
       </g>
 
-      {/* glow surfaces, windows light up at completion */}
-      <g fill="currentColor" stroke="none" filter="url(#villaGlow)">
+      {/* glow surfaces, windows light up at completion. Halo ellipses fake
+          the old feGaussianBlur bloom: a gradient rasterizes once, while a
+          live SVG blur filter re-blurred on every scrubbed frame. */}
+      <g fill="currentColor" stroke="none">
+        <ellipse data-glow cx="250" cy="164" rx="85" ry="42" fill="url(#windowHalo)" opacity="0" />
         <rect data-glow x="200" y="150" width="100" height="28" rx="2" opacity="0" />
+        <ellipse data-glow cx="390" cy="164" rx="85" ry="42" fill="url(#windowHalo)" opacity="0" />
         <rect data-glow x="340" y="150" width="100" height="28" rx="2" opacity="0" />
+        <ellipse data-glow cx="455" cy="290" rx="80" ry="70" fill="url(#windowHalo)" opacity="0" />
         <rect data-glow x="410" y="250" width="90" height="80" rx="2" opacity="0" />
+        <ellipse data-glow cx="612" cy="345" rx="115" ry="105" fill="url(#windowHalo)" opacity="0" />
         <rect data-glow x="545" y="280" width="135" height="130" rx="2" opacity="0" />
       </g>
     </svg>

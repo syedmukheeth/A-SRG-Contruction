@@ -21,8 +21,16 @@ export function Nav() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 24);
+        ticking = false;
+      });
+    };
+    setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -48,7 +56,7 @@ export function Nav() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-500",
         scrolled || open
-          ? "border-b border-text/10 bg-ink/70 backdrop-blur-md"
+          ? "border-b border-text/10 bg-ink/95"
           : "border-b border-transparent",
       )}
     >
@@ -127,7 +135,7 @@ export function Nav() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden border-b border-text/10 bg-ink/95 backdrop-blur-md md:hidden"
+            className="overflow-hidden border-b border-text/10 bg-ink/95 md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-8">
               {LINKS.map((l, i) => (

@@ -4,6 +4,22 @@ import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useReducedMotion } from "./useReducedMotion";
 
+// One coalesced ScrollTrigger.refresh() per mount batch. A refresh per
+// Section instance re-measures every trigger (including both pinned
+// sections) a dozen times on load — a large forced-layout cost.
+let refreshQueued = false;
+function scheduleRefresh() {
+  if (refreshQueued) return;
+  refreshQueued = true;
+  // Double rAF: run after the browser has painted the newly mounted sections.
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      refreshQueued = false;
+      ScrollTrigger.refresh();
+    }),
+  );
+}
+
 interface RevealOptions {
   y?: number;
   duration?: number;
@@ -57,7 +73,7 @@ export function useScrollReveal<T extends HTMLElement>({
 
   // Keep ScrollTrigger in sync after the very first paint.
   useEffect(() => {
-    ScrollTrigger.refresh();
+    scheduleRefresh();
   }, []);
 
   return ref;

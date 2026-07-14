@@ -60,7 +60,6 @@ export function Journey() {
         const isRoof = b === "roof";
         gsap.set(el, {
           autoAlpha: 0,
-          willChange: "transform, opacity",
           transformOrigin: "center bottom",
           ...(isRoof ? { y: -28 } : { scaleY: 0 }),
         });
@@ -68,8 +67,16 @@ export function Journey() {
 
       const mm = gsap.matchMedia();
 
-      mm.add({ isDesktop: "(min-width: 768px)" }, (context) => {
-        const { isDesktop } = context.conditions as { isDesktop: boolean };
+      // Both conditions are needed: gsap.matchMedia only runs the handler
+      // when at least one condition matches, so a lone isDesktop query means
+      // the mobile branch never executes and the villa stays invisible.
+      mm.add(
+        {
+          isDesktop: "(min-width: 768px)",
+          isMobile: "(max-width: 767.98px)",
+        },
+        (context) => {
+          const { isDesktop } = context.conditions as { isDesktop: boolean };
 
         const bumpActive = (i: number) => {
           if (i !== lastIdx.current) {
@@ -179,7 +186,7 @@ export function Journey() {
 
         {/* dust */}
         {!reduced &&
-          DUST.map(([l, t], i) => (
+          DUST.slice(0, 6).map(([l, t], i) => (
             <span
               key={i}
               className="absolute h-[3px] w-[3px] rounded-full bg-copper/30"

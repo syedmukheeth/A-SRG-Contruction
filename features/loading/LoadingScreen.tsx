@@ -23,19 +23,15 @@ export function LoadingScreen() {
   const { setLoaded } = useLoad();
   const reduced = useReducedMotion();
   const [visible, setVisible] = useState(true);
-  const [pct, setPct] = useState(0);
   const svgRef = useRef<SVGSVGElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<SVGCircleElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+  const pctRef = useRef<HTMLSpanElement>(null);
+  const stepNumRef = useRef<HTMLSpanElement>(null);
+  const stepTitleRef = useRef<HTMLSpanElement>(null);
 
   const RING_R = 46;
   const RING_C = 2 * Math.PI * RING_R;
-
-  const stepIndex = Math.min(
-    processSteps.length - 1,
-    Math.floor((pct / 100) * processSteps.length),
-  );
 
   useEffect(() => {
     if (reduced) {
@@ -51,17 +47,8 @@ export function LoadingScreen() {
     });
 
     // Kept intentionally snappy: a full-screen opaque loader blocks paint,
-    // so every second here directly costs Speed Index / LCP. ~1.1s total.
-    tl.fromTo(
-      logoRef.current,
-      { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.35, ease: "power3.out" },
-    ).to(
-      logoRef.current,
-      { filter: "drop-shadow(0 0 24px rgba(199,133,62,0.55))", duration: 0.3, ease: "power2.out" },
-      "<",
-    );
-
+    // so every second here directly costs Speed Index / LCP. ~0.9s total.
+    // The logo is static by design; only the wireframe, ring and counter move.
     if (paths) {
       paths.forEach((p) => {
         const len = "getTotalLength" in p ? p.getTotalLength() : 200;
@@ -71,25 +58,36 @@ export function LoadingScreen() {
         paths,
         {
           strokeDashoffset: 0,
-          duration: 0.65,
+          duration: 0.45,
           ease: "power2.inOut",
-          stagger: 0.05,
+          stagger: 0.03,
         },
-        0.15,
+        0.1,
       );
     }
 
+    // Counter writes straight to the DOM: no React re-render per tick.
     tl.to(
       counter,
       {
         v: 100,
-        duration: 1,
+        duration: 0.55,
         ease: "power1.inOut",
         onUpdate: () => {
-          const v = counter.v;
-          setPct(Math.round(v));
+          const v = Math.round(counter.v);
+          if (pctRef.current) pctRef.current.textContent = String(v);
+          const idx = Math.min(
+            processSteps.length - 1,
+            Math.floor((v / 100) * processSteps.length),
+          );
+          if (stepNumRef.current) {
+            stepNumRef.current.textContent = String(idx + 1).padStart(2, "0");
+          }
+          if (stepTitleRef.current) {
+            stepTitleRef.current.textContent = processSteps[idx].title;
+          }
           if (ringRef.current) {
-            ringRef.current.style.strokeDashoffset = `${RING_C * (1 - v / 100)}`;
+            ringRef.current.style.strokeDashoffset = `${RING_C * (1 - counter.v / 100)}`;
           }
         },
       },
@@ -99,8 +97,8 @@ export function LoadingScreen() {
     tl.fromTo(
       statsRef.current,
       { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
-      0.75,
+      { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" },
+      0.45,
     );
 
     return () => {
@@ -115,13 +113,13 @@ export function LoadingScreen() {
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-ink"
           initial={{ y: 0 }}
           exit={{ y: "-100%" }}
-          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
         >
           <div className="blueprint-grid-fine absolute inset-0 opacity-40" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(199,133,62,0.1)_0%,transparent_55%)]" />
 
           {/* ambient construction dust */}
-          {DUST.map(([l, t], i) => (
+          {DUST.slice(0, 4).map(([l, t], i) => (
             <span
               key={i}
               className="pointer-events-none absolute h-[3px] w-[3px] rounded-full bg-copper/30"
@@ -135,8 +133,8 @@ export function LoadingScreen() {
 
           {/* brand mark medallion */}
           <div className="relative flex h-28 w-28 items-center justify-center">
-            {/* pulsing halo */}
-            <div className="absolute inset-0 animate-pulse rounded-full bg-copper/20 blur-xl" />
+            {/* pulsing halo: pre-baked radial gradient, no live blur filter */}
+            <div className="absolute -inset-3 animate-pulse rounded-full bg-[radial-gradient(circle,rgba(199,133,62,0.3)_0%,transparent_70%)]" />
 
             {/* decorative rotating ring */}
             <div
@@ -168,10 +166,7 @@ export function LoadingScreen() {
               />
             </svg>
 
-            <div
-              ref={logoRef}
-              className="relative h-16 w-16 overflow-hidden rounded-full opacity-0"
-            >
+            <div className="relative h-16 w-16 overflow-hidden rounded-full">
               <Image
                 src="/images/brand/logo-mark-round.png"
                 alt={site.name}
@@ -211,15 +206,17 @@ export function LoadingScreen() {
           <div className="relative mt-8 w-[78vw] max-w-[360px] sm:w-[52vw] md:w-[42vw]">
             <div className="flex items-baseline justify-between font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
               <span>
-                {String(stepIndex + 1).padStart(2, "0")} / {processSteps.length}
+                <span ref={stepNumRef}>01</span> / {processSteps.length}
               </span>
-              <span className="text-copper">{processSteps[stepIndex].title}</span>
+              <span ref={stepTitleRef} className="text-copper">
+                {processSteps[0].title}
+              </span>
             </div>
 
             <div className="mt-4 flex items-end justify-between">
               <span className="eyebrow">{site.name}</span>
               <span className="font-mono text-4xl font-medium tabular-nums text-text">
-                {pct}
+                <span ref={pctRef}>0</span>
                 <span className="text-copper">%</span>
               </span>
             </div>

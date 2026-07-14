@@ -152,18 +152,11 @@ html {
   }
 }
 
-/* Soft-focus image: gentle blur at rest, sharp on hover.
-   Only on hover-capable (desktop) devices — touch shows sharp always. */
+/* Image hover treatment: transform-only. The old resting blur(2.5px) forced
+   per-frame re-filtering on every parallax-scrubbed image (major scroll
+   jank); the "soft at rest" look is carried by the dark tint overlays. */
 .soft-img {
-  transition: filter 0.6s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
-}
-@media (hover: hover) and (pointer: fine) {
-  .soft-img {
-    filter: blur(2.5px);
-  }
-  .group:hover .soft-img {
-    filter: blur(0);
-  }
+  transition: transform 0.7s var(--ease-out-expo);
 }
 
 /* ---- Display utility ---- */
@@ -208,9 +201,9 @@ html {
   overflow: hidden;
 }
 
-/* Footer villa windows — soft breathing glow */
+/* Footer villa windows — soft breathing glow. Opacity keyframes only:
+   a drop-shadow filter here re-rasterizes the footer SVG on every tick. */
 .footer-window {
-  filter: drop-shadow(0 0 6px rgba(243, 201, 139, 0.55));
   animation: window-glow 4s ease-in-out infinite;
 }
 @keyframes window-glow {

@@ -57,8 +57,14 @@ export function Hero() {
 
     const mm = gsap.matchMedia();
 
+    // Both conditions are needed: gsap.matchMedia only runs the handler when
+    // at least one condition matches, so a lone isDesktop query means the
+    // mobile branch never executes (no draw-in, windows never light up).
     mm.add(
-      { isDesktop: "(min-width: 768px)" },
+      {
+        isDesktop: "(min-width: 768px)",
+        isMobile: "(max-width: 767.98px)",
+      },
       (context) => {
         const { isDesktop } = context.conditions as { isDesktop: boolean };
         const draws = villaWrap.current!.querySelectorAll<SVGGeometryElement>(
@@ -91,7 +97,7 @@ export function Hero() {
             ease: "none",
             stagger: 0.04,
           })
-            .to(glows, { opacity: 0.28, duration: 1.5, stagger: 0.1 }, ">-1")
+            .to(glows, { opacity: 0.35, duration: 1.5, stagger: 0.1 }, ">-1")
             .to(
               headline.current,
               { yPercent: -18, opacity: 0.85, duration: 2, ease: "none" },
@@ -114,7 +120,7 @@ export function Hero() {
               ease: "power2.out",
               stagger: 0.03,
             })
-            .to(glows, { opacity: 0.28, duration: 0.8, stagger: 0.05 }, ">-0.4");
+            .to(glows, { opacity: 0.35, duration: 0.8, stagger: 0.05 }, ">-0.4");
         }
       },
     );

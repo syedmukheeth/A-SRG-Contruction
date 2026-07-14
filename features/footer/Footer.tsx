@@ -41,7 +41,7 @@ export function Footer() {
         fill="none"
       >
         {/* glow */}
-        <ellipse cx="280" cy="360" rx="320" ry="120" fill="#c7853e" opacity="0.06" />
+        <ellipse cx="280" cy="360" rx="320" ry="120" fill="#c7853e" opacity="0.1" />
         {/* ground */}
         <line x1="0" y1="360" x2="560" y2="360" stroke="#1e1e1e" strokeWidth="2" />
         {/* villa mass */}
@@ -90,7 +90,7 @@ export function Footer() {
           </div>
           <p className="mt-3 max-w-xs text-sm text-muted">{site.tagline}</p>
         </div>
-        <div className="flex gap-12 font-mono text-xs uppercase tracking-[0.18em] text-muted">
+        <div className="flex flex-wrap gap-x-8 gap-y-4 font-mono text-xs uppercase tracking-[0.18em] text-muted md:gap-12">
           <Link href="/services" className="transition-colors hover:text-copper">Services</Link>
           <Link href="/#projects" className="transition-colors hover:text-copper">Work</Link>
           <Link href="/#process" className="transition-colors hover:text-copper">Process</Link>

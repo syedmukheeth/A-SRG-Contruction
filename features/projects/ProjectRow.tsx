@@ -46,7 +46,10 @@ export function ProjectRow({ project, index }: { project: Project; index: number
           flip ? "md:order-2" : ""
         }`}
       >
-        <div ref={media} className="absolute inset-x-0 -top-[12%] h-[124%]">
+        {/* Mover holds only image + flat tint so the parallax transform stays
+            compositor-only; grid + gradient sit static over it (no blend mode,
+            which would force a repaint every scrubbed frame). */}
+        <div ref={media} className="absolute inset-x-0 -top-[12%] h-[124%] will-change-transform">
           <Image
             src={project.image}
             alt={`${project.title}, a ${project.category.toLowerCase()} project (${project.area}) by ASRG Construction in ${project.location}`}
@@ -54,10 +57,10 @@ export function ProjectRow({ project, index }: { project: Project; index: number
             sizes="(max-width: 1024px) 100vw, 66vw"
             className="object-cover soft-img"
           />
-          <div className="blueprint-grid absolute inset-0 opacity-20 mix-blend-soft-light" />
           <div className="absolute inset-0 bg-ink/20" />
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-ink/80 to-transparent" />
         </div>
+        <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-10" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-ink/80 to-transparent" />
         <span className="absolute left-5 top-5 z-10 font-mono text-[11px] uppercase tracking-[0.25em] text-text/90">
           {project.category}
         </span>

@@ -1,14 +1,20 @@
 "use client";
 
+import { memo } from "react";
 import { cn } from "@/lib/utils";
 
 /**
  * Layered villa elevation for the build story. Each <g data-layer="...">
  * is revealed beat-by-beat by the parent Journey timeline:
  * blueprint → foundation → steel → walls → roof → glass → finish.
- * Purely presentational.
+ * Purely presentational. Memoized: the parent re-renders on every beat
+ * change and this SVG subtree must not be reconciled each time.
  */
-export function BuildingVilla({ className }: { className?: string }) {
+export const BuildingVilla = memo(function BuildingVilla({
+  className,
+}: {
+  className?: string;
+}) {
   return (
     <svg
       viewBox="0 0 1000 600"
@@ -107,4 +113,4 @@ export function BuildingVilla({ className }: { className?: string }) {
       </g>
     </svg>
   );
-}
+});
