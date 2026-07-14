@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Hero } from "@/features/hero";
@@ -14,6 +15,27 @@ import { Section } from "@/components/Section";
 import { Marquee } from "@/components/Marquee";
 import { site, faqs, services } from "@/lib/site";
 import { breadcrumbNode, faqNode, pageGraph } from "@/lib/schema";
+
+export const metadata: Metadata = {
+  title: `ASRG Construction Kurnool | Best Construction Company in ${site.location.region}`,
+  description: site.description,
+  alternates: { canonical: site.url },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: site.url,
+    siteName: site.name,
+    title: `ASRG Construction Kurnool | Best Construction Company`,
+    description: site.description,
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: site.name }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `ASRG Construction Kurnool | Best Construction Company`,
+    description: site.description,
+    images: ["/opengraph-image"],
+  },
+};
 
 const homeJsonLd = pageGraph([
   breadcrumbNode([{ name: "Home", url: site.url }]),
@@ -101,6 +123,11 @@ export default function Home() {
             contracting, centering works, renovation and villa construction.
             Every service below links to a full breakdown of scope, process
             and delivered work.
+          </p>
+          <p className="mt-4 max-w-2xl text-muted">
+            Searching for a construction company near you in Kurnool? Our site
+            team also covers Nandyal, Adoni and the wider Kurnool district for
+            civil contracting and residential builds.
           </p>
           <ul className="mt-12 grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((s) => (

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { site, services, type Service } from "./site";
 import { organizationNode, websiteNode, pageGraph } from "./schema";
 
-const titleDefault = "ASRG Construction | Premium Construction Company in Andhra Pradesh";
-const ogDescription = "Premium Construction Company";
+const titleDefault = "ASRG Construction Kurnool | Best Construction Company in Andhra Pradesh";
+const ogDescription = "Best Construction Company in Kurnool, Andhra Pradesh";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -14,6 +14,11 @@ export const metadata: Metadata = {
   description: site.description,
   keywords: [
     site.name,
+    "ASRG Construction Kurnool",
+    "asrgcontruction",
+    "asrgconstruction",
+    "Best Construction Company Kurnool",
+    "Top Builders Kurnool",
     "Construction Company",
     "Residential Construction",
     "Commercial Construction",
@@ -26,6 +31,9 @@ export const metadata: Metadata = {
     "civil contractors Andhra Pradesh",
     "centering contractors",
     "building contractors Kurnool",
+    "construction company near me Kurnool",
+    "civil contractor Nandyal",
+    "building contractors Adoni",
     ...services.map((s) => `${s.title} Kurnool`),
   ],
   authors: [{ name: site.owner }],
@@ -68,6 +76,12 @@ export const metadata: Metadata = {
     },
   },
   category: "construction",
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+      : undefined,
+  },
 };
 
 /** Root schema.org graph — Organization + WebSite, emitted once in app/layout.tsx. */

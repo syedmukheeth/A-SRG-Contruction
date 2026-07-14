@@ -1,4 +1,4 @@
-import { site, type Service, type Faq } from "./site";
+import { site, testimonials, type Service } from "./site";
 
 const orgId = `${site.url}/#organization`;
 const websiteId = `${site.url}/#website`;
@@ -23,10 +23,10 @@ export function organizationNode() {
       name: site.owner,
       jobTitle: site.ownerTitle,
     },
-    areaServed: {
-      "@type": "State",
-      name: site.location.region,
-    },
+    areaServed: [
+      { "@type": "City", name: site.location.city },
+      { "@type": "State", name: site.location.region },
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: site.location.address,
@@ -39,6 +39,23 @@ export function organizationNode() {
       latitude: site.location.geo.latitude,
       longitude: site.location.geo.longitude,
     },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "19:00",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5",
+      reviewCount: String(testimonials.length),
+    },
+    review: testimonials.map((t) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: t.owner },
+      reviewBody: t.quote,
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+    })),
     knowsAbout: [
       "Civil Contracting",
       "Centering Works",
@@ -77,7 +94,7 @@ export function breadcrumbNode(items: { name: string; url: string }[]) {
 }
 
 /** FAQPage node from a subset (or all) of the faqs array. */
-export function faqNode(items: readonly Faq[]) {
+export function faqNode(items: readonly { q: string; a: string }[]) {
   return {
     "@type": "FAQPage",
     mainEntity: items.map((f) => ({
@@ -101,6 +118,26 @@ export function serviceNode(service: Service) {
       name: site.location.city,
     },
     url: `${site.url}/services/${service.slug}`,
+  } as const;
+}
+
+/** Article node for a blog post. */
+export function articleNode(post: {
+  title: string;
+  description: string;
+  slug: string;
+  date: string;
+}) {
+  return {
+    "@type": "Article",
+    "@id": `${site.url}/blog/${post.slug}/#article`,
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: { "@id": orgId },
+    publisher: { "@id": orgId },
+    mainEntityOfPage: `${site.url}/blog/${post.slug}`,
   } as const;
 }
 

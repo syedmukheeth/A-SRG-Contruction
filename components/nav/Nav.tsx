@@ -10,6 +10,7 @@ const LINKS = [
   { label: "Work", href: "/#projects" },
   { label: "Process", href: "/#process" },
   { label: "Studio", href: "/#about" },
+  { label: "Insights", href: "/blog" },
 ] as const;
 
 /** Minimal fixed nav that gains a hairline + blur once the user scrolls. */
