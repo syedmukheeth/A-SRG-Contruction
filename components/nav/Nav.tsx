@@ -55,17 +55,19 @@ export function Nav() {
       <nav className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 md:px-12">
         <Link
           href="/"
-          className="flex items-center gap-2.5"
+          className="group flex items-center gap-2.5"
           onClick={() => setOpen(false)}
         >
-          <Image
-            src="/images/brand/logo-mark.png"
-            alt={site.name}
-            width={40}
-            height={40}
-            priority
-            className="h-9 w-9 md:h-10 md:w-10"
-          />
+          <span className="relative h-9 w-9 overflow-hidden rounded-full border border-copper/30 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 md:h-10 md:w-10">
+            <Image
+              src="/images/brand/logo-mark-round.png"
+              alt={site.name}
+              fill
+              sizes="40px"
+              priority
+              className="object-cover"
+            />
+          </span>
           <span className="font-display text-lg font-bold uppercase tracking-tight text-text">
             ASRG<span className="text-copper">.</span>
           </span>

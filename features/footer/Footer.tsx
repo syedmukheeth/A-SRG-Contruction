@@ -74,13 +74,15 @@ export function Footer() {
       <div className="relative mx-auto flex max-w-[1300px] flex-col gap-10 px-6 pb-14 pt-10 md:flex-row md:items-end md:justify-between md:px-12">
         <div>
           <div className="flex items-center gap-3">
-            <Image
-              src="/images/brand/logo-mark.png"
-              alt={site.name}
-              width={44}
-              height={44}
-              className="h-10 w-10"
-            />
+            <span className="relative h-10 w-10 overflow-hidden rounded-full border border-copper/30">
+              <Image
+                src="/images/brand/logo-mark-round.png"
+                alt={site.name}
+                fill
+                sizes="40px"
+                className="object-cover"
+              />
+            </span>
             <p className="font-display text-2xl font-bold uppercase text-text">
               {site.name}
               <span className="text-copper">.</span>

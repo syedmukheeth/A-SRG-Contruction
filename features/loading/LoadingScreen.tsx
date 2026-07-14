@@ -26,8 +26,11 @@ export function LoadingScreen() {
   const [pct, setPct] = useState(0);
   const svgRef = useRef<SVGSVGElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
-  const barRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<SVGCircleElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+
+  const RING_R = 46;
+  const RING_C = 2 * Math.PI * RING_R;
 
   const stepIndex = Math.min(
     processSteps.length - 1,
@@ -47,13 +50,15 @@ export function LoadingScreen() {
       onComplete: () => setVisible(false),
     });
 
+    // Kept intentionally snappy: a full-screen opaque loader blocks paint,
+    // so every second here directly costs Speed Index / LCP. ~1.1s total.
     tl.fromTo(
       logoRef.current,
       { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.9, ease: "power3.out" },
+      { scale: 1, opacity: 1, duration: 0.35, ease: "power3.out" },
     ).to(
       logoRef.current,
-      { filter: "drop-shadow(0 0 24px rgba(199,133,62,0.55))", duration: 0.6, ease: "power2.out" },
+      { filter: "drop-shadow(0 0 24px rgba(199,133,62,0.55))", duration: 0.3, ease: "power2.out" },
       "<",
     );
 
@@ -66,11 +71,11 @@ export function LoadingScreen() {
         paths,
         {
           strokeDashoffset: 0,
-          duration: 1.6,
+          duration: 0.65,
           ease: "power2.inOut",
-          stagger: 0.12,
+          stagger: 0.05,
         },
-        0.3,
+        0.15,
       );
     }
 
@@ -78,22 +83,24 @@ export function LoadingScreen() {
       counter,
       {
         v: 100,
-        duration: 2.4,
+        duration: 1,
         ease: "power1.inOut",
         onUpdate: () => {
           const v = counter.v;
           setPct(Math.round(v));
-          if (barRef.current) barRef.current.style.transform = `scaleX(${v / 100})`;
+          if (ringRef.current) {
+            ringRef.current.style.strokeDashoffset = `${RING_C * (1 - v / 100)}`;
+          }
         },
       },
-      0.2,
+      0.1,
     );
 
     tl.fromTo(
       statsRef.current,
       { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-      2.05,
+      { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
+      0.75,
     );
 
     return () => {
@@ -108,7 +115,7 @@ export function LoadingScreen() {
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-ink"
           initial={{ y: 0 }}
           exit={{ y: "-100%" }}
-          transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
         >
           <div className="blueprint-grid-fine absolute inset-0 opacity-40" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(199,133,62,0.1)_0%,transparent_55%)]" />
@@ -126,9 +133,53 @@ export function LoadingScreen() {
             />
           ))}
 
-          {/* brand mark */}
-          <div ref={logoRef} className="relative h-16 w-16 opacity-0">
-            <Image src="/images/brand/logo-mark.png" alt={site.name} fill sizes="64px" />
+          {/* brand mark medallion */}
+          <div className="relative flex h-28 w-28 items-center justify-center">
+            {/* pulsing halo */}
+            <div className="absolute inset-0 animate-pulse rounded-full bg-copper/20 blur-xl" />
+
+            {/* decorative rotating ring */}
+            <div
+              className="absolute -inset-2.5 rounded-full border border-dashed border-copper/25"
+              style={{ animation: "slow-spin 16s linear infinite" }}
+            />
+
+            {/* live progress ring */}
+            <svg viewBox="0 0 100 100" className="absolute h-full w-full -rotate-90">
+              <circle
+                cx="50"
+                cy="50"
+                r={RING_R}
+                fill="none"
+                stroke="rgba(248,248,248,0.08)"
+                strokeWidth="2"
+              />
+              <circle
+                ref={ringRef}
+                cx="50"
+                cy="50"
+                r={RING_R}
+                fill="none"
+                stroke="#c7853e"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeDasharray={RING_C}
+                strokeDashoffset={RING_C}
+              />
+            </svg>
+
+            <div
+              ref={logoRef}
+              className="relative h-16 w-16 overflow-hidden rounded-full opacity-0"
+            >
+              <Image
+                src="/images/brand/logo-mark-round.png"
+                alt={site.name}
+                fill
+                sizes="64px"
+                className="object-cover"
+              />
+            </div>
           </div>
 
           <svg
@@ -171,13 +222,6 @@ export function LoadingScreen() {
                 {pct}
                 <span className="text-copper">%</span>
               </span>
-            </div>
-
-            <div className="mt-3 h-px w-full overflow-hidden bg-text/10">
-              <div
-                ref={barRef}
-                className="h-full w-full origin-left scale-x-0 bg-copper"
-              />
             </div>
 
             <div

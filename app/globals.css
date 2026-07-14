@@ -247,6 +247,13 @@ html {
   }
 }
 
+/* Slow decorative rotation, e.g. the loader's brand-mark ring */
+@keyframes slow-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Reduced motion — flatten everything */
 @media (prefers-reduced-motion: reduce) {
   *,

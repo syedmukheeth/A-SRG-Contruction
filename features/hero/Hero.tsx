@@ -31,6 +31,7 @@ export function Hero() {
     const split = new SplitText(headline.current.querySelectorAll(".line-inner"), {
       type: "lines",
       linesClass: "split-line",
+      accessible: false,
     });
     gsap.set(split.lines, { yPercent: 110 });
     gsap.to(split.lines, {
@@ -153,10 +154,11 @@ export function Hero() {
         <div className="relative z-10 flex flex-col items-center px-6 text-center">
           <h1
             ref={headline}
+            aria-label={HEADLINE.join(" ")}
             className="font-display text-mega uppercase text-text"
           >
             {HEADLINE.map((line, i) => (
-              <span key={i} className="block overflow-hidden">
+              <span key={i} className="block overflow-hidden" aria-hidden="true">
                 <span className="line-inner block">{line}</span>
               </span>
             ))}
