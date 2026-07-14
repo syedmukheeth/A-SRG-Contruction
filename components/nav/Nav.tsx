@@ -54,7 +54,7 @@ export function Nav() {
     >
       <nav className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 md:px-12">
         <Link
-          href="/"
+          href="/#hero"
           className="group flex items-center gap-2.5"
           onClick={() => setOpen(false)}
         >
