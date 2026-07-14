@@ -27,7 +27,7 @@ export function Section({
     <section
       id={id}
       ref={ref}
-      className={cn("relative w-full px-6 py-32 md:px-12 lg:px-20", className)}
+      className={cn("relative w-full px-6 py-20 md:px-12 md:py-32 lg:px-20", className)}
     >
       {children}
     </section>

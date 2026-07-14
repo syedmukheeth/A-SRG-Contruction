@@ -9,8 +9,8 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative w-full px-6 py-32 md:px-12 lg:px-20">
-      <div className="mx-auto grid max-w-[1300px] gap-16 lg:grid-cols-[0.8fr_1.2fr]">
+    <section id="faq" className="relative w-full px-6 py-20 md:px-12 md:py-32 lg:px-20">
+      <div className="mx-auto grid max-w-[1300px] gap-16 md:grid-cols-[0.8fr_1.2fr]">
         <div>
           <p className="eyebrow mb-6">Answers</p>
           <h2 className="font-display text-giant uppercase leading-[0.9] text-text">

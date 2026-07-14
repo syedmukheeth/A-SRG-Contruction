@@ -69,7 +69,7 @@ export default function Home() {
             </p>
             <p className="mt-6 max-w-xl text-muted">
               Headquartered at {site.location.address}, {site.location.city},
-              ASRG Construction builds across {site.location.region} — for
+              ASRG Construction builds across {site.location.region}. For
               landmark projects, the team mobilises statewide. Every project,
               from a single villa to a multi-storey commercial block, runs
               through the same eight-stage process, the same site team, and the

@@ -28,6 +28,7 @@ export function Process() {
             start: "top 60%",
             end: "bottom 80%",
             scrub: 0.5,
+            invalidateOnRefresh: true,
           },
         },
       );
@@ -45,7 +46,7 @@ export function Process() {
   }, [reduced]);
 
   return (
-    <section id="process" className="relative w-full px-6 py-32 md:px-12 lg:px-20">
+    <section id="process" className="relative w-full px-6 py-20 md:px-12 md:py-32 lg:px-20">
       <div className="mx-auto max-w-[1100px]">
         <p className="eyebrow mb-6">The build</p>
         <h2 className="mb-20 font-display text-giant uppercase leading-[0.9] text-text">

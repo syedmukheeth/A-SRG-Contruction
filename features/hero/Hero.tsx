@@ -54,56 +54,83 @@ export function Hero() {
       return;
     }
 
-    const ctx = gsap.context(() => {
-      const draws = villaWrap.current!.querySelectorAll<SVGGeometryElement>(
-        "[data-draw]",
-      );
-      const glows = villaWrap.current!.querySelectorAll("[data-glow]");
+    const mm = gsap.matchMedia();
 
-      draws.forEach((p) => {
-        const len = p.getTotalLength?.() ?? 300;
-        gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
-      });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.5,
-          pin: stage.current,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      tl.to(draws, {
-        strokeDashoffset: 0,
-        duration: 6,
-        ease: "none",
-        stagger: 0.04,
-      })
-        .to(glows, { opacity: 0.28, duration: 1.5, stagger: 0.1 }, ">-1")
-        .to(
-          headline.current,
-          { yPercent: -18, opacity: 0.85, duration: 2, ease: "none" },
-          0,
+    mm.add(
+      { isDesktop: "(min-width: 768px)" },
+      (context) => {
+        const { isDesktop } = context.conditions as { isDesktop: boolean };
+        const draws = villaWrap.current!.querySelectorAll<SVGGeometryElement>(
+          "[data-draw]",
         );
-    }, section);
+        const glows = villaWrap.current!.querySelectorAll("[data-glow]");
 
-    return () => ctx.revert();
+        draws.forEach((p) => {
+          const len = p.getTotalLength?.() ?? 300;
+          gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
+        });
+
+        if (isDesktop) {
+          // Full pinned scroll-scrub build on tablet/desktop.
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: section.current,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: 0.5,
+              pin: stage.current,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          tl.to(draws, {
+            strokeDashoffset: 0,
+            duration: 6,
+            ease: "none",
+            stagger: 0.04,
+          })
+            .to(glows, { opacity: 0.28, duration: 1.5, stagger: 0.1 }, ">-1")
+            .to(
+              headline.current,
+              { yPercent: -18, opacity: 0.85, duration: 2, ease: "none" },
+              0,
+            );
+        } else {
+          // Mobile: no pin (fights native scroll), a single triggered
+          // draw-in instead of a scroll-scrubbed one.
+          gsap.timeline({
+            scrollTrigger: {
+              trigger: section.current,
+              start: "top 70%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          })
+            .to(draws, {
+              strokeDashoffset: 0,
+              duration: 1.6,
+              ease: "power2.out",
+              stagger: 0.03,
+            })
+            .to(glows, { opacity: 0.28, duration: 0.8, stagger: 0.05 }, ">-0.4");
+        }
+      },
+    );
+
+    return () => mm.revert();
   }, [reduced]);
 
   return (
     <section
       ref={section}
       id="hero"
-      className="relative h-[240vh] w-full"
+      className="relative h-dvh w-full md:h-[240dvh]"
       aria-label="Hero"
     >
       <div
         ref={stage}
-        className="relative flex h-screen w-full items-center justify-center overflow-hidden"
+        className="relative flex h-dvh w-full items-center justify-center overflow-hidden"
       >
         {/* blueprint grid + vignette */}
         <div className="blueprint-grid absolute inset-0 opacity-70" />

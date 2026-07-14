@@ -9,10 +9,10 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative w-full overflow-hidden px-6 py-40 md:px-12 lg:px-20"
+      className="relative w-full overflow-hidden px-6 py-24 md:px-12 md:py-40 lg:px-20"
     >
       <div className="blueprint-grid absolute inset-0 opacity-50" />
-      <div className="relative mx-auto grid max-w-[1300px] gap-16 lg:grid-cols-2">
+      <div className="relative mx-auto grid max-w-[1300px] gap-16 md:grid-cols-2">
         <div>
           <p className="eyebrow mb-6">Start here</p>
           <h2 className="font-display text-giant uppercase leading-[0.88] text-text">

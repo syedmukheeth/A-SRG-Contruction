@@ -26,7 +26,7 @@ export function Testimonials() {
   }, [active]);
 
   return (
-    <section id="testimonials" className="relative w-full px-6 py-32 md:px-12 lg:px-20">
+    <section id="testimonials" className="relative w-full px-6 py-20 md:px-12 md:py-32 lg:px-20">
       <div className="mx-auto max-w-[1400px]">
         <p className="eyebrow mb-6">In their words</p>
         <h2 className="mb-16 font-display text-giant uppercase leading-[0.9] text-text">
@@ -35,7 +35,7 @@ export function Testimonials() {
           <span className="text-copper">stayed.</span>
         </h2>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((t) => (
             <motion.button
               key={t.id}

@@ -31,6 +31,7 @@ export function GalleryTile({ item }: { item: GalleryItem }) {
             start: "top bottom",
             end: "bottom top",
             scrub: true,
+            invalidateOnRefresh: true,
           },
         },
       );
@@ -52,7 +53,7 @@ export function GalleryTile({ item }: { item: GalleryItem }) {
       >
         <Image
           src={item.image}
-          alt={`${item.caption} — ASRG Construction, ${site.location.city}`}
+          alt={`${item.caption}, ASRG Construction, ${site.location.city}`}
           fill
           sizes="(max-width: 640px) 50vw, 25vw"
           className="object-cover soft-img"

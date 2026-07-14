@@ -111,8 +111,42 @@ export const processSteps = [
 
 export type ProcessStep = (typeof processSteps)[number];
 
+export interface Project {
+  id: string;
+  title: string;
+  category: string;
+  year: string;
+  location: string;
+  area: string;
+  accent: string;
+  image: string;
+  /** Set only for entries with a genuine in-progress → complete pair. */
+  beforeImage?: string;
+}
+
 /** Real completed work. Drop photos into public/images/proof/ with these exact filenames. */
-export const projects = [
+export const projects: Project[] = [
+  {
+    id: "stone-facade-night",
+    title: "Stone-Clad Elevation, Night Reveal",
+    category: "Residential",
+    year: "2026",
+    location: "Kurnool",
+    area: "G+3",
+    accent: "#C7853E",
+    image: "/images/proof/stone-facade-night.jpg",
+  },
+  {
+    id: "twin-tone-bungalow",
+    title: "Twin-Tone Bungalow",
+    category: "Residential",
+    year: "2026",
+    location: "Kurnool",
+    area: "G+1",
+    accent: "#E8A93C",
+    image: "/images/proof/twin-tone-bungalow-after.jpg",
+    beforeImage: "/images/proof/twin-tone-bungalow-before.jpg",
+  },
   {
     id: "jeelani-mansion",
     title: "Jeelani Mansion",
@@ -122,6 +156,16 @@ export const projects = [
     area: "G+4",
     accent: "#C7853E",
     image: "/images/proof/jeelani-mansion.jpg",
+  },
+  {
+    id: "duplex-teal-coral",
+    title: "Garden Duplex",
+    category: "Residential",
+    year: "2026",
+    location: "Kurnool",
+    area: "G+2",
+    accent: "#9A6A6C",
+    image: "/images/proof/duplex-teal-coral.jpg",
   },
   {
     id: "netaji-facade",
@@ -134,6 +178,16 @@ export const projects = [
     image: "/images/proof/blue-facade-building.jpg",
   },
   {
+    id: "charcoal-elevation",
+    title: "Charcoal & Glass Elevation",
+    category: "Residential",
+    year: "2026",
+    location: "Kurnool",
+    area: "G+3",
+    accent: "#3C3C3C",
+    image: "/images/proof/charcoal-elevation.jpg",
+  },
+  {
     id: "tree-mural-villa",
     title: "Courtyard Villa",
     category: "Residential",
@@ -143,9 +197,37 @@ export const projects = [
     accent: "#9A6A3C",
     image: "/images/proof/tree-mural-villa.jpg",
   },
-] as const;
-
-export type Project = (typeof projects)[number];
+  {
+    id: "offwhite-elevation",
+    title: "Off-White Elevation",
+    category: "Residential",
+    year: "2026",
+    location: "Kurnool",
+    area: "G+3",
+    accent: "#B79C7A",
+    image: "/images/proof/offwhite-elevation.jpg",
+  },
+  {
+    id: "asrg-traders-showroom",
+    title: "ASRG Traders Showroom",
+    category: "Commercial",
+    year: "2026",
+    location: "Kurnool",
+    area: "Retail",
+    accent: "#9C2B2B",
+    image: "/images/proof/asrg-traders-showroom.jpg",
+  },
+  {
+    id: "medical-complex",
+    title: "Medical Complex",
+    category: "Commercial",
+    year: "2026",
+    location: "Kurnool",
+    area: "G+2",
+    accent: "#6B6F76",
+    image: "/images/proof/medical-complex.jpg",
+  },
+];
 
 /** Real client feedback. Abdul's review is verbatim from Justdial; the other two carry no invented names. */
 export const testimonials = [
@@ -184,12 +266,12 @@ export const testimonials = [
 export type Testimonial = (typeof testimonials)[number];
 
 export const gallery = [
-  { id: "g1", caption: "Cast-in-place concrete", span: "tall", image: img("1690947155019-d63aba8187ac") },
-  { id: "g2", caption: "Structural steel frame", span: "wide", image: img("1763771421320-028cdbade96d") },
-  { id: "g3", caption: "Glass curtain wall", span: "", image: img("1775582336512-a8a714980243") },
-  { id: "g4", caption: "Timber & finishes", span: "", image: img("1768131424767-ea722fbcafd5") },
-  { id: "g5", caption: "Foundation works", span: "wide", image: img("1612878100556-032bbf1b3bab") },
-  { id: "g6", caption: "Handover detail", span: "tall", image: img("1741156386380-0236c72eb6f9") },
+  { id: "g1", caption: "Structural lift", span: "wide", image: "/images/proof/gallery-structural-lift.jpg" },
+  { id: "g2", caption: "Custom joinery", span: "tall", image: "/images/proof/gallery-custom-joinery.jpg" },
+  { id: "g3", caption: "Kitchen fit-out", span: "", image: "/images/proof/gallery-kitchen-fitout.jpg" },
+  { id: "g4", caption: "Showcase detailing", span: "", image: "/images/proof/gallery-showcase-detailing.jpg" },
+  { id: "g5", caption: "Ceiling & lighting", span: "wide", image: "/images/proof/gallery-ceiling-lighting.jpg" },
+  { id: "g6", caption: "Handover-ready interior", span: "tall", image: "/images/proof/gallery-handover-interior.jpg" },
 ] as const;
 
 export type GalleryItem = (typeof gallery)[number];

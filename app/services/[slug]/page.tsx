@@ -105,7 +105,7 @@ export default async function ServicePage({
                 key={item}
                 className="flex items-start gap-3 border-b border-text/10 pb-4 text-muted"
               >
-                <span className="mt-1 text-copper">—</span>
+                <span className="mt-1 text-copper">▸</span>
                 <span>{item}</span>
               </li>
             ))}

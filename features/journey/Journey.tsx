@@ -121,11 +121,13 @@ export function Journey() {
       ref={section}
       id="journey"
       aria-label="How we build"
-      className={reduced ? "relative w-full" : "relative h-[520vh] w-full"}
+      className={
+        reduced ? "relative w-full" : "relative h-[300dvh] w-full md:h-[520dvh]"
+      }
     >
       <div
         ref={stage}
-        className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden"
+        className="relative flex h-dvh w-full flex-col items-center justify-center overflow-hidden"
       >
         <div className="blueprint-grid absolute inset-0 opacity-50" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,var(--ink)_88%)]" />
@@ -156,13 +158,13 @@ export function Journey() {
 
         {/* caption */}
         <div className="pointer-events-none absolute bottom-16 left-6 right-6 md:left-12">
-          <div className="flex items-end gap-6">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:gap-6">
             <span className="font-mono text-sm text-copper">
               {BEATS[visibleBeat].n}
               <span className="text-muted"> / 07</span>
             </span>
             <div>
-              <h2 className="font-display text-5xl font-bold uppercase leading-none text-text md:text-7xl">
+              <h2 className="font-display text-4xl font-bold uppercase leading-none text-text sm:text-5xl md:text-7xl">
                 {BEATS[visibleBeat].t}
               </h2>
               <p className="mt-3 max-w-md text-muted">{BEATS[visibleBeat].l}</p>

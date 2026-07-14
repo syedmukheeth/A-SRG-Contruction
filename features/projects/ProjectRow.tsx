@@ -30,6 +30,7 @@ export function ProjectRow({ project, index }: { project: Project; index: number
             start: "top bottom",
             end: "bottom top",
             scrub: true,
+            invalidateOnRefresh: true,
           },
         },
       );
@@ -38,16 +39,11 @@ export function ProjectRow({ project, index }: { project: Project; index: number
   }, [reduced]);
 
   return (
-    <div
-      ref={frame}
-      className={`grid items-center gap-8 lg:grid-cols-12 ${
-        flip ? "" : ""
-      }`}
-    >
+    <div ref={frame} className="grid items-center gap-8 md:grid-cols-2 lg:grid-cols-12">
       {/* media */}
       <div
-        className={`group relative h-[60vh] overflow-hidden rounded-lg border border-text/10 lg:col-span-8 lg:h-[80vh] ${
-          flip ? "lg:order-2" : ""
+        className={`group relative h-[50dvh] overflow-hidden rounded-lg border border-text/10 sm:h-[60dvh] md:col-span-1 lg:col-span-8 lg:h-[80dvh] ${
+          flip ? "md:order-2" : ""
         }`}
       >
         <div ref={media} className="absolute inset-x-0 -top-[12%] h-[124%]">
@@ -65,10 +61,27 @@ export function ProjectRow({ project, index }: { project: Project; index: number
         <span className="absolute left-5 top-5 z-10 font-mono text-[11px] uppercase tracking-[0.25em] text-text/90">
           {project.category}
         </span>
+
+        {project.beforeImage && (
+          <div className="absolute bottom-5 left-5 z-10 w-[120px] min-w-[120px] overflow-hidden rounded-md border border-text/20 shadow-lg shadow-ink/40 sm:w-[160px]">
+            <div className="relative aspect-4/3">
+              <Image
+                src={project.beforeImage}
+                alt={`${project.title}, mid-construction, before completion`}
+                fill
+                sizes="160px"
+                className="object-cover"
+              />
+            </div>
+            <span className="block bg-ink/85 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-copper">
+              In progress
+            </span>
+          </div>
+        )}
       </div>
 
       {/* meta */}
-      <div className={`lg:col-span-4 ${flip ? "lg:order-1" : ""}`}>
+      <div className={`md:col-span-1 lg:col-span-4 ${flip ? "md:order-1" : ""}`}>
         <span className="font-mono text-sm text-copper">
           {String(index + 1).padStart(2, "0")} / {project.year}
         </span>

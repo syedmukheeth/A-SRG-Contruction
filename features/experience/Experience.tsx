@@ -8,7 +8,7 @@ export function Experience() {
     <Section id="experience" className="surface-concrete">
       <div className="mx-auto max-w-[1300px]">
         <p className="eyebrow mb-12">By the numbers</p>
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-6 md:gap-8">
           {stats.map((s) => (
             <StatCounter
               key={s.label}
