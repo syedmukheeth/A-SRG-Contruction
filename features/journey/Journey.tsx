@@ -66,49 +66,94 @@ export function Journey() {
         });
       });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.6,
-          pin: stage.current,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const i = Math.min(
-              BEATS.length - 1,
-              Math.floor(self.progress * BEATS.length),
-            );
-            if (i !== lastIdx.current) {
-              lastIdx.current = i;
-              setActive(i); // only re-render React on an actual beat change
-            }
-          },
-        },
+      const mm = gsap.matchMedia();
+
+      mm.add({ isDesktop: "(min-width: 768px)" }, (context) => {
+        const { isDesktop } = context.conditions as { isDesktop: boolean };
+
+        const bumpActive = (i: number) => {
+          if (i !== lastIdx.current) {
+            lastIdx.current = i;
+            setActive(i);
+          }
+        };
+
+        if (isDesktop) {
+          // Desktop/tablet: pinned scroll-scrub, one beat per scroll step.
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: section.current,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: 0.6,
+              pin: stage.current,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                bumpActive(
+                  Math.min(BEATS.length - 1, Math.floor(self.progress * BEATS.length)),
+                );
+              },
+            },
+          });
+
+          if (blueprintStrokes && blueprintStrokes.length) {
+            tl.to(blueprintStrokes, {
+              strokeDashoffset: 0,
+              duration: 1,
+              ease: "none",
+              stagger: 0.05,
+            });
+          }
+          built.forEach((b) => {
+            const el = layer(b);
+            if (!el) return;
+            const isRoof = b === "roof";
+            tl.to(el, {
+              autoAlpha: 1,
+              ...(isRoof ? { y: 0 } : { scaleY: 1 }),
+              duration: 1,
+              ease: isRoof ? "power3.out" : "power2.out",
+            });
+          });
+        } else {
+          // Mobile: pin fights native/Lenis momentum scroll and is a real
+          // jank source, so no pin here — a single triggered build-up that
+          // autoplays once the section enters view instead.
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: section.current,
+              start: "top 75%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          if (blueprintStrokes && blueprintStrokes.length) {
+            tl.to(blueprintStrokes, {
+              strokeDashoffset: 0,
+              duration: 0.6,
+              ease: "power2.inOut",
+              stagger: 0.03,
+              onStart: () => bumpActive(0),
+            });
+          }
+          built.forEach((b, idx) => {
+            const el = layer(b);
+            if (!el) return;
+            const isRoof = b === "roof";
+            tl.to(el, {
+              autoAlpha: 1,
+              ...(isRoof ? { y: 0 } : { scaleY: 1 }),
+              duration: 0.4,
+              ease: isRoof ? "power3.out" : "power2.out",
+              onStart: () => bumpActive(idx + 1),
+            });
+          });
+        }
       });
 
-      // beat 0, blueprint draws
-      if (blueprintStrokes && blueprintStrokes.length) {
-        tl.to(blueprintStrokes, {
-          strokeDashoffset: 0,
-          duration: 1,
-          ease: "none",
-          stagger: 0.05,
-        });
-      }
-      // beats 1–6, built layers
-      built.forEach((b) => {
-        const el = layer(b);
-        if (!el) return;
-        const isRoof = b === "roof";
-        tl.to(el, {
-          autoAlpha: 1,
-          ...(isRoof ? { y: 0 } : { scaleY: 1 }),
-          duration: 1,
-          ease: isRoof ? "power3.out" : "power2.out",
-        });
-      });
+      return () => mm.revert();
     }, section);
 
     return () => ctx.revert();
@@ -122,7 +167,7 @@ export function Journey() {
       id="journey"
       aria-label="How we build"
       className={
-        reduced ? "relative w-full" : "relative h-[300dvh] w-full md:h-[520dvh]"
+        reduced ? "relative w-full" : "relative h-dvh w-full md:h-[520dvh]"
       }
     >
       <div
