@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -54,10 +55,20 @@ export function Nav() {
       <nav className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 md:px-12">
         <Link
           href="/"
-          className="font-display text-lg font-bold uppercase tracking-tight text-text"
+          className="flex items-center gap-2.5"
           onClick={() => setOpen(false)}
         >
-          ASRG<span className="text-copper">.</span>
+          <Image
+            src="/images/brand/logo-mark.png"
+            alt={site.name}
+            width={40}
+            height={40}
+            priority
+            className="h-9 w-9 md:h-10 md:w-10"
+          />
+          <span className="font-display text-lg font-bold uppercase tracking-tight text-text">
+            ASRG<span className="text-copper">.</span>
+          </span>
         </Link>
 
         <div className="hidden items-center gap-10 md:flex">

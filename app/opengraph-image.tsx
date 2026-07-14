@@ -1,5 +1,11 @@
 import { ImageResponse } from "next/og";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { site } from "@/lib/site";
+
+const logoBase64 = readFileSync(
+  join(process.cwd(), "public/images/brand/logo-mark-og.png"),
+).toString("base64");
 
 export const alt = `${site.name} · 46 Years of Construction Experience`;
 export const size = { width: 1200, height: 630 };
@@ -27,13 +33,23 @@ export default function OgImage() {
           style={{
             display: "flex",
             justifyContent: "space-between",
+            alignItems: "center",
             color: "#a0a0a0",
             fontSize: 22,
             letterSpacing: "0.3em",
             textTransform: "uppercase",
           }}
         >
-          <span>{site.name}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`data:image/png;base64,${logoBase64}`}
+              width={64}
+              height={64}
+              alt=""
+            />
+            <span>{site.name}</span>
+          </div>
           <span>{site.location.city}</span>
         </div>
 

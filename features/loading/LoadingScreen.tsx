@@ -1,15 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { gsap } from "@/lib/gsap";
 import { useLoad } from "@/components/providers/LoadProvider";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { site } from "@/lib/site";
+import { site, processSteps, stats } from "@/lib/site";
+
+// Deterministic dust positions (mirrors the Journey section's motif).
+const DUST = [
+  [10, 22], [22, 68], [35, 16], [48, 78], [63, 34],
+  [74, 60], [86, 20], [92, 70], [17, 46], [56, 12],
+] as const;
 
 /**
- * Cinematic loader: a luxury-villa wireframe draws itself while a
- * percentage counts to 100, then the panel lifts away to reveal the hero.
+ * Cinematic loader: the brand mark ignites, a luxury-villa wireframe draws
+ * itself while a percentage counts to 100 against the build's process
+ * stages, then the panel lifts away to reveal the hero.
  */
 export function LoadingScreen() {
   const { setLoaded } = useLoad();
@@ -17,6 +25,14 @@ export function LoadingScreen() {
   const [visible, setVisible] = useState(true);
   const [pct, setPct] = useState(0);
   const svgRef = useRef<SVGSVGElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  const stepIndex = Math.min(
+    processSteps.length - 1,
+    Math.floor((pct / 100) * processSteps.length),
+  );
 
   useEffect(() => {
     if (reduced) {
@@ -31,28 +47,53 @@ export function LoadingScreen() {
       onComplete: () => setVisible(false),
     });
 
+    tl.fromTo(
+      logoRef.current,
+      { scale: 0.8, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.9, ease: "power3.out" },
+    ).to(
+      logoRef.current,
+      { filter: "drop-shadow(0 0 24px rgba(199,133,62,0.55))", duration: 0.6, ease: "power2.out" },
+      "<",
+    );
+
     if (paths) {
       paths.forEach((p) => {
         const len = "getTotalLength" in p ? p.getTotalLength() : 200;
         gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
       });
-      tl.to(paths, {
-        strokeDashoffset: 0,
-        duration: 1.6,
-        ease: "power2.inOut",
-        stagger: 0.12,
-      });
+      tl.to(
+        paths,
+        {
+          strokeDashoffset: 0,
+          duration: 1.6,
+          ease: "power2.inOut",
+          stagger: 0.12,
+        },
+        0.3,
+      );
     }
 
     tl.to(
       counter,
       {
         v: 100,
-        duration: 2,
+        duration: 2.4,
         ease: "power1.inOut",
-        onUpdate: () => setPct(Math.round(counter.v)),
+        onUpdate: () => {
+          const v = counter.v;
+          setPct(Math.round(v));
+          if (barRef.current) barRef.current.style.transform = `scaleX(${v / 100})`;
+        },
       },
-      0,
+      0.2,
+    );
+
+    tl.fromTo(
+      statsRef.current,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+      2.05,
     );
 
     return () => {
@@ -70,11 +111,30 @@ export function LoadingScreen() {
           transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
         >
           <div className="blueprint-grid-fine absolute inset-0 opacity-40" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(199,133,62,0.1)_0%,transparent_55%)]" />
+
+          {/* ambient construction dust */}
+          {DUST.map(([l, t], i) => (
+            <span
+              key={i}
+              className="pointer-events-none absolute h-[3px] w-[3px] rounded-full bg-copper/30"
+              style={{
+                left: `${l}%`,
+                top: `${t}%`,
+                animation: `dust ${6 + (i % 4)}s ease-in-out ${i * 0.3}s infinite`,
+              }}
+            />
+          ))}
+
+          {/* brand mark */}
+          <div ref={logoRef} className="relative h-16 w-16 opacity-0">
+            <Image src="/images/brand/logo-mark.png" alt={site.name} fill sizes="64px" />
+          </div>
 
           <svg
             ref={svgRef}
             viewBox="0 0 240 180"
-            className="relative w-[42vw] max-w-[360px] text-copper"
+            className="relative mt-6 w-[78vw] max-w-[360px] text-copper sm:w-[52vw] md:w-[42vw]"
             fill="none"
             stroke="currentColor"
             strokeWidth={1.25}
@@ -97,15 +157,45 @@ export function LoadingScreen() {
             <line x1="60" y1="172" x2="180" y2="172" />
           </svg>
 
-          <div className="relative mt-10 flex w-[42vw] max-w-[360px] flex-col gap-1">
-            <div className="flex items-end justify-between">
+          <div className="relative mt-8 w-[78vw] max-w-[360px] sm:w-[52vw] md:w-[42vw]">
+            <div className="flex items-baseline justify-between font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+              <span>
+                {String(stepIndex + 1).padStart(2, "0")} / {processSteps.length}
+              </span>
+              <span className="text-copper">{processSteps[stepIndex].title}</span>
+            </div>
+
+            <div className="mt-4 flex items-end justify-between">
               <span className="eyebrow">{site.name}</span>
               <span className="font-mono text-4xl font-medium tabular-nums text-text">
                 {pct}
                 <span className="text-copper">%</span>
               </span>
             </div>
-            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+
+            <div className="mt-3 h-px w-full overflow-hidden bg-text/10">
+              <div
+                ref={barRef}
+                className="h-full w-full origin-left scale-x-0 bg-copper"
+              />
+            </div>
+
+            <div
+              ref={statsRef}
+              className="mt-4 flex flex-wrap justify-between gap-x-4 gap-y-1 font-mono text-[11px] uppercase tracking-[0.15em] text-muted opacity-0"
+            >
+              {stats.map((s) => (
+                <span key={s.label}>
+                  <span className="text-text">
+                    {s.value}
+                    {s.suffix}
+                  </span>{" "}
+                  {s.label}
+                </span>
+              ))}
+            </div>
+
+            <span className="mt-4 block font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
               {site.owner} · {site.ownerTitle}
             </span>
           </div>
