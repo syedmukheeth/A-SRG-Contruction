@@ -1,28 +1,13 @@
 import { site } from "./site";
 
+/**
+ * The "best-construction-company-in-kurnool" post used to live here. It duplicated
+ * the thesis, checklist and FAQs of /best-construction-in-kurnool, so the two
+ * pages competed for one query and split their link equity. The post is now
+ * permanently redirected to that page in next.config.ts — do not re-add a post on the
+ * "best construction company" theme; strengthen the landing page instead.
+ */
 export const posts = [
-  {
-    slug: "best-construction-company-in-kurnool",
-    title: `What Makes the Best Construction Company in ${site.location.city}`,
-    description: `How to evaluate a construction company in ${site.location.city}, Andhra Pradesh: licensing, transparent billing, site experience and what ASRG Construction does differently.`,
-    date: "2026-06-01",
-    excerpt: `${site.location.city} has no shortage of contractors. Here's what actually separates a reliable builder from the rest, and why ASRG Construction has held client trust here for ${site.yearsOfExperience} years.`,
-    body: [
-      `Choosing a construction company in ${site.location.city} is a high-stakes decision. Most families and businesses only go through it once or twice in a lifetime. The gap between an average contractor and the best construction company in ${site.location.city} usually comes down to five things: transparent stage-linked billing, a dated schedule agreed before the first foundation is dug, in-house design and structural capability, a verifiable track record of completed projects, and a team that answers the phone.`,
-      `ASRG Construction has operated in ${site.location.city}, ${site.location.region} for ${site.yearsOfExperience} years, running residential construction, commercial construction, civil contracting, centering works, renovation and consultation under one accountable team. Every project, from a single villa to a multi-storey commercial block, runs through the same eight-stage process and the same site team from planning to handover.`,
-      `If you're comparing construction companies in ${site.location.city}, ask three questions: can they show completed projects with real addresses, do they commit to a dated schedule in writing, and is billing tied to verified progress milestones rather than arbitrary demands. A contractor confident in their work will answer all three without hesitation.`,
-    ],
-    faq: [
-      {
-        q: `Who is the best construction company in ${site.location.city}?`,
-        a: `ASRG Construction has built homes, workplaces and civic landmarks across ${site.location.city} for ${site.yearsOfExperience} years, with transparent stage-linked billing and a dated schedule agreed up front.`,
-      },
-      {
-        q: "What should I check before hiring a civil contractor?",
-        a: "Verified completed projects, a written dated schedule, stage-linked payment milestones, and direct site-team communication.",
-      },
-    ],
-  },
   {
     slug: "choosing-a-civil-contractor-andhra-pradesh",
     title: "How to Choose a Civil Contractor in Andhra Pradesh",

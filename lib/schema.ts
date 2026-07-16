@@ -1,7 +1,10 @@
-import { site, testimonials, type Service } from "./site";
+import { site, type Service } from "./site";
 
 const orgId = `${site.url}/#organization`;
 const websiteId = `${site.url}/#website`;
+
+/** Verified off-site profiles only; unset entries never reach the markup. */
+const sameAs = Object.values(site.profiles).filter(Boolean);
 
 /** Root Organization/LocalBusiness node — emitted once, in the root layout. */
 export function organizationNode() {
@@ -10,12 +13,32 @@ export function organizationNode() {
     "@id": orgId,
     name: site.name,
     legalName: site.legalName,
+    alternateName: site.alternateNames,
+    slogan: site.tagline,
     description: site.description,
     url: site.url,
+    ...(sameAs.length ? { sameAs } : {}),
     image: `${site.url}${site.ownerImage}`,
     logo: `${site.url}/icon`,
     email: site.email,
     telephone: site.phone,
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        telephone: site.phone,
+        email: site.email,
+        areaServed: site.location.country,
+        availableLanguage: ["en", "te", "ur", "hi"],
+      },
+      {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        telephone: site.phoneAlt,
+        areaServed: site.location.country,
+        availableLanguage: ["en", "te", "ur", "hi"],
+      },
+    ],
     priceRange: "₹₹",
     foundingDate: String(new Date().getFullYear() - site.yearsOfExperience),
     founder: {
@@ -45,17 +68,12 @@ export function organizationNode() {
       opens: "09:00",
       closes: "19:00",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "5",
-      reviewCount: String(testimonials.length),
-    },
-    review: testimonials.map((t) => ({
-      "@type": "Review",
-      author: { "@type": "Person", name: t.owner },
-      reviewBody: t.quote,
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-    })),
+    // No aggregateRating/review here on purpose. Google treats reviews a business
+    // publishes about itself as self-serving and disqualifies the markup — at best
+    // ignored, at worst a structured-data manual action that costs the FAQ and
+    // sitelink results too. Ratings belong on the Google Business Profile and
+    // Justdial listing, which feed the map pack directly. Testimonials stay on the
+    // page as visible copy.
     knowsAbout: [
       "Civil Contracting",
       "Centering Works",
@@ -74,8 +92,23 @@ export function websiteNode() {
     "@id": websiteId,
     url: site.url,
     name: site.name,
+    alternateName: site.alternateNames,
     description: site.description,
     publisher: { "@id": orgId },
+    inLanguage: "en-IN",
+  } as const;
+}
+
+/** WebPage node for a standalone landing page, tied back to the organization. */
+export function webPageNode(page: { name: string; description: string; url: string }) {
+  return {
+    "@type": "WebPage",
+    "@id": `${page.url}/#webpage`,
+    name: page.name,
+    description: page.description,
+    url: page.url,
+    isPartOf: { "@id": websiteId },
+    about: { "@id": orgId },
     inLanguage: "en-IN",
   } as const;
 }

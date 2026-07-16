@@ -13,6 +13,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${site.url}/best-construction-in-kurnool`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${site.url}/services`,
       lastModified,
       changeFrequency: "monthly",

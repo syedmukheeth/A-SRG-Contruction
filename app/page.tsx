@@ -129,6 +129,14 @@ export default function Home() {
             team also covers Nandyal, Adoni and the wider Kurnool district for
             civil contracting and residential builds.
           </p>
+          <p className="mt-6">
+            <Link
+              href="/best-construction-in-kurnool"
+              className="font-mono text-xs uppercase tracking-[0.18em] text-copper hover:underline"
+            >
+              Why ASRG is the best construction in Kurnool →
+            </Link>
+          </p>
           <ul className="mt-12 grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((s) => (
               <li key={s.id}>

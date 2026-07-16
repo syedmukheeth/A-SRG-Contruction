@@ -9,6 +9,7 @@ import { site } from "@/lib/site";
 
 const LINKS = [
   { label: "Services", href: "/services" },
+  { label: "Why Us", href: "/best-construction-in-kurnool" },
   { label: "Work", href: "/#projects" },
   { label: "Process", href: "/#process" },
   { label: "Studio", href: "/#about" },

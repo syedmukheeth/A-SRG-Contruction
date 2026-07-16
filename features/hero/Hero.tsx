@@ -8,7 +8,10 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { site } from "@/lib/site";
 import { BlueprintVilla } from "./BlueprintVilla";
 
-const HEADLINE = ["46 YEARS", "OF CONSTRUCTION", "EXPERIENCE"];
+// Kept to ~15 characters per line: --text-mega clamps to 2.6rem on phones, where
+// a longer line overflows the viewport. The brand sits on its own smaller line
+// above, so the h1 still names the company and the city for brand searches.
+const HEADLINE = [`${site.yearsOfExperience} YEARS`, "OF CONSTRUCTION", "IN KURNOOL"];
 
 export function Hero() {
   const { isLoaded } = useLoad();
@@ -151,18 +154,16 @@ export function Hero() {
           <BlueprintVilla className="w-[88vw] max-w-[1100px]" />
         </div>
 
-        {/* annotation (desktop only, avoid colliding with headline on phones) */}
-        <span className="eyebrow absolute left-6 top-28 hidden md:left-12 md:block">
-          {site.name}
-        </span>
-
         {/* headline + CTAs */}
         <div className="relative z-10 flex flex-col items-center px-6 text-center">
           <h1
             ref={headline}
-            aria-label={HEADLINE.join(" ")}
+            aria-label={`${site.name} — ${HEADLINE.join(" ")}`}
             className="font-display text-mega uppercase text-text"
           >
+            <span className="eyebrow mb-5 block" aria-hidden="true">
+              {site.name}
+            </span>
             {HEADLINE.map((line, i) => (
               <span key={i} className="block overflow-hidden" aria-hidden="true">
                 <span className="line-inner block">{line}</span>

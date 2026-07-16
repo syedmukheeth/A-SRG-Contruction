@@ -26,6 +26,33 @@ export const site = {
   phone: "+91 93962 86289",
   phoneAlt: "+91 95056 37863",
   whatsapp: "919396286289",
+  /**
+   * Every name this business is searched by, fed to schema.org `alternateName`.
+   * Includes "SRG Constructions" (how the Justdial reviewer refers to it) and
+   * the domain's misspelling, so Google resolves all of them to one entity.
+   * Visible copy still only ever uses site.name.
+   */
+  alternateNames: [
+    "ASRG",
+    "ASRG Constructions",
+    "ASRG Contruction",
+    "SRG Constructions",
+    "SRG Construction",
+    "A.S.R.G. Construction",
+  ],
+  /**
+   * Off-site profiles for schema.org `sameAs` — the strongest signal tying this
+   * domain to the business Google already knows from Maps and Justdial.
+   * Empty strings are filtered out, so add each URL only once it is verified real.
+   */
+  profiles: {
+    googleBusiness: "",
+    justdial: "",
+    facebook: "",
+    instagram: "",
+    linkedin: "",
+    youtube: "",
+  },
   location: {
     city: "Kurnool",
     region: "Andhra Pradesh",

@@ -92,6 +92,7 @@ export function Footer() {
         </div>
         <div className="flex flex-wrap gap-x-8 gap-y-4 font-mono text-xs uppercase tracking-[0.18em] text-muted md:gap-12">
           <Link href="/services" className="transition-colors hover:text-copper">Services</Link>
+          <Link href="/best-construction-in-kurnool" className="transition-colors hover:text-copper">Why Us</Link>
           <Link href="/#projects" className="transition-colors hover:text-copper">Work</Link>
           <Link href="/#process" className="transition-colors hover:text-copper">Process</Link>
           <Link href="/#contact" className="transition-colors hover:text-copper">Contact</Link>
