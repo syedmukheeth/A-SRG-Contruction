@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap, SplitText } from "@/lib/gsap";
-import { useLoad } from "@/components/providers/LoadProvider";
+import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { MagneticButton } from "@/components/MagneticButton";
-import { site } from "@/lib/site";
+import { site, stats } from "@/lib/site";
 import { BlueprintVilla } from "./BlueprintVilla";
 
 // Kept to ~15 characters per line: --text-mega clamps to 2.6rem on phones, where
@@ -13,39 +12,25 @@ import { BlueprintVilla } from "./BlueprintVilla";
 // above, so the h1 still names the company and the city for brand searches.
 const HEADLINE = [`${site.yearsOfExperience} YEARS`, "OF CONSTRUCTION", "IN KURNOOL"];
 
+/** Above-the-fold proof line — the three numbers a buyer screens on first. */
+const TRUST = [
+  `${site.yearsOfExperience} yrs on site`,
+  `${stats[1].value}${stats[1].suffix} projects delivered`,
+  `${site.location.city}, ${site.location.region}`,
+];
+
 export function Hero() {
-  const { isLoaded } = useLoad();
   const reduced = useReducedMotion();
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const headline = useRef<HTMLHeadingElement>(null);
   const villaWrap = useRef<HTMLDivElement>(null);
 
-  /* Headline intro, fires once the loader has lifted. */
-  useEffect(() => {
-    if (!isLoaded || !headline.current) return;
-    if (reduced) {
-      gsap.set(headline.current.querySelectorAll(".line-inner"), {
-        yPercent: 0,
-        opacity: 1,
-      });
-      return;
-    }
-    const split = new SplitText(headline.current.querySelectorAll(".line-inner"), {
-      type: "lines",
-      linesClass: "split-line",
-      accessible: false,
-    });
-    gsap.set(split.lines, { yPercent: 110 });
-    gsap.to(split.lines, {
-      yPercent: 0,
-      duration: 1.1,
-      ease: "power4.out",
-      stagger: 0.12,
-      delay: 0.1,
-    });
-    return () => split.revert();
-  }, [isLoaded, reduced]);
+  /* The headline intro is pure CSS (.hero-line / .hero-fade in globals.css).
+     It used to be a GSAP SplitText timeline gated on the loading screen; with
+     the splash gone there is nothing to hide a JS- and font-dependent reveal,
+     so an unstyled flash would land straight on the LCP element. CSS animates
+     from first paint, needs no font metrics, and survives a JS failure. */
 
   /* Scroll-scrubbed blueprint build. */
   useEffect(() => {
@@ -161,22 +146,50 @@ export function Hero() {
             aria-label={`${site.name} — ${HEADLINE.join(" ")}`}
             className="font-display text-mega uppercase text-text"
           >
-            <span className="eyebrow mb-5 block" aria-hidden="true">
+            <span
+              className="eyebrow hero-fade mb-5 block"
+              aria-hidden="true"
+              style={{ animationDelay: "0.05s" }}
+            >
               {site.name}
             </span>
             {HEADLINE.map((line, i) => (
               <span key={i} className="block overflow-hidden" aria-hidden="true">
-                <span className="line-inner block">{line}</span>
+                <span
+                  className="hero-line block"
+                  style={{ animationDelay: `${0.12 + i * 0.11}s` }}
+                >
+                  {line}
+                </span>
               </span>
             ))}
           </h1>
 
-          <div className="mt-10 flex flex-col items-center gap-5 sm:flex-row">
+          <div
+            className="hero-fade mt-8 flex flex-col items-center gap-4 sm:mt-10 sm:flex-row sm:gap-5"
+            style={{ animationDelay: "0.5s" }}
+          >
             <MagneticButton href="#contact">Build Your Dream</MagneticButton>
             <MagneticButton href="#projects" variant="ghost">
               Explore Projects
             </MagneticButton>
           </div>
+
+          <ul
+            className="hero-fade mt-7 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.16em] text-muted sm:mt-9 sm:gap-x-6 sm:text-[11px]"
+            style={{ animationDelay: "0.68s" }}
+          >
+            {TRUST.map((item, i) => (
+              <li key={item} className="flex items-center gap-4 sm:gap-6">
+                {i > 0 && (
+                  <span aria-hidden className="text-copper/40">
+                    /
+                  </span>
+                )}
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* scroll cue */}

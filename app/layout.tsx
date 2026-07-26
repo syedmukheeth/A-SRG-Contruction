@@ -4,11 +4,10 @@ import Script from "next/script";
 import "./globals.css";
 
 import { metadata as siteMetadata, rootJsonLd } from "@/lib/seo";
-import { LoadProvider } from "@/components/providers/LoadProvider";
 import { LenisProvider } from "@/components/providers/LenisProvider";
-import { LoadingScreen } from "@/features/loading";
 import { Nav } from "@/components/nav";
 import { WhatsAppButton } from "@/features/whatsapp";
+import { MobileActionBar } from "@/features/cta";
 import { Footer } from "@/features/footer";
 
 const display = Archivo({
@@ -67,15 +66,13 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <LoadProvider>
-          <LenisProvider>
-            <LoadingScreen />
-            <Nav />
-            <main id="main">{children}</main>
-            <Footer />
-          </LenisProvider>
-        </LoadProvider>
+        <LenisProvider>
+          <Nav />
+          <main id="main">{children}</main>
+          <Footer />
+        </LenisProvider>
         <WhatsAppButton />
+        <MobileActionBar />
         <div className="vignette" aria-hidden />
         <div className="grain" aria-hidden />
       </body>

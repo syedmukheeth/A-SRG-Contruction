@@ -1,40 +1,92 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 
 const LINKS = [
-  { label: "Services", href: "/services" },
-  { label: "Why Us", href: "/best-construction-in-kurnool" },
-  { label: "Work", href: "/#projects" },
-  { label: "Process", href: "/#process" },
-  { label: "Studio", href: "/#about" },
-  { label: "Insights", href: "/blog" },
+  { label: "Services", href: "/services", section: null },
+  { label: "Why Us", href: "/best-construction-in-kurnool", section: null },
+  { label: "Work", href: "/#projects", section: "projects" },
+  { label: "Process", href: "/#process", section: "process" },
+  { label: "Studio", href: "/#about", section: "about" },
+  { label: "Insights", href: "/blog", section: null },
 ] as const;
 
-/** Minimal fixed nav that gains a hairline + blur once the user scrolls. */
+/** Home-page anchors the scrollspy watches, in document order. */
+const SECTIONS = ["about", "process", "projects"] as const;
+
+/** Minimal fixed nav that gains a hairline once the user scrolls. */
 export function Nav() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
+  const railRef = useRef<HTMLSpanElement>(null);
 
+  const onHome = pathname === "/";
+  // Derived, not reset in an effect: the last observed section stays in state
+  // when the user navigates away, and is simply ignored off the home page.
+  const activeSection = onHome ? active : null;
+
+  /* Scroll state + read-progress rail. The rail is written straight to the
+     DOM as a transform so a scroll never costs a React render. */
   useEffect(() => {
     let ticking = false;
+    const measure = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      if (railRef.current) {
+        const max =
+          document.documentElement.scrollHeight - window.innerHeight;
+        railRef.current.style.transform = `scaleX(${
+          max > 0 ? Math.min(1, y / max) : 0
+        })`;
+      }
+    };
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 24);
+        measure();
         ticking = false;
       });
     };
-    setScrolled(window.scrollY > 24);
+    measure();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
+
+  /* Scrollspy: marks the nav link for the section currently under the nav bar.
+     rootMargin pulls the detection band to the upper third of the viewport so
+     a section counts as "active" while it is being read, not when it exits. */
+  useEffect(() => {
+    if (!onHome) return;
+    const nodes = SECTIONS.map((id) => document.getElementById(id)).filter(
+      (n): n is HTMLElement => Boolean(n),
+    );
+    if (!nodes.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const hit = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (hit) setActive(hit.target.id);
+      },
+      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.25, 0.5] },
+    );
+    nodes.forEach((n) => observer.observe(n));
+    return () => observer.disconnect();
+  }, [onHome]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -83,16 +135,30 @@ export function Nav() {
         </Link>
 
         <div className="hidden items-center gap-10 md:flex">
-          {LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="group relative font-mono text-xs uppercase tracking-[0.18em] text-muted transition-colors hover:text-text"
-            >
-              {l.label}
-              <span className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-copper transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:origin-left group-hover:scale-x-100" />
-            </Link>
-          ))}
+          {LINKS.map((l) => {
+            const isActive = l.section
+              ? activeSection === l.section
+              : pathname === l.href || pathname.startsWith(`${l.href}/`);
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                aria-current={isActive ? "true" : undefined}
+                className={cn(
+                  "group relative font-mono text-xs uppercase tracking-[0.18em] transition-colors hover:text-text",
+                  isActive ? "text-text" : "text-muted",
+                )}
+              >
+                {l.label}
+                <span
+                  className={cn(
+                    "absolute -bottom-1 left-0 h-px w-full bg-copper transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:origin-left group-hover:scale-x-100",
+                    isActive ? "origin-left scale-x-100" : "origin-right scale-x-0",
+                  )}
+                />
+              </Link>
+            );
+          })}
         </div>
 
         <div className="flex items-center gap-3">
@@ -128,6 +194,19 @@ export function Nav() {
         </div>
       </nav>
 
+      {/* Read-progress rail: how much of the page is left, at a glance.
+          Pinned to top-20 (the nav bar's own height) rather than bottom-0 so it
+          stays on the bar instead of dropping to the foot of the open menu. */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-20 block h-px bg-copper/15"
+      >
+        <span
+          ref={railRef}
+          className="scroll-rail block h-full w-full scale-x-0 bg-copper"
+        />
+      </span>
+
       <AnimatePresence>
         {open && (
           <motion.div
@@ -149,9 +228,20 @@ export function Nav() {
                   <Link
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    className="block border-b border-text/10 py-4 font-display text-2xl uppercase text-text transition-colors active:text-copper"
+                    aria-current={
+                      !l.section && pathname === l.href ? "true" : undefined
+                    }
+                    className={cn(
+                      "flex items-center justify-between border-b border-text/10 py-4 font-display text-2xl uppercase transition-colors active:text-copper",
+                      !l.section && pathname === l.href
+                        ? "text-copper"
+                        : "text-text",
+                    )}
                   >
                     {l.label}
+                    <span aria-hidden className="font-mono text-sm text-copper">
+                      →
+                    </span>
                   </Link>
                 </motion.div>
               ))}

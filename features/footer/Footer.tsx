@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { site } from "@/lib/site";
+import { site, services } from "@/lib/site";
 
 // Deterministic star field (avoids hydration mismatch).
 const STARS = [
@@ -70,9 +70,13 @@ export function Footer() {
         </g>
       </svg>
 
-      {/* nav + legal */}
-      <div className="relative mx-auto flex max-w-[1300px] flex-col gap-10 px-6 pb-14 pt-10 md:flex-row md:items-end md:justify-between md:px-12">
-        <div>
+      {/* nav + NAP + legal */}
+      <div className="relative mx-auto grid max-w-[1300px] gap-12 px-6 pb-14 pt-10 md:grid-cols-[1.2fr_0.9fr_0.9fr] md:px-12">
+        {/* Name / Address / Phone, rendered sitewide and marked up with
+            microdata. A consistent NAP block on every page is the plainest
+            local-search signal there is, and it matches the Organization
+            JSON-LD emitted from the root layout exactly. */}
+        <div itemScope itemType="https://schema.org/GeneralContractor">
           <div className="flex items-center gap-3">
             <span className="relative h-10 w-10 overflow-hidden rounded-full border border-copper/30">
               <Image
@@ -83,22 +87,92 @@ export function Footer() {
                 className="object-cover"
               />
             </span>
-            <p className="font-display text-2xl font-bold uppercase text-text">
+            <p
+              itemProp="name"
+              className="font-display text-2xl font-bold uppercase text-text"
+            >
               {site.name}
               <span className="text-copper">.</span>
             </p>
           </div>
           <p className="mt-3 max-w-xs text-sm text-muted">{site.tagline}</p>
+
+          <address
+            itemProp="address"
+            itemScope
+            itemType="https://schema.org/PostalAddress"
+            className="mt-6 space-y-1 font-mono text-xs not-italic leading-relaxed text-muted"
+          >
+            <span itemProp="streetAddress" className="block">
+              {site.location.address}
+            </span>
+            <span className="block">
+              <span itemProp="addressLocality">{site.location.city}</span>,{" "}
+              <span itemProp="addressRegion">{site.location.region}</span>,{" "}
+              <span itemProp="addressCountry">India</span>
+            </span>
+          </address>
+
+          <div className="mt-4 space-y-1 font-mono text-xs">
+            <a
+              href={`tel:${site.phone.replace(/\s+/g, "")}`}
+              itemProp="telephone"
+              className="block text-muted transition-colors hover:text-copper"
+            >
+              {site.phone}
+            </a>
+            <a
+              href={`mailto:${site.email}`}
+              itemProp="email"
+              className="block text-muted transition-colors hover:text-copper"
+            >
+              {site.email}
+            </a>
+          </div>
+
+          <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-muted/70">
+            Mon–Sat · 9:00–19:00
+          </p>
         </div>
-        <div className="flex flex-wrap gap-x-8 gap-y-4 font-mono text-xs uppercase tracking-[0.18em] text-muted md:gap-12">
-          <Link href="/services" className="transition-colors hover:text-copper">Services</Link>
-          <Link href="/best-construction-in-kurnool" className="transition-colors hover:text-copper">Why Us</Link>
-          <Link href="/#projects" className="transition-colors hover:text-copper">Work</Link>
-          <Link href="/#process" className="transition-colors hover:text-copper">Process</Link>
-          <Link href="/#contact" className="transition-colors hover:text-copper">Contact</Link>
-        </div>
+
+        <nav aria-label="Footer">
+          <p className="eyebrow mb-5">Explore</p>
+          <ul className="space-y-3 font-mono text-xs uppercase tracking-[0.18em] text-muted">
+            {[
+              { href: "/best-construction-in-kurnool", label: `Best construction in ${site.location.city}` },
+              { href: "/services", label: "All services" },
+              { href: "/#projects", label: "Delivered work" },
+              { href: "/#process", label: "Our process" },
+              { href: "/blog", label: "Insights" },
+              { href: "/#contact", label: "Contact" },
+            ].map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className="transition-colors hover:text-copper">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <nav aria-label="Services">
+          <p className="eyebrow mb-5">Services in {site.location.city}</p>
+          <ul className="space-y-3 font-mono text-xs uppercase tracking-[0.18em] text-muted">
+            {services.map((s) => (
+              <li key={s.id}>
+                <Link
+                  href={`/services/${s.slug}`}
+                  className="transition-colors hover:text-copper"
+                >
+                  {s.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
-      <div className="relative border-t border-text/10 px-6 py-6 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-muted/60 md:px-12">
+      {/* pb clears the sticky mobile action bar on phones */}
+      <div className="relative border-t border-text/10 px-6 pb-24 pt-6 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-muted/60 md:px-12 md:pb-6">
         © {new Date().getFullYear()} {site.name} · {site.location.city},{" "}
         {site.location.region} · BuildOS™
         <br className="md:hidden" />

@@ -58,6 +58,8 @@ export const site = {
     region: "Andhra Pradesh",
     country: "IN",
     address: "Netaji Talkies Road, Gafooria Masjid Line, Kurnool",
+    /** Towns the site team covers, fed to schema.org `areaServed`. */
+    nearbyTowns: ["Nandyal", "Adoni", "Dhone", "Yemmiganur", "Nandikotkur"],
     /** Approximate Kurnool city-centre coordinates — replace with the exact site location if precision matters. */
     geo: {
       latitude: 15.8281,

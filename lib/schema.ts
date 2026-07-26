@@ -1,10 +1,20 @@
-import { site, type Service } from "./site";
+import { site, services, projects, type Service } from "./site";
 
 const orgId = `${site.url}/#organization`;
 const websiteId = `${site.url}/#website`;
 
 /** Verified off-site profiles only; unset entries never reach the markup. */
 const sameAs = Object.values(site.profiles).filter(Boolean);
+
+/**
+ * Multiple real project photos, not just the founder portrait. Google's
+ * local-business guidance asks for several images per entity, and these are the
+ * same shots the site already serves, so nothing new has to be hosted.
+ */
+const orgImages = [
+  `${site.url}${site.ownerImage}`,
+  ...projects.slice(0, 6).map((p) => `${site.url}${p.image}`),
+];
 
 /** Root Organization/LocalBusiness node — emitted once, in the root layout. */
 export function organizationNode() {
@@ -18,7 +28,7 @@ export function organizationNode() {
     description: site.description,
     url: site.url,
     ...(sameAs.length ? { sameAs } : {}),
-    image: `${site.url}${site.ownerImage}`,
+    image: orgImages,
     logo: `${site.url}/icon`,
     email: site.email,
     telephone: site.phone,
@@ -40,16 +50,38 @@ export function organizationNode() {
       },
     ],
     priceRange: "₹₹",
+    currenciesAccepted: "INR",
+    paymentAccepted: "Cash, Bank Transfer, UPI, Cheque",
     foundingDate: String(new Date().getFullYear() - site.yearsOfExperience),
     founder: {
       "@type": "Person",
       name: site.owner,
       jobTitle: site.ownerTitle,
     },
+    // Kurnool first, then the towns the site team actually covers. Naming them
+    // individually is what lets the entity surface for "construction company in
+    // Nandyal / Adoni" style queries instead of only the Kurnool ones.
     areaServed: [
       { "@type": "City", name: site.location.city },
+      ...site.location.nearbyTowns.map((name) => ({ "@type": "City", name })),
       { "@type": "State", name: site.location.region },
     ],
+    // Every service as one catalog, each pointing at its own page. Gives Google
+    // the full service surface of the business from the root document.
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: `Construction services in ${site.location.city}`,
+      itemListElement: services.map((s) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          "@id": `${site.url}/services/${s.slug}/#service`,
+          name: `${s.title} in ${site.location.city}`,
+          description: s.summary,
+          url: `${site.url}/services/${s.slug}`,
+        },
+      })),
+    },
     address: {
       "@type": "PostalAddress",
       streetAddress: site.location.address,
