@@ -7,10 +7,6 @@
  * never leak into visible copy, schema `name` fields, or alt text.
  */
 
-/** Unsplash image URL builder (swap host/source when real photography lands). */
-const img = (id: string, w = 1400) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
-
 export const site = {
   name: "ASRG Construction",
   legalName: "ASRG Construction",
@@ -81,7 +77,7 @@ export const services = [
     title: "Residential Construction",
     blueprint: "Plan A-01",
     summary: "Luxury homes engineered to outlast generations.",
-    image: img("1774697443203-0f54409d1613"),
+    image: "/images/proof/jeelani-mansion.jpg",
   },
   {
     id: "commercial",
@@ -89,7 +85,7 @@ export const services = [
     title: "Commercial Construction",
     blueprint: "Plan B-04",
     summary: "Workspaces and retail built to command presence.",
-    image: img("1768807842143-d1493bde6931"),
+    image: "/images/proof/asrg-traders-showroom.jpg",
   },
   {
     id: "civil",
@@ -97,7 +93,7 @@ export const services = [
     title: "Civil Contracting",
     blueprint: "Plan C-12",
     summary: "Infrastructure executed with precision and scale.",
-    image: img("1632400386307-2b2f275b35da"),
+    image: "/images/proof/medical-complex.jpg",
   },
   {
     id: "centering",
@@ -105,7 +101,7 @@ export const services = [
     title: "Centering Works",
     blueprint: "Plan D-07",
     summary: "Formwork and structural shuttering, done right.",
-    image: img("1747192904662-e03e8da1e0ab"),
+    image: "/images/proof/gallery-structural-lift.jpg",
   },
   {
     id: "renovation",
@@ -113,7 +109,7 @@ export const services = [
     title: "Renovation",
     blueprint: "Plan E-03",
     summary: "Old structures, reimagined and restored.",
-    image: img("1760443832430-f5afa50103e4"),
+    image: "/images/proof/twin-tone-bungalow-after.jpg",
   },
   {
     id: "consultation",
@@ -121,7 +117,7 @@ export const services = [
     title: "Consultation",
     blueprint: "Plan F-09",
     summary: "Strategy from site survey to handover.",
-    image: img("1761628332000-9da4f810183e"),
+    image: "/images/proof/charcoal-elevation.jpg",
   },
 ] as const;
 
