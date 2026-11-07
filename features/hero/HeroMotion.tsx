@@ -21,6 +21,7 @@ export function HeroMotion() {
       });
       tl.to("[data-hero-line]", { yPercent: -22, opacity: 0.35, stagger: 0.04 }, 0)
         .to("[data-hero-photo]", { yPercent: 12, scale: 1.05 }, 0)
+        .to("[data-hero-callout]", { yPercent: 12, opacity: 0, ease: "power1.in" }, 0)
         .to("[data-hero-dim]", { opacity: 0.75 }, 0);
     });
 
