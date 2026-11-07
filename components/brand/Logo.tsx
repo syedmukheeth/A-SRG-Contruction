@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { site } from "@/lib/site";
 import { MARK_SIZE, MARK_STROKE, markPaths, plumbPaths } from "@/lib/brand/mark";
 
 interface MarkProps {
@@ -59,42 +58,5 @@ export function Logo({ className, markClassName, sub = "Construction" }: LogoPro
         <span className="mt-1 font-mono text-[0.58rem] uppercase leading-none tracking-[0.32em]">{sub}</span>
       </span>
     </span>
-  );
-}
-
-/** Round seal: mark inside a ring of mono type. Decorative, browser-rendered only. */
-export function Seal({ className, id = "asrg-seal" }: { className?: string; id?: string }) {
-  const ring = `${site.name} · ${site.location.city} · Est. ${site.established} · `;
-  return (
-    <svg viewBox="0 0 120 120" aria-hidden className={cn("shrink-0", className)}>
-      <defs>
-        <path id={`${id}-ring`} d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0" />
-      </defs>
-      <circle cx="60" cy="60" r="58" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-      <circle cx="60" cy="60" r="34" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-      <text
-        fill="currentColor"
-        style={{ fontFamily: "var(--font-plex-mono), monospace", fontSize: "8.4px", letterSpacing: "0.22em" }}
-      >
-        <textPath href={`#${id}-ring`} textLength={272} lengthAdjust="spacing">
-          {ring.toUpperCase()}
-        </textPath>
-      </text>
-      <g transform="translate(42 40) scale(0.75)">
-        <g
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={MARK_STROKE}
-          strokeLinecap="butt"
-          strokeLinejoin="miter"
-        >
-          <path d={markPaths.plinth} />
-          <path d={markPaths.columns} />
-          <path d={markPaths.lintel} />
-        </g>
-        <path d={plumbPaths.line} fill="none" stroke="currentColor" strokeWidth={1.4} />
-        <path d={plumbPaths.bob} fill="currentColor" />
-      </g>
-    </svg>
   );
 }

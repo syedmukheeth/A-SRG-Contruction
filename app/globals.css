@@ -47,8 +47,13 @@
   --text-title--line-height: 1;
 }
 
-* {
-  border-color: var(--rule);
+/* In the base layer, so border-* colour utilities can override it. */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--rule);
+  }
 }
 
 html {
@@ -272,6 +277,13 @@ body {
 }
 .logo-draw .logo-plumb {
   animation: logo-plumb 0.6s var(--ease-out-expo) 1.05s both;
+}
+
+/* ---- Studio credit: signature with a laterite marker stroke under it ---- */
+.credit-mark {
+  padding: 0 0.3em 0.05em 0.15em;
+  background: linear-gradient(transparent 56%, var(--laterite) 56%, var(--laterite) 90%, transparent 90%);
+  box-decoration-break: clone;
 }
 
 /* ---- Story ---- */

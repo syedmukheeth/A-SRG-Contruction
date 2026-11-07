@@ -10,7 +10,7 @@ const tel = telHref(site.phone);
  * Phone-only sticky bar with the two actions a construction enquiry actually
  * ends in: a call and a WhatsApp message. Hidden until the hero has scrolled
  * past so it never covers the hero CTAs, and hidden from md up where the
- * floating WhatsApp bubble and the nav CTA already cover it.
+ * nav's Call button already covers it.
  */
 export function MobileActionBar() {
   const [shown, setShown] = useState(false);

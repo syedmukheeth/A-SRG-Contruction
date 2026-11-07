@@ -6,7 +6,6 @@ import "./globals.css";
 import { metadata as siteMetadata, rootJsonLd } from "@/lib/seo";
 import { LenisProvider } from "@/components/providers/LenisProvider";
 import { Nav } from "@/components/nav";
-import { WhatsAppButton } from "@/features/whatsapp";
 import { MobileActionBar } from "@/features/cta";
 import { Footer } from "@/features/footer";
 
@@ -76,7 +75,6 @@ export default function RootLayout({
           <main id="main">{children}</main>
           <Footer />
         </LenisProvider>
-        <WhatsAppButton />
         <MobileActionBar />
       </body>
     </html>

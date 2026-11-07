@@ -50,7 +50,8 @@ export const site = {
     city: "Kurnool",
     region: "Andhra Pradesh",
     country: "IN",
-    address: "Netaji Talkies Road, Gafooria Masjid Line, Kurnool",
+    /** Street only; city and region are their own fields. */
+    address: "Netaji Talkies Road, Gafooria Masjid Line",
     nearbyTowns: ["Nandyal", "Adoni", "Dhone", "Yemmiganur", "Nandikotkur"],
   },
 } as const;
@@ -60,7 +61,7 @@ export const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComp
   `Hi ${site.name}, I'd like to talk about a build.`,
 )}`;
 export const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  `${site.name}, ${site.location.address}`,
+  `${site.name}, ${site.location.address}, ${site.location.city}`,
 )}`;
 
 export interface Photo {

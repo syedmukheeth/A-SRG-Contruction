@@ -31,10 +31,20 @@ interface MarkSvgOptions {
   /** Space around the mark, as a fraction of the mark box. */
   pad?: number;
   detail?: boolean;
+  /** Heavier strokes keep the A legible at 16–32px. */
+  stroke?: number;
 }
 
 /** Standalone SVG markup for rasterising or data URIs. */
-export function markSvg({ fg, bg, shape = "none", size = 512, pad = 0.18, detail = true }: MarkSvgOptions) {
+export function markSvg({
+  fg,
+  bg,
+  shape = "none",
+  size = 512,
+  pad = 0.18,
+  detail = true,
+  stroke = MARK_STROKE,
+}: MarkSvgOptions) {
   const p = MARK_SIZE * pad;
   const box = MARK_SIZE + p * 2;
   const back =
@@ -43,10 +53,10 @@ export function markSvg({ fg, bg, shape = "none", size = 512, pad = 0.18, detail
       : bg && shape === "circle"
         ? `<circle cx="${MARK_SIZE / 2}" cy="${MARK_SIZE / 2}" r="${box / 2}" fill="${bg}"/>`
         : "";
-  const stroke = `fill="none" stroke="${fg}" stroke-width="${MARK_STROKE}" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4"`;
+  const lines = `fill="none" stroke="${fg}" stroke-width="${stroke}" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4"`;
   const plumb = detail
     ? `<path d="${plumbPaths.line}" fill="none" stroke="${fg}" stroke-width="1.4"/><path d="${plumbPaths.bob}" fill="${fg}"/>`
     : "";
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${-p} ${-p} ${box} ${box}">${back}<g ${stroke}><path d="${markPaths.columns}"/><path d="${markPaths.lintel}"/><path d="${markPaths.plinth}"/></g>${plumb}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${-p} ${-p} ${box} ${box}">${back}<g ${lines}><path d="${markPaths.columns}"/><path d="${markPaths.lintel}"/><path d="${markPaths.plinth}"/></g>${plumb}</svg>`;
 }

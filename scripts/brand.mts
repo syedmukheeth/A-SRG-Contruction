@@ -6,7 +6,6 @@ import { markSvg } from "../lib/brand/mark.ts";
 
 const root = process.cwd();
 const NIGHT = "#15161a";
-const PLASTER = "#f2eee6";
 const EMBER = "#e07a52";
 
 const png = (svg: string, size: number) =>
@@ -39,17 +38,20 @@ function ico(images: { size: number; data: Buffer }[]) {
   return Buffer.concat([header, ...images.map((i) => i.data)]);
 }
 
-// Small sizes drop the plumb bob and get a tighter pad so the A reads at 16px.
-const tiny = markSvg({ fg: PLASTER, bg: NIGHT, shape: "square", pad: 0.1, detail: false });
-const app = markSvg({ fg: PLASTER, bg: NIGHT, shape: "square", pad: 0.2 });
-const maskable = markSvg({ fg: PLASTER, bg: NIGHT, shape: "square", pad: 0.42 });
+// Browser tab: ember mark on transparent, so it reads on light and dark tab
+// bars alike. Heavier stroke, tight pad and no plumb bob so the A holds at 16px.
+const tab = markSvg({ fg: EMBER, pad: 0.03, detail: false, stroke: 4.6 });
+// Home-screen tiles must be opaque: ember on night, matching the nav.
+const app = markSvg({ fg: EMBER, bg: NIGHT, shape: "square", pad: 0.2, stroke: 3.6 });
+const maskable = markSvg({ fg: EMBER, bg: NIGHT, shape: "square", pad: 0.42, stroke: 3.6 });
 const logo = markSvg({ fg: EMBER, bg: NIGHT, shape: "square", pad: 0.24 });
 
 await out("app/favicon.ico", ico([
-  { size: 32, data: await png(tiny, 32) },
-  { size: 48, data: await png(tiny, 48) },
+  { size: 16, data: await png(tab, 16) },
+  { size: 32, data: await png(tab, 32) },
+  { size: 48, data: await png(tab, 48) },
 ]));
-await out("app/icon.png", await png(tiny, 96));
+await out("app/icon.png", await png(tab, 96));
 await out("app/apple-icon.png", await png(app, 180));
 await out("public/images/brand/asrg-icon-192.png", await png(app, 192));
 await out("public/images/brand/asrg-icon-512.png", await png(app, 512));
