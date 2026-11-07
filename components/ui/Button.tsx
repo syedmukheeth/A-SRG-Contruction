@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 interface ButtonProps {
   href: string;
-  variant?: "solid" | "line" | "light" | "paper";
+  variant?: "solid" | "line" | "light";
   external?: boolean;
   className?: string;
   children: React.ReactNode;
@@ -12,9 +12,7 @@ interface ButtonProps {
 const styles = {
   solid: "bg-laterite text-plaster before:bg-laterite-deep",
   line: "border border-ink text-ink before:bg-ink hover:text-plaster",
-  light: "border border-plaster/60 text-plaster before:bg-plaster hover:text-ink",
-  paper: "bg-plaster text-ink before:bg-white",
-} as const;
+  light: "border border-plaster/60 text-plaster before:bg-plaster hover:text-ink",} as const;
 
 export function Button({ href, variant = "solid", external, className, children }: ButtonProps) {
   const cls = cn(

@@ -81,7 +81,7 @@ export function Hero() {
           ))}
         </h1>
 
-        <div className="mt-7 grid gap-6 md:mt-9 lg:grid-cols-[minmax(0,24rem)_minmax(0,27rem)] lg:items-end lg:gap-10">
+        <div className="mt-7 max-w-xl md:mt-9">
           <div className="hero-fade flex items-start gap-4" style={{ animationDelay: "420ms" }}>
             <Mark draw className="mt-1 hidden h-10 w-10 shrink-0 text-ember sm:block" />
             <p className="text-base leading-relaxed text-plaster/80 md:text-lg">
@@ -91,31 +91,20 @@ export function Hero() {
             </p>
           </div>
 
-          {/* Direct line: the number itself is the headline of this block. */}
+          {/* One action per button: the Call button carries the number, so nothing repeats. */}
           <div
-            className="hero-fade border border-plaster/15 bg-night/85 p-5 md:p-6"
+            className="hero-fade mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:pl-14"
             style={{ animationDelay: "560ms" }}
           >
-            <p className="stamp text-plaster/60">Direct line · {site.ownerShort}</p>
-            <a
-              href={tel(site.phone)}
-              className="group mt-3 flex items-center gap-3 text-plaster transition-colors hover:text-ember"
-            >
-              <PhoneIcon className="h-6 w-6 shrink-0 text-ember md:h-7 md:w-7" />
-              <span className="font-display text-[clamp(2.2rem,3.6vw,3.2rem)] leading-none tracking-[0.01em]">
-                {number}
-              </span>
-            </a>
-            <div className="mt-5 grid grid-cols-2 gap-3">
-              <Button href={tel(site.phone)} className="justify-center px-4">
-                <PhoneIcon className="h-4 w-4" />
-                Call
-              </Button>
-              <Button href={whatsappHref} variant="paper" className="justify-center px-4">
-                <WhatsAppIcon className="h-[18px] w-[18px] text-[#1faa59]" />
-                WhatsApp
-              </Button>
-            </div>
+            <Button href={tel(site.phone)} className="justify-center py-3.5">
+              <PhoneIcon className="h-4 w-4" />
+              Call
+              <span className="font-display whitespace-nowrap text-lg leading-none tracking-[0.03em]">{number}</span>
+            </Button>
+            <Button href={whatsappHref} variant="light" className="justify-center py-3.5">
+              <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
+              WhatsApp
+            </Button>
           </div>
         </div>
       </div>
