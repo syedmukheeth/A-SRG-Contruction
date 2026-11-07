@@ -235,48 +235,6 @@ body {
   opacity: 0.12;
 }
 
-/* ---- Hero callout: ring settles on Jeelani, leader draws out, label lands ---- */
-@keyframes hero-ring-in {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1.6);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-@keyframes hero-leader-in {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-@keyframes hero-tag-in {
-  from {
-    opacity: 0;
-    transform: translate(8px, -50%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, -50%);
-  }
-}
-.hero-ring {
-  transform: translate(-50%, -50%);
-  animation: hero-ring-in 1s var(--ease-out-expo) 1.3s both;
-  box-shadow: 0 0 0 6px rgb(224 122 82 / 0.12);
-}
-.hero-leader {
-  animation: hero-leader-in 0.7s var(--ease-out-expo) 1.75s both;
-}
-.hero-tag {
-  transform: translateY(-50%);
-  animation: hero-tag-in 0.7s var(--ease-out-expo) 2.15s both;
-}
-
 /* Viewfinder corners: four short L-brackets around the photo. */
 .hero-corners {
   --c: rgb(242 238 230 / 0.55);

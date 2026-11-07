@@ -50,24 +50,6 @@ export function Hero() {
         <div aria-hidden className="hero-veil absolute -inset-1 bg-night" />
       </div>
 
-      {/* Callout on Jeelani, outside the clipped frame so its label can reach
-          into the dark. The inner box has the photo's own aspect, so the
-          percentages land on him at any viewport size. */}
-      <div
-        aria-hidden
-        data-hero-callout
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[min(calc(100svh*0.703),56vw)] min-w-[460px] md:block"
-      >
-        <div className="absolute inset-y-0 left-1/2 aspect-[720/1024] h-full -translate-x-1/2">
-          {/* Offsets live in the keyframes' transform, not translate-* utilities, so they don't stack. */}
-          <span className="hero-ring absolute left-[56.5%] top-[35%] block aspect-square w-[23%] rounded-full border-2 border-ember" />
-          <span className="hero-leader absolute right-[55%] top-[35%] block h-0.5 w-[30%] origin-right bg-ember" />
-          <span className="hero-tag absolute right-[86%] top-[35%] pr-3 text-right">
-            <span className="stamp block whitespace-nowrap text-plaster">{site.ownerShort}</span>
-            <span className="stamp block whitespace-nowrap text-plaster/60">Owner · on site</span>
-          </span>
-        </div>
-      </div>
 
       <div aria-hidden className="grain pointer-events-none absolute inset-0" />
       <div aria-hidden data-hero-dim className="pointer-events-none absolute inset-0 bg-night opacity-0" />
