@@ -17,7 +17,8 @@ const label = (p: Project) => [p.title, p.storeys, p.category].filter(Boolean).j
 
 export function Work() {
   const pair = projects.find((p) => p.beforeImage);
-  const rest = projects.filter((p) => p !== pair);
+  // Jeelani Mansion gets its own spread in the Owner section.
+  const rest = projects.filter((p) => p !== pair && p.id !== "jeelani-mansion");
 
   return (
     <section id="work" aria-labelledby="work-title" className="border-t border-rule">

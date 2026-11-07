@@ -1,24 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap, queueRefresh } from "@/lib/gsap";
+import { DIST, DUR, START, STAGGER } from "@/lib/motion";
 import { useReducedMotion } from "./useReducedMotion";
-
-// One coalesced ScrollTrigger.refresh() per mount batch. A refresh per
-// Section instance re-measures every trigger (including both pinned
-// sections) a dozen times on load — a large forced-layout cost.
-let refreshQueued = false;
-function scheduleRefresh() {
-  if (refreshQueued) return;
-  refreshQueued = true;
-  // Double rAF: run after the browser has painted the newly mounted sections.
-  requestAnimationFrame(() =>
-    requestAnimationFrame(() => {
-      refreshQueued = false;
-      ScrollTrigger.refresh();
-    }),
-  );
-}
 
 interface RevealOptions {
   y?: number;
@@ -35,11 +20,11 @@ interface RevealOptions {
  * Returns a ref to attach to the target. Respects reduced motion.
  */
 export function useScrollReveal<T extends HTMLElement>({
-  y = 40,
-  duration = 1,
+  y = DIST.reveal,
+  duration = DUR.lg,
   delay = 0,
-  start = "top 85%",
-  stagger = 0.08,
+  start = START.reveal,
+  stagger = STAGGER.base,
   children = false,
 }: RevealOptions = {}) {
   const ref = useRef<T>(null);
@@ -63,7 +48,7 @@ export function useScrollReveal<T extends HTMLElement>({
         duration,
         delay,
         stagger,
-        ease: "power3.out",
+        ease: "expo.out",
         scrollTrigger: { trigger: el, start },
       });
     }, el);
@@ -73,7 +58,7 @@ export function useScrollReveal<T extends HTMLElement>({
 
   // Keep ScrollTrigger in sync after the very first paint.
   useEffect(() => {
-    scheduleRefresh();
+    queueRefresh();
   }, []);
 
   return ref;

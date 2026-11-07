@@ -18,4 +18,18 @@ export function registerGsap() {
 
 registerGsap();
 
+// One coalesced ScrollTrigger.refresh() per mount batch, after paint. A refresh
+// per component re-measures every trigger a dozen times on load.
+let refreshQueued = false;
+export function queueRefresh() {
+  if (refreshQueued) return;
+  refreshQueued = true;
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      refreshQueued = false;
+      ScrollTrigger.refresh();
+    }),
+  );
+}
+
 export { gsap, ScrollTrigger };

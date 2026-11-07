@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Hero } from "@/features/hero";
+import { Manifesto } from "@/features/manifesto";
 import { Story } from "@/features/story";
 import { Work } from "@/features/work";
 import { DrawingBoard } from "@/features/drawing-board";
@@ -33,16 +34,21 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#15161a",
+};
+
 const homeJsonLd = pageGraph([breadcrumbNode([{ name: "Home", url: site.url }]), faqNode(faqs)]);
 
 export default function Home() {
   return (
     <>
       <Hero />
+      <Manifesto />
       <Story />
       <Work />
-      <DrawingBoard />
       <Owner />
+      <DrawingBoard />
       <Services />
       <Traders />
       <Faq />

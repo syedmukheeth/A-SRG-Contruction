@@ -17,23 +17,39 @@ export function MobileActionBar() {
 
   useEffect(() => {
     let ticking = false;
+    let threshold = 0;
+    // Past the hero's own CTAs where there is one; otherwise most of a screen down.
+    const cache = () => {
+      const hero = document.getElementById("hero");
+      threshold = hero
+        ? hero.getBoundingClientRect().bottom + window.scrollY - window.innerHeight * 0.4
+        : window.innerHeight * 0.6;
+    };
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        setShown(window.scrollY > window.innerHeight * 0.6);
+        setShown(window.scrollY > threshold);
         ticking = false;
       });
     };
-    onScroll();
+    const onResize = () => {
+      cache();
+      onScroll();
+    };
+    onResize();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   return (
     <div
       className={cn(
-        "action-bar fixed inset-x-0 bottom-0 z-[70] bg-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden",
+        "action-bar fixed inset-x-0 bottom-0 z-[70] border-t border-plaster/10 bg-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden",
         shown ? "translate-y-0" : "translate-y-full",
       )}
       // Kept out of the tab order and off the a11y tree while it is off-screen:

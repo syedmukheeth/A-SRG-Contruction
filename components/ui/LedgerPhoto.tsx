@@ -7,11 +7,13 @@ interface LedgerPhotoProps {
   sizes: string;
   /** Force a crop; otherwise the photo keeps its own proportions. */
   aspect?: string;
-  priority?: boolean;
+  preload?: boolean;
   className?: string;
   /** Extra caption text after the stamp, e.g. a project title. */
   caption?: React.ReactNode;
   tone?: "light" | "night";
+  /** object-position when `aspect` crops the photo. */
+  position?: string;
 }
 
 /** A photo with its site-diary stamp underneath, like a page in a site log. */
@@ -19,10 +21,11 @@ export function LedgerPhoto({
   photo,
   sizes,
   aspect,
-  priority,
+  preload,
   className,
   caption,
   tone = "light",
+  position,
 }: LedgerPhotoProps) {
   return (
     <figure className={cn("group", className)}>
@@ -35,7 +38,8 @@ export function LedgerPhoto({
           alt={photo.alt}
           fill
           sizes={sizes}
-          priority={priority}
+          preload={preload}
+          style={position ? { objectPosition: position } : undefined}
           className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]"
         />
       </div>

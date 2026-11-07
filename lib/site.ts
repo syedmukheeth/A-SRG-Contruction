@@ -10,7 +10,9 @@
  * never leak into visible copy, schema `name` fields, or alt text.
  */
 
-const yearsOfExperience = 46;
+/** Owner-confirmed founding year; everything else counts from it. */
+const established = 1980;
+const yearsOfExperience = new Date().getFullYear() - established;
 
 export const site = {
   name: "ASRG Construction",
@@ -24,7 +26,7 @@ export const site = {
   tagline: `Civil contractor in Kurnool for ${yearsOfExperience} years`,
   description: `ASRG Construction is Jeelani Shaik's civil contracting firm in Kurnool, Andhra Pradesh: houses, shops and multi-storey blocks, from footings to handover, for ${yearsOfExperience} years.`,
   yearsOfExperience,
-  established: new Date().getFullYear() - yearsOfExperience,
+  established,
   url: "https://asrgcontruction.com",
   email: "jelanisrg@gmail.com",
   phone: "+91 93962 86289",
@@ -78,6 +80,18 @@ export const heroPhoto: Photo = {
   stamp: "19.03.2026 · 08:35 · Kurnool",
 };
 
+/** Jeelani on the deck before a pour. Only 720px wide: never stretch it full-bleed on desktop. */
+export const heroPortrait: Photo = {
+  src: "/images/site/jeelani-on-slab.jpg",
+  alt: "Jeelani Shaik, owner of ASRG Construction, seated on the rebar deck of a Kurnool site before a slab pour",
+  width: 720,
+  height: 1024,
+  stamp: "On the deck before a pour",
+};
+
+/** Kurnool city centre, for the hero's site-board stamp. */
+export const coordinates = "15.83° N · 78.04° E";
+
 /** The homepage story, in the order a building actually goes up. */
 export interface Chapter {
   id: string;
@@ -115,13 +129,6 @@ export const chapters: Chapter[] = [
         width: 1568,
         height: 618,
         stamp: "Slab pour · Kurnool",
-      },
-      {
-        src: "/images/site/jeelani-on-slab.jpg",
-        alt: "Jeelani Shaik seated on the rebar deck beside the concrete pump line",
-        width: 720,
-        height: 1024,
-        stamp: "On the deck",
       },
     ],
   },

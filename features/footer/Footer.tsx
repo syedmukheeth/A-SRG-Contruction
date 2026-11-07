@@ -1,11 +1,12 @@
-import Image from "next/image";
 import Link from "next/link";
+import { Mark, Seal } from "@/components/brand/Logo";
 import { site, services, traders, tel, whatsappHref, mapsHref } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer id="contact" className="relative w-full bg-ink text-plaster">
-      <div className="mx-auto max-w-[1440px] px-5 pb-10 pt-20 md:px-10 md:pt-28">
+    <footer id="contact" data-tone="dark" className="relative w-full overflow-hidden bg-ink text-plaster">
+      <Seal className="pointer-events-none absolute -right-10 top-12 hidden w-56 text-plaster/25 md:block lg:right-10" />
+      <div className="relative mx-auto max-w-[1440px] px-5 pb-10 pt-20 md:px-10 md:pt-28">
         <p className="marker text-ember mb-6">Building in {site.location.city}?</p>
         <a
           href={tel(site.phone)}
@@ -29,9 +30,7 @@ export function Footer() {
           {/* NAP block with microdata, matching the root Organization JSON-LD. */}
           <div itemScope itemType="https://schema.org/GeneralContractor">
             <div className="flex items-center gap-3">
-              <span className="relative h-10 w-10 overflow-hidden rounded-full">
-                <Image src="/images/brand/logo-mark-round.png" alt="" fill sizes="40px" className="object-cover" />
-              </span>
+              <Mark className="h-10 w-10 text-ember" />
               <p itemProp="name" className="font-display text-2xl leading-none">
                 {site.name}
               </p>

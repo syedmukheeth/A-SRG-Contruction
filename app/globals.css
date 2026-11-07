@@ -41,8 +41,6 @@
   --font-mono: var(--font-plex-mono);
   --font-telugu: var(--font-noto-telugu);
 
-  --text-hero: clamp(3.4rem, 12.5vw, 11.5rem);
-  --text-hero--line-height: 0.84;
   --text-display: clamp(2.6rem, 7.5vw, 6.5rem);
   --text-display--line-height: 0.88;
   --text-title: clamp(1.6rem, 3.2vw, 2.5rem);
@@ -77,6 +75,11 @@ body {
   outline: 2px solid var(--laterite);
   outline-offset: 3px;
   border-radius: 2px;
+}
+/* Laterite is only ~3:1 on night; dark sections ring in ember. */
+[data-tone="dark"] :focus-visible,
+[data-nav-tone="dark"] :focus-visible {
+  outline-color: var(--ember);
 }
 :focus:not(:focus-visible) {
   outline: none;
@@ -171,22 +174,127 @@ body {
     transform: none;
   }
 }
-@keyframes hero-photo-in {
+@keyframes hero-kenburns {
   from {
-    clip-path: inset(0 0 100% 0);
+    transform: scale(1.08);
   }
   to {
-    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+}
+@keyframes hero-veil-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 .hero-line {
-  animation: hero-line-up 0.9s var(--ease-out-expo) both;
+  animation: hero-line-up 1s var(--ease-out-expo) both;
 }
 .hero-fade {
-  animation: hero-fade-up 0.8s var(--ease-out-expo) both;
+  animation: hero-fade-up 0.9s var(--ease-out-expo) both;
 }
-.hero-photo {
-  animation: hero-photo-in 1.1s var(--ease-out-expo) 0.15s both;
+/* The photo is painted from frame one (LCP); a night veil lifts off it. */
+.hero-kenburns {
+  animation: hero-kenburns 2.6s var(--ease-out-expo) both;
+}
+.hero-veil {
+  animation: hero-veil-out 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+}
+/* Fades the photo into the night: from below on phones, from the left too on desktop. */
+.hero-shade {
+  background:
+    linear-gradient(180deg, rgb(21 22 26 / 0.55) 0%, rgb(21 22 26 / 0) 22%),
+    linear-gradient(0deg, var(--night) 8%, rgb(21 22 26 / 0.85) 34%, rgb(21 22 26 / 0) 62%);
+}
+@media (min-width: 768px) {
+  .hero-shade {
+    background:
+      linear-gradient(90deg, var(--night) 0%, rgb(21 22 26 / 0.6) 22%, rgb(21 22 26 / 0) 48%),
+      linear-gradient(180deg, rgb(21 22 26 / 0.75) 0%, rgb(21 22 26 / 0) 20%),
+      linear-gradient(0deg, rgb(21 22 26 / 0.9) 0%, rgb(21 22 26 / 0) 30%);
+  }
+}
+.hero-rules {
+  background-image: linear-gradient(90deg, rgb(242 238 230 / 0.05) 1px, transparent 1px);
+  background-size: calc((min(100vw, 1440px) - 5rem) / 12) 100%;
+  background-position: max(2.5rem, calc((100vw - 1440px) / 2 + 2.5rem)) 0;
+}
+
+/* Static film grain over dark photo sections. Never animated. */
+.grain {
+  background-image: url("/images/texture/grain.png");
+  background-size: 192px 192px;
+  opacity: 0.12;
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+.scroll-cue {
+  animation: scroll-cue 2.2s cubic-bezier(0.65, 0, 0.35, 1) 1.4s 3 both;
+}
+
+/* ---- Logo draw-on: each stroke has pathLength=1 ---- */
+@keyframes logo-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes logo-plumb {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.logo-draw path[pathLength] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: logo-draw 1.1s var(--ease-out-expo) forwards;
+}
+.logo-draw path[pathLength]:nth-child(2) {
+  animation-delay: 0.25s;
+}
+.logo-draw path[pathLength]:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.logo-draw .logo-plumb {
+  animation: logo-plumb 0.6s var(--ease-out-expo) 1.05s both;
+}
+
+/* ---- Story ---- */
+.numeral-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--cement);
+  letter-spacing: -0.02em;
+}
+.numeral-outline--night {
+  -webkit-text-stroke-color: rgb(242 238 230 / 0.35);
+}
+.story-rail[data-active="lights-on"] {
+  background: var(--night);
+  border-color: rgb(242 238 230 / 0.12);
+}
+.story-rail[data-active="lights-on"] a {
+  color: rgb(242 238 230 / 0.6);
+}
+.story-rail[data-active="lights-on"] a[aria-current] {
+  color: var(--plaster);
+}
+.story-rail[data-active="lights-on"] [data-fill] {
+  background: var(--ember);
 }
 
 /* ---- Nav read-progress rail ---- */

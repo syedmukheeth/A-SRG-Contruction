@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
-import { site, services, projects, chapters, interiors, heroPhoto } from "@/lib/site";
+import { site, services, projects, chapters, interiors, heroPhoto, heroPortrait } from "@/lib/site";
 import { posts } from "@/lib/blog";
 
 const lastModified = new Date();
 
 /** Real site and finished-work photography, surfaced for Image search. */
 const proofImages = [
+  heroPortrait.src,
   heroPhoto.src,
   ...chapters.flatMap((c) => c.photos.map((p) => p.src)),
   ...projects.map((p) => p.image),

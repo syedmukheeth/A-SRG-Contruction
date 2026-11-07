@@ -24,7 +24,7 @@ export function organizationNode() {
     url: site.url,
     ...(sameAs.length ? { sameAs } : {}),
     image: orgImages,
-    logo: `${site.url}/icon`,
+    logo: `${site.url}/images/brand/asrg-logo-512.png`,
     email: site.email,
     telephone: site.phone,
     contactPoint: [

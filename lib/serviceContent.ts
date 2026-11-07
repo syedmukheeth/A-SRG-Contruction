@@ -6,6 +6,7 @@ import {
   interiors,
   renders,
   heroPhoto,
+  heroPortrait,
   site,
   type Photo,
 } from "./site";
@@ -148,6 +149,7 @@ export const serviceContent: Record<string, ServiceContent> = {
 
 const allPhotos: Photo[] = [
   heroPhoto,
+  heroPortrait,
   ...chapters.flatMap((c) => c.photos),
   ...interiors,
   ...renders,

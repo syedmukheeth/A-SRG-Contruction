@@ -1,11 +1,11 @@
 import { ImageResponse } from "next/og";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { site, heroPhoto } from "@/lib/site";
+import { site, heroPortrait } from "@/lib/site";
+import { markSvg } from "@/lib/brand/mark";
 
-const read = (p: string) => readFileSync(join(process.cwd(), "public", p)).toString("base64");
-const logo = read("images/brand/logo-mark-og.png");
-const photo = read(heroPhoto.src.slice(1));
+const photo = readFileSync(join(process.cwd(), "public", heroPortrait.src.slice(1))).toString("base64");
+const mark = Buffer.from(markSvg({ fg: "#e07a52", size: 64, pad: 0.04 })).toString("base64");
 
 export const alt = `${site.name} · building in ${site.location.city} since ${site.established}`;
 export const size = { width: 1200, height: 630 };
@@ -14,64 +14,57 @@ export const contentType = "image/png";
 export default function OgImage() {
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          background: "#f2eee6",
-          fontFamily: "sans-serif",
-          color: "#1c1b19",
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "column", padding: "52px 64px 0" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              fontSize: 22,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "#4a4741",
-              borderBottom: "2px solid rgba(28,27,25,0.14)",
-              paddingBottom: 18,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`data:image/png;base64,${logo}`} width={48} height={48} alt="" />
-              <span>{site.name}</span>
+      <div style={{ width: "100%", height: "100%", display: "flex", background: "#15161a", color: "#f2eee6", fontFamily: "sans-serif" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`data:image/jpeg;base64,${photo}`}
+          width={470}
+          height={630}
+          alt=""
+          style={{ position: "absolute", right: 0, top: 0, objectFit: "cover", objectPosition: "50% 30%" }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            width: 470,
+            height: 630,
+            display: "flex",
+            background: "linear-gradient(90deg, #15161a 0%, rgba(21,22,26,0) 45%)",
+          }}
+        />
+        <div style={{ display: "flex", flexDirection: "column", padding: "56px 64px", width: 820, height: "100%" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`data:image/svg+xml;base64,${mark}`} width={64} height={64} alt="" />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <span style={{ fontSize: 40, fontWeight: 800, letterSpacing: "0.02em", lineHeight: 1 }}>ASRG</span>
+              <span style={{ fontSize: 14, letterSpacing: "0.32em", textTransform: "uppercase", color: "rgba(242,238,230,0.7)" }}>
+                Construction
+              </span>
             </div>
-            <span>
-              {site.yearsOfExperience} years · {site.location.city}
-            </span>
           </div>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              marginTop: 30,
-              fontSize: 104,
+              marginTop: "auto",
+              fontSize: 100,
               fontWeight: 800,
-              lineHeight: 0.92,
+              lineHeight: 0.9,
               letterSpacing: "-0.03em",
               textTransform: "uppercase",
             }}
           >
-            <span>Built in {site.location.city},</span>
-            <span style={{ color: "#b4472a" }}>since {site.established}.</span>
+            <span>Built in</span>
+            <span>{site.location.city},</span>
+            <span style={{ color: "#e07a52" }}>since {site.established}.</span>
           </div>
+          <span style={{ marginTop: 28, fontSize: 20, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(242,238,230,0.65)" }}>
+            {site.ownerShort} · {site.ownerTitle} · {site.yearsOfExperience} years
+          </span>
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={`data:image/jpeg;base64,${photo}`}
-          width={1200}
-          height={220}
-          alt=""
-          style={{ marginTop: "auto", objectFit: "cover", objectPosition: "50% 70%" }}
-        />
       </div>
     ),
     size,
