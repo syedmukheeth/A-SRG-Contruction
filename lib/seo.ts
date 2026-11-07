@@ -33,8 +33,6 @@ export const metadata: Metadata = {
     "Commercial Construction",
     "Builders",
     "Civil Contractors",
-    "Interior Design",
-    "Architecture",
     "Construction Company Andhra Pradesh",
     "Construction Company Kurnool",
     "civil contractors Andhra Pradesh",
@@ -99,7 +97,7 @@ export const rootJsonLd = pageGraph([organizationNode(), websiteNode()]);
 /** Shared metadata builder for each /services/[slug] page. */
 export function buildServiceMetadata(service: Service): Metadata {
   const title = `${service.title} in ${site.location.city}, ${site.location.region}`;
-  const description = `${service.summary} ASRG Construction delivers ${service.title.toLowerCase()} across ${site.location.city} and ${site.location.region}, backed by ${site.yearsOfExperience} years of building experience.`;
+  const description = `${service.title} in ${site.location.city} by ASRG Construction. ${service.summary} ${site.yearsOfExperience} years of building in ${site.location.city}.`;
   const url = `${site.url}/services/${service.slug}`;
 
   return {

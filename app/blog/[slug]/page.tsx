@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Section } from "@/components/Section";
-import { MagneticButton } from "@/components/MagneticButton";
-import { site } from "@/lib/site";
+import { PageHeader } from "@/components/PageHeader";
+import { Button } from "@/components/ui/Button";
+import { site, tel } from "@/lib/site";
 import { posts, getPostBySlug } from "@/lib/blog";
 import { breadcrumbNode, faqNode, articleNode, pageGraph } from "@/lib/schema";
 
@@ -43,11 +42,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPost({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
@@ -55,7 +50,7 @@ export default async function BlogPost({
   const jsonLd = pageGraph([
     breadcrumbNode([
       { name: "Home", url: site.url },
-      { name: "Insights", url: `${site.url}/blog` },
+      { name: "Guides", url: `${site.url}/blog` },
       { name: post.title, url: `${site.url}/blog/${post.slug}` },
     ]),
     articleNode(post),
@@ -64,79 +59,38 @@ export default async function BlogPost({
 
   return (
     <article>
-      <Section className="pt-40">
-        <div className="mx-auto max-w-[900px]">
-          <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted">
-              <li>
-                <Link href="/" className="hover:text-copper">
-                  Home
-                </Link>
-              </li>
-              <li aria-hidden>/</li>
-              <li>
-                <Link href="/blog" className="hover:text-copper">
-                  Insights
-                </Link>
-              </li>
-              <li aria-hidden>/</li>
-              <li className="text-text">{post.title}</li>
-            </ol>
-          </nav>
+      <PageHeader
+        crumbs={[{ label: "Home", href: "/" }, { label: "Guides", href: "/blog" }, { label: post.title }]}
+        marker={`Guide · ${new Date(post.date).getFullYear()}`}
+        title={post.title}
+      />
 
-          <h1 className="font-display text-giant uppercase leading-[0.9] text-text">
-            {post.title}
-          </h1>
-
-          <div className="mt-12 max-w-3xl space-y-6 text-lg text-muted">
-            {post.body.map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
-            ))}
-          </div>
+      <section className="px-5 py-16 md:px-10 md:py-20">
+        <div className="mx-auto max-w-[720px] space-y-6 text-lg leading-relaxed text-ink-soft">
+          {post.body.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
         </div>
-      </Section>
+      </section>
 
-      <Section className="surface-concrete">
-        <div className="mx-auto max-w-[900px]">
-          <h2 className="font-display text-3xl font-bold uppercase text-text md:text-4xl">
-            FAQs
-          </h2>
+      <section className="border-t border-rule px-5 py-16 md:px-10 md:py-20">
+        <div className="mx-auto max-w-[720px]">
+          <h2 className="font-display text-title text-ink">Questions</h2>
           <dl className="mt-8 space-y-8">
             {post.faq.map((f) => (
-              <div key={f.q}>
-                <dt className="font-display text-xl font-semibold uppercase text-text">
-                  {f.q}
-                </dt>
-                <dd className="mt-2 max-w-2xl text-muted">{f.a}</dd>
+              <div key={f.q} className="border-t border-ink pt-5">
+                <dt className="text-xl font-semibold text-ink">{f.q}</dt>
+                <dd className="mt-3 text-ink-soft">{f.a}</dd>
               </div>
             ))}
           </dl>
-        </div>
-      </Section>
-
-      <Section>
-        <div className="mx-auto flex max-w-[900px] flex-col items-start gap-8">
-          <h2 className="font-display text-giant uppercase leading-[0.9] text-text">
-            Talk to
-            <br />
-            <span className="text-copper">the team.</span>
-          </h2>
-          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-            <MagneticButton href="/#contact">Talk to the team</MagneticButton>
-            <a
-              href={`tel:${site.phone.replace(/\s+/g, "")}`}
-              className="font-mono text-sm text-muted hover:text-copper"
-            >
-              {site.phone}
-            </a>
+          <div className="mt-12">
+            <Button href={tel(site.phone)}>Call {site.ownerShort}</Button>
           </div>
         </div>
-      </Section>
+      </section>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </article>
   );
 }

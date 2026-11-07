@@ -11,23 +11,15 @@ interface SectionProps {
   children: React.ReactNode;
 }
 
-/**
- * Cinematic section wrapper: full-width, generous vertical rhythm,
- * scroll-revealed. Keeps transitions between sections soft (no hard jumps).
- */
-export function Section({
-  id,
-  className,
-  revealChildren = false,
-  children,
-}: SectionProps) {
-  const ref = useScrollReveal<HTMLElement>({ children: revealChildren });
+/** Page section with the site's horizontal gutter, vertical rhythm and a scroll reveal. */
+export function Section({ id, className, revealChildren = false, children }: SectionProps) {
+  const ref = useScrollReveal<HTMLElement>({ children: revealChildren, y: 24 });
 
   return (
     <section
       id={id}
       ref={ref}
-      className={cn("relative w-full px-6 py-20 md:px-12 md:py-32 lg:px-20", className)}
+      className={cn("relative w-full px-5 py-20 md:px-10 md:py-28", className)}
     >
       {children}
     </section>

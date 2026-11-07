@@ -1,8 +1,6 @@
 "use client";
 
-import { site } from "@/lib/site";
-
-const message = `Hi ${site.name}, I'd like to enquire about a project.`;
+import { whatsappHref as href } from "@/lib/site";
 
 /**
  * Fixed WhatsApp click-to-chat button. Opens a prefilled chat in a new tab.
@@ -10,8 +8,6 @@ const message = `Hi ${site.name}, I'd like to enquire about a project.`;
  * link next to a tap-to-call, and both floating at once collide.
  */
 export function WhatsAppButton() {
-  const href = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
-
   return (
     <a
       href={href}

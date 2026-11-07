@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 
 export default function Error({
   error,
@@ -15,31 +15,25 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center px-6 text-center">
-      <div className="blueprint-grid absolute inset-0 opacity-40" />
-      <p className="eyebrow relative mb-6">Error</p>
-      <h1 className="relative font-display text-giant uppercase leading-[0.9] text-text">
-        Something
-        <br />
-        <span className="text-copper">went wrong.</span>
-      </h1>
-      <p className="relative mt-8 max-w-md text-muted">
-        An unexpected error occurred while loading this page.
-      </p>
-      <div className="relative mt-10 flex flex-col items-center gap-5 sm:flex-row">
-        <button
-          type="button"
-          onClick={() => unstable_retry()}
-          className="rounded-full bg-copper px-8 py-4 font-mono text-xs uppercase tracking-[0.22em] text-ink transition-colors hover:bg-text"
-        >
-          Try again
-        </button>
-        <Link
-          href="/"
-          className="rounded-full border border-text/25 px-8 py-4 font-mono text-xs uppercase tracking-[0.22em] text-text transition-colors hover:text-copper"
-        >
-          Return home
-        </Link>
+    <div className="flex min-h-[80vh] w-full flex-col justify-center px-5 pb-20 pt-32 md:px-10">
+      <div className="mx-auto w-full max-w-[1280px]">
+        <p className="marker">Error</p>
+        <h1 className="font-display mt-6 max-w-[12ch] text-display text-ink">
+          Something <span className="text-laterite">went wrong.</span>
+        </h1>
+        <p className="mt-6 max-w-md text-lg text-ink-soft">This page failed to load.</p>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={() => unstable_retry()}
+            className="bg-laterite px-6 py-4 font-mono text-xs font-medium uppercase tracking-[0.08em] text-plaster transition-colors hover:bg-laterite-deep"
+          >
+            Try again
+          </button>
+          <Button href="/" variant="line">
+            Homepage
+          </Button>
+        </div>
       </div>
     </div>
   );

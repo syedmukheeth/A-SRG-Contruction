@@ -1,16 +1,17 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Section } from "@/components/Section";
-import { MagneticButton } from "@/components/MagneticButton";
-import { site, services } from "@/lib/site";
+import { PageHeader } from "@/components/PageHeader";
+import { Button } from "@/components/ui/Button";
+import { LedgerPhoto } from "@/components/ui/LedgerPhoto";
+import { site, services, tel } from "@/lib/site";
 import { buildServiceMetadata } from "@/lib/seo";
 import { breadcrumbNode, faqNode, serviceNode, pageGraph } from "@/lib/schema";
 import {
   serviceContent,
   getServiceBySlug,
   getFeaturedProjects,
+  getPhotos,
   getFaqsByQuestions,
 } from "@/lib/serviceContent";
 
@@ -29,19 +30,16 @@ export async function generateMetadata({
   return buildServiceMetadata(service);
 }
 
-export default async function ServicePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const service = getServiceBySlug(slug);
   const content = serviceContent[slug];
   if (!service || !content) notFound();
 
-  const featuredProjects = getFeaturedProjects(content.featured.projectIds);
+  const projects = getFeaturedProjects(content.projectIds);
+  const photos = getPhotos(content.photoSrcs);
   const pageFaqs = getFaqsByQuestions(content.faqQuestions);
-  const relatedServices = content.related
+  const related = content.related
     .map((relSlug) => services.find((s) => s.slug === relSlug))
     .filter((s): s is (typeof services)[number] => Boolean(s));
 
@@ -57,184 +55,115 @@ export default async function ServicePage({
 
   return (
     <article>
-      <Section className="pt-40">
-        <div className="mx-auto max-w-[1100px]">
-          <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted">
-              <li>
-                <Link href="/" className="hover:text-copper">
-                  Home
-                </Link>
-              </li>
-              <li aria-hidden>/</li>
-              <li>
-                <Link href="/services" className="hover:text-copper">
-                  Services
-                </Link>
-              </li>
-              <li aria-hidden>/</li>
-              <li className="text-text">{service.title}</li>
-            </ol>
-          </nav>
+      <PageHeader
+        crumbs={[
+          { label: "Home", href: "/" },
+          { label: "Services", href: "/services" },
+          { label: service.title },
+        ]}
+        marker={`${service.title} · ${site.location.city}`}
+        title={
+          <>
+            {service.title} in <span className="text-laterite">{site.location.city}.</span>
+          </>
+        }
+      >
+        {content.intro.map((p, i) => (
+          <p key={i}>{p}</p>
+        ))}
+      </PageHeader>
 
-          <p className="eyebrow mb-6">{service.blueprint}</p>
-          <h1 className="font-display text-giant uppercase leading-[0.9] text-text">
-            {service.title}
-            <br />
-            <span className="text-copper">
-              in {site.location.city}, {site.location.region}
-            </span>
-          </h1>
-
-          <div className="mt-12 max-w-3xl space-y-6 text-lg text-muted">
-            {content.intro.map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      <Section className="surface-concrete">
-        <div className="mx-auto max-w-[1100px]">
-          <h2 className="font-display text-3xl font-bold uppercase text-text md:text-4xl">
-            What&apos;s included
-          </h2>
-          <ul className="mt-8 grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2">
-            {content.included.map((item) => (
-              <li
-                key={item}
-                className="flex items-start gap-3 border-b border-text/10 pb-4 text-muted"
-              >
-                <span className="mt-1 text-copper">▸</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
-      <Section>
-        <div className="mx-auto max-w-[1100px]">
-          <h2 className="font-display text-3xl font-bold uppercase text-text md:text-4xl">
-            Our process for {service.title.toLowerCase()}
-          </h2>
-          <p className="mt-6 max-w-3xl text-muted">{content.process}</p>
-          <p className="mt-4">
-            <Link
-              href="/#process"
-              className="font-mono text-xs uppercase tracking-[0.18em] text-copper hover:underline"
-            >
-              See all eight build stages →
-            </Link>
-          </p>
-        </div>
-      </Section>
-
-      <Section className="surface-concrete">
-        <div className="mx-auto max-w-[1100px]">
-          <h2 className="font-display text-3xl font-bold uppercase text-text md:text-4xl">
-            Building in {site.location.city} &amp; {site.location.region}
-          </h2>
-          <p className="mt-6 max-w-3xl text-muted">{content.local}</p>
-        </div>
-      </Section>
-
-      <Section>
-        <div className="mx-auto max-w-[1100px]">
-          <h2 className="font-display text-3xl font-bold uppercase text-text md:text-4xl">
-            Featured work
-          </h2>
-          {featuredProjects.length > 0 ? (
-            <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
-              {featuredProjects.map((project) => (
-                <figure
-                  key={project.id}
-                  className="overflow-hidden rounded-lg border border-text/10"
-                >
-                  <div className="relative aspect-4/3">
-                    <Image
-                      src={project.image}
-                      alt={`${project.title}, a ${project.category.toLowerCase()} project (${project.area}) by ASRG Construction in ${project.location}`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <figcaption className="p-4 font-mono text-xs uppercase tracking-[0.15em] text-muted">
-                    {project.title} · {project.area} · {project.year}
-                  </figcaption>
-                </figure>
+      {(projects.length > 0 || photos.length > 0) && (
+        <section className="px-5 py-16 md:px-10 md:py-24">
+          <div className="mx-auto max-w-[1280px]">
+            <p className="marker">{projects.length ? "Built by ASRG" : "From ASRG sites"}</p>
+            <div className="mt-8 grid gap-8 md:grid-cols-3">
+              {projects.map((p) => (
+                <LedgerPhoto
+                  key={p.id}
+                  photo={{
+                    src: p.image,
+                    alt: `${p.title}${p.storeys ? `, ${p.storeys}` : ""}, a ${p.category.toLowerCase()} building by ${site.name} in ${site.location.city}`,
+                    width: p.width,
+                    height: p.height,
+                  }}
+                  aspect="4 / 5"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  caption={[p.title, p.storeys].filter(Boolean).join(" · ")}
+                />
+              ))}
+              {photos.map((photo, i) => (
+                <LedgerPhoto
+                  key={photo.src}
+                  photo={photo}
+                  aspect={i === 0 && !projects.length ? "16 / 9" : "4 / 5"}
+                  sizes="(max-width: 768px) 100vw, 66vw"
+                  className={i === 0 && !projects.length ? "md:col-span-2" : undefined}
+                />
               ))}
             </div>
-          ) : (
-            <p className="mt-6 max-w-3xl text-muted">{content.featured.note}</p>
-          )}
+          </div>
+        </section>
+      )}
+
+      <section className="border-t border-rule px-5 py-16 md:px-10 md:py-24">
+        <div className="mx-auto grid max-w-[1280px] gap-12 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <h2 className="font-display text-title text-ink">What&apos;s included</h2>
+            <ul className="mt-8 border-t border-ink">
+              {content.included.map((item) => (
+                <li key={item} className="flex gap-4 border-b border-rule py-4 text-ink-soft">
+                  <span aria-hidden className="mt-2.5 h-0.5 w-4 shrink-0 bg-laterite" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="md:col-span-6 md:col-start-7">
+            <h2 className="font-display text-title text-ink">How it runs</h2>
+            <p className="mt-8 text-lg leading-relaxed text-ink-soft">{content.process}</p>
+            <Link href="/#story" className="link-u mt-6 inline-block font-medium">
+              Follow a build from ground to handover
+            </Link>
+          </div>
         </div>
-      </Section>
+      </section>
 
       {pageFaqs.length > 0 && (
-        <Section className="surface-concrete">
-          <div className="mx-auto max-w-[1100px]">
-            <h2 className="font-display text-3xl font-bold uppercase text-text md:text-4xl">
-              {service.title} FAQs
-            </h2>
-            <dl className="mt-8 space-y-8">
+        <section className="border-t border-rule px-5 py-16 md:px-10 md:py-24">
+          <div className="mx-auto max-w-[1280px]">
+            <h2 className="font-display text-title text-ink">Questions</h2>
+            <dl className="mt-8 grid gap-8 md:grid-cols-2">
               {pageFaqs.map((f) => (
-                <div key={f.q}>
-                  <dt className="font-display text-xl font-semibold uppercase text-text">
-                    {f.q}
-                  </dt>
-                  <dd className="mt-2 max-w-2xl text-muted">{f.a}</dd>
+                <div key={f.q} className="border-t border-ink pt-5">
+                  <dt className="text-xl font-semibold text-ink">{f.q}</dt>
+                  <dd className="mt-3 text-ink-soft">{f.a}</dd>
                 </div>
               ))}
             </dl>
           </div>
-        </Section>
+        </section>
       )}
 
-      <Section>
-        <div className="mx-auto max-w-[1100px]">
-          <h2 className="font-display text-3xl font-bold uppercase text-text md:text-4xl">
-            Related services
-          </h2>
-          <ul className="mt-8 flex flex-wrap gap-4">
-            {relatedServices.map((rel) => (
-              <li key={rel.slug}>
-                <Link
-                  href={`/services/${rel.slug}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-text/20 px-6 py-3 font-mono text-xs uppercase tracking-[0.15em] text-muted transition-colors hover:border-copper hover:text-copper"
-                >
-                  {rel.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
-      <Section className="surface-concrete">
-        <div className="mx-auto flex max-w-[1100px] flex-col items-start gap-8">
-          <h2 className="font-display text-giant uppercase leading-[0.9] text-text">
-            Start your
-            <br />
-            <span className="text-copper">{service.title.toLowerCase()}.</span>
-          </h2>
-          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-            <MagneticButton href="/#contact">Talk to the team</MagneticButton>
-            <a
-              href={`tel:${site.phone.replace(/\s+/g, "")}`}
-              className="font-mono text-sm text-muted hover:text-copper"
-            >
-              {site.phone}
-            </a>
+      <section className="border-t border-rule px-5 py-16 md:px-10 md:py-20">
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-10 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="stamp mb-4">Related</p>
+            <ul className="flex flex-wrap gap-x-8 gap-y-3">
+              {related.map((rel) => (
+                <li key={rel.slug}>
+                  <Link href={`/services/${rel.slug}`} className="link-u text-lg font-medium">
+                    {rel.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
+          <Button href={tel(site.phone)}>Call about {service.title.toLowerCase()}</Button>
         </div>
-      </Section>
+      </section>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </article>
   );
 }

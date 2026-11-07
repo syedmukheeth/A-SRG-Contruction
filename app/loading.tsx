@@ -10,9 +10,9 @@ export default function Loading() {
       <span
         role="status"
         aria-label="Loading"
-        className="fixed inset-x-0 top-20 z-40 block h-px overflow-hidden bg-copper/15"
+        className="fixed inset-x-0 top-18 z-40 block h-0.5 overflow-hidden bg-laterite/15"
       >
-        <span className="route-rail block h-full w-1/3 bg-copper" />
+        <span className="route-rail block h-full w-1/3 bg-laterite" />
       </span>
     </div>
   );

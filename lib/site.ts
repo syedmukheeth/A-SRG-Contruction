@@ -1,22 +1,30 @@
 /**
  * Static, typed company data for ASRG Construction.
- * Shaped to swap to a CMS later with no component changes.
  *
- * Brand name is always "ASRG Construction" (correct spelling) — the
+ * Rule for this file: only facts that can be pointed at — a photo, a flyer,
+ * a review, or something the owner confirmed. No invented counts, quotes,
+ * timelines or awards.
+ *
+ * Brand name is always "ASRG Construction" (correct spelling). The
  * "asrgcontruction.com" domain's missing "s" is a URL-only quirk and must
  * never leak into visible copy, schema `name` fields, or alt text.
  */
+
+const yearsOfExperience = 46;
 
 export const site = {
   name: "ASRG Construction",
   legalName: "ASRG Construction",
   owner: "Jeelani Shaik",
-  ownerTitle: "Founder & Civil Contractor",
+  ownerShort: "S. Jeelani",
+  ownerTitle: "Civil Contractor",
+  /** Verbatim from the company flyer: "S. Jeelani, Civil Contractor". */
+  ownerTelugu: "ఎస్. జిలాని, సివిల్ కాంట్రాక్టర్",
   ownerImage: "/images/owner/jeelani-shaik.jpg",
-  tagline: "We Build Your Dreams",
-  description:
-    "ASRG Construction is a trusted construction company in Kurnool, Andhra Pradesh, specializing in residential and commercial construction, civil contracting, centering works, renovation, and design consultation for over 46 years.",
-  yearsOfExperience: 46,
+  tagline: `Civil contractor in Kurnool for ${yearsOfExperience} years`,
+  description: `ASRG Construction is Jeelani Shaik's civil contracting firm in Kurnool, Andhra Pradesh: houses, shops and multi-storey blocks, from footings to handover, for ${yearsOfExperience} years.`,
+  yearsOfExperience,
+  established: new Date().getFullYear() - yearsOfExperience,
   url: "https://asrgcontruction.com",
   email: "jelanisrg@gmail.com",
   phone: "+91 93962 86289",
@@ -24,9 +32,7 @@ export const site = {
   whatsapp: "919396286289",
   /**
    * Every name this business is searched by, fed to schema.org `alternateName`.
-   * Includes "SRG Constructions" (how the Justdial reviewer refers to it) and
-   * the domain's misspelling, so Google resolves all of them to one entity.
-   * Visible copy still only ever uses site.name.
+   * Visible copy only ever uses site.name.
    */
   alternateNames: [
     "ASRG",
@@ -36,311 +42,395 @@ export const site = {
     "SRG Construction",
     "A.S.R.G. Construction",
   ],
-  /**
-   * Off-site profiles for schema.org `sameAs` — the strongest signal tying this
-   * domain to the business Google already knows from Maps and Justdial.
-   * Empty strings are filtered out, so add each URL only once it is verified real.
-   */
-  profiles: {
-    googleBusiness: "",
-    justdial: "",
-    facebook: "",
-    instagram: "",
-    linkedin: "",
-    youtube: "",
-  },
+  /** Off-site profiles for schema.org `sameAs`. Add each URL only once it is verified. */
+  profiles: [] as string[],
   location: {
     city: "Kurnool",
     region: "Andhra Pradesh",
     country: "IN",
     address: "Netaji Talkies Road, Gafooria Masjid Line, Kurnool",
-    /** Towns the site team covers, fed to schema.org `areaServed`. */
     nearbyTowns: ["Nandyal", "Adoni", "Dhone", "Yemmiganur", "Nandikotkur"],
-    /** Approximate Kurnool city-centre coordinates — replace with the exact site location if precision matters. */
-    geo: {
-      latitude: 15.8281,
-      longitude: 78.0373,
-    },
   },
 } as const;
 
-export const stats = [
-  { value: 46, suffix: "", label: "Years of building trust" },
-  { value: 500, suffix: "+", label: "Projects delivered" },
-  { value: 1000, suffix: "+", label: "Happy families" },
-] as const;
+export const tel = (phone: string) => `tel:${phone.replace(/\s+/g, "")}`;
+export const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
+  `Hi ${site.name}, I'd like to talk about a build.`,
+)}`;
+export const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${site.name}, ${site.location.address}`,
+)}`;
+
+export interface Photo {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** Site-diary caption, e.g. the camera's own date stamp. */
+  stamp?: string;
+}
+
+export const heroPhoto: Photo = {
+  src: "/images/site/column-cages.jpg",
+  alt: "Rows of reinforced concrete columns curing on a red-soil building site in Kurnool under a clear sky",
+  width: 1600,
+  height: 598,
+  stamp: "19.03.2026 · 08:35 · Kurnool",
+};
+
+/** The homepage story, in the order a building actually goes up. */
+export interface Chapter {
+  id: string;
+  label: string;
+  title: string;
+  body: string;
+  photos: Photo[];
+}
+
+export const chapters: Chapter[] = [
+  {
+    id: "ground",
+    label: "Ground",
+    title: "It starts in red soil.",
+    body: "Kurnool's red earth, a heap of gravel and a grid of columns rising out of the footings, wrapped in gunny cloth while the concrete cures. Nothing above ground is better than what goes in here.",
+    photos: [
+      {
+        src: "/images/site/footings-red-soil.jpg",
+        alt: "Column reinforcement rising from fresh footings on a red-soil plot in Kurnool, columns wrapped for curing",
+        width: 1600,
+        height: 598,
+        stamp: "19.03.2026 · 08:25 · Kurnool",
+      },
+    ],
+  },
+  {
+    id: "steel",
+    label: "Steel",
+    title: "Steel, then concrete.",
+    body: "The slab deck is tied bar by bar and the concrete goes in through a pump line. Jeelani sits out on the deck for the pour, where he can see every bay.",
+    photos: [
+      {
+        src: "/images/site/crew-slab-pour.jpg",
+        alt: "ASRG crew fixing column steel during a slab pour while Jeelani Shaik supervises from the deck",
+        width: 1568,
+        height: 618,
+        stamp: "Slab pour · Kurnool",
+      },
+      {
+        src: "/images/site/jeelani-on-slab.jpg",
+        alt: "Jeelani Shaik seated on the rebar deck beside the concrete pump line",
+        width: 720,
+        height: 1024,
+        stamp: "On the deck",
+      },
+    ],
+  },
+  {
+    id: "frame",
+    label: "Frame",
+    title: "Then the frame goes up.",
+    body: "Scaffolding wraps the whole block. Plaster goes on floor by floor, and a crane swings finished window frames up to the slab while the team guides them in by hand.",
+    photos: [
+      {
+        src: "/images/site/scaffold-block.jpg",
+        alt: "Multi-storey block in Kurnool wrapped in red scaffolding during plastering",
+        width: 1600,
+        height: 598,
+        stamp: "25.04.2026 · 18:08 · Kurnool",
+      },
+      {
+        src: "/images/site/crane-frame-lift.jpg",
+        alt: "Crane lifting a large timber window frame onto a building while the ASRG team guides it from the slab",
+        width: 575,
+        height: 1050,
+        stamp: "Frame lift",
+      },
+    ],
+  },
+  {
+    id: "finish",
+    label: "Finish",
+    title: "The part people see.",
+    body: "Stone cladding, wood-finish ceilings, textured wall coats. Same team that poured the slab, still on site for the last coat.",
+    photos: [
+      {
+        src: "/images/site/black-stone-facade.jpg",
+        alt: "Black stone cladding, wood-finish ceilings and glass on a Kurnool residence nearing completion",
+        width: 1152,
+        height: 864,
+        stamp: "Facade · finishing stage",
+      },
+      {
+        src: "/images/site/texture-wall-finish.jpg",
+        alt: "Close-up of a textured grey wall finish with vertical grooves on a balcony",
+        width: 1200,
+        height: 1600,
+        stamp: "Texture coat",
+      },
+    ],
+  },
+  {
+    id: "lights-on",
+    label: "Lights on",
+    title: "Lights on.",
+    body: "Handover. The gates swing open, the ceiling lights come on, and the owner walks through every room.",
+    photos: [
+      {
+        src: "/images/site/duplex-dusk.jpg",
+        alt: "Completed two-storey house in Kurnool at dusk with ceiling lights on and glass balcony railings",
+        width: 1440,
+        height: 1080,
+        stamp: "Kurnool",
+      },
+    ],
+  },
+];
+
+export const handoverVideo = {
+  src: "/media/handover-walkthrough.mp4",
+  poster: "/media/handover-walkthrough-poster.jpg",
+  label: "Handover walkthrough of a finished ASRG house in Kurnool, filmed at night",
+};
 
 export const services = [
   {
     id: "residential",
     slug: "residential-construction",
     title: "Residential Construction",
-    blueprint: "Plan A-01",
-    summary: "Luxury homes engineered to outlast generations.",
+    summary: "Independent houses, duplexes and multi-storey family homes, built from footings to handover.",
     image: "/images/proof/jeelani-mansion.jpg",
   },
   {
     id: "commercial",
     slug: "commercial-construction",
     title: "Commercial Construction",
-    blueprint: "Plan B-04",
-    summary: "Workspaces and retail built to command presence.",
-    image: "/images/proof/asrg-traders-showroom.jpg",
+    summary: "Shops and commercial blocks with the larger spans and heavier services they need.",
+    image: "/images/proof/medical-complex.jpg",
   },
   {
     id: "civil",
     slug: "civil-contracting",
     title: "Civil Contracting",
-    blueprint: "Plan C-12",
-    summary: "Infrastructure executed with precision and scale.",
-    image: "/images/proof/medical-complex.jpg",
+    summary: "Footings, columns, beams and slabs: the structural work everything else stands on.",
+    image: "/images/site/crew-slab-pour.jpg",
   },
   {
     id: "centering",
     slug: "centering-works",
     title: "Centering Works",
-    blueprint: "Plan D-07",
-    summary: "Formwork and structural shuttering, done right.",
-    image: "/images/proof/gallery-structural-lift.jpg",
+    summary: "Formwork and shuttering for slabs, beams and columns, as part of a build or on its own.",
+    image: "/images/site/column-cages.jpg",
   },
   {
     id: "renovation",
     slug: "renovation",
     title: "Renovation",
-    blueprint: "Plan E-03",
-    summary: "Old structures, reimagined and restored.",
-    image: "/images/proof/twin-tone-bungalow-after.jpg",
+    summary: "Repair and refit of existing buildings, starting from what the structure actually needs.",
+    image: "/images/proof/gallery-ceiling-lighting.jpg",
   },
   {
     id: "consultation",
     slug: "consultation",
     title: "Consultation",
-    blueprint: "Plan F-09",
-    summary: "Strategy from site survey to handover.",
-    image: "/images/proof/charcoal-elevation.jpg",
+    summary: "A site visit and a straight answer on scope and budget before you commit to anything.",
+    image: "/images/site/arch-villa-render.jpg",
   },
 ] as const;
 
 export type Service = (typeof services)[number];
 
-export const processSteps = [
-  { id: "01", title: "Planning", note: "Site survey, feasibility, budget." },
-  { id: "02", title: "Design", note: "Architecture, structural drawings, approvals." },
-  { id: "03", title: "Foundation", note: "Excavation, footings, concrete pour." },
-  { id: "04", title: "Structure", note: "Columns, beams, slabs rise." },
-  { id: "05", title: "Roof", note: "Slab casting and waterproofing." },
-  { id: "06", title: "Electrical", note: "Wiring, plumbing, MEP rough-in." },
-  { id: "07", title: "Finishing", note: "Plaster, flooring, joinery, paint." },
-  { id: "08", title: "Handover", note: "Snagging, cleaning, keys." },
-] as const;
-
-export type ProcessStep = (typeof processSteps)[number];
-
 export interface Project {
   id: string;
   title: string;
-  category: string;
-  year: string;
-  location: string;
-  area: string;
-  accent: string;
+  category: "Residential" | "Commercial";
+  /** Storey count, read off the photo. */
+  storeys?: string;
   image: string;
+  width: number;
+  height: number;
+  stamp?: string;
   /** Set only for entries with a genuine in-progress → complete pair. */
   beforeImage?: string;
 }
 
-/** Real completed work. Drop photos into public/images/proof/ with these exact filenames. */
+/** Real work, real photos. */
 export const projects: Project[] = [
-  {
-    id: "stone-facade-night",
-    title: "Stone-Clad Elevation, Night Reveal",
-    category: "Residential",
-    year: "2026",
-    location: "Kurnool",
-    area: "G+3",
-    accent: "#C7853E",
-    image: "/images/proof/stone-facade-night.jpg",
-  },
-  {
-    id: "twin-tone-bungalow",
-    title: "Twin-Tone Bungalow",
-    category: "Residential",
-    year: "2026",
-    location: "Kurnool",
-    area: "G+1",
-    accent: "#E8A93C",
-    image: "/images/proof/twin-tone-bungalow-after.jpg",
-    beforeImage: "/images/proof/twin-tone-bungalow-before.jpg",
-  },
   {
     id: "jeelani-mansion",
     title: "Jeelani Mansion",
     category: "Residential",
-    year: "2024",
-    location: "Kurnool",
-    area: "G+4",
-    accent: "#C7853E",
+    storeys: "G+4",
     image: "/images/proof/jeelani-mansion.jpg",
+    width: 577,
+    height: 1280,
   },
   {
-    id: "duplex-teal-coral",
-    title: "Garden Duplex",
+    id: "lattice-tower",
+    title: "Lattice-front residence",
     category: "Residential",
-    year: "2026",
-    location: "Kurnool",
-    area: "G+2",
-    accent: "#9A6A6C",
-    image: "/images/proof/duplex-teal-coral.jpg",
+    storeys: "G+3",
+    image: "/images/site/lattice-tower-night.jpg",
+    width: 719,
+    height: 1488,
+    stamp: "Night before handover",
   },
   {
-    id: "netaji-facade",
-    title: "Contemporary Residence",
+    id: "twin-tone-bungalow",
+    title: "Twin-tone house",
     category: "Residential",
-    year: "2023",
-    location: "Kurnool",
-    area: "G+3",
-    accent: "#7E8CA0",
-    image: "/images/proof/blue-facade-building.jpg",
+    storeys: "G+1",
+    image: "/images/proof/twin-tone-bungalow-after.jpg",
+    beforeImage: "/images/proof/twin-tone-bungalow-before.jpg",
+    width: 960,
+    height: 1280,
   },
   {
-    id: "charcoal-elevation",
-    title: "Charcoal & Glass Elevation",
+    id: "garden-house",
+    title: "Garden house",
     category: "Residential",
-    year: "2026",
-    location: "Kurnool",
-    area: "G+3",
-    accent: "#3C3C3C",
-    image: "/images/proof/charcoal-elevation.jpg",
+    storeys: "G+2",
+    image: "/images/site/garden-house.jpg",
+    width: 1600,
+    height: 590,
+    stamp: "29.06.2026 · Kurnool",
+  },
+  {
+    id: "corner-house",
+    title: "Corner house",
+    category: "Residential",
+    storeys: "G+1",
+    image: "/images/site/corner-house-dusk.jpg",
+    width: 720,
+    height: 1050,
+    stamp: "Dusk, first lights",
   },
   {
     id: "tree-mural-villa",
-    title: "Courtyard Villa",
+    title: "Tree-mural house",
     category: "Residential",
-    year: "2023",
-    location: "Kurnool",
-    area: "G+2",
-    accent: "#9A6A3C",
+    storeys: "G+2",
     image: "/images/proof/tree-mural-villa.jpg",
+    width: 1080,
+    height: 1209,
   },
   {
-    id: "offwhite-elevation",
-    title: "Off-White Elevation",
+    id: "night-porch-house",
+    title: "Porch-lit house",
     category: "Residential",
-    year: "2026",
-    location: "Kurnool",
-    area: "G+3",
-    accent: "#B79C7A",
-    image: "/images/proof/offwhite-elevation.jpg",
+    image: "/images/site/night-porch-house.jpg",
+    width: 1600,
+    height: 605,
+    stamp: "08.06.2026 · 19:15 · Kurnool",
   },
   {
-    id: "asrg-traders-showroom",
-    title: "ASRG Traders Showroom",
-    category: "Commercial",
-    year: "2026",
-    location: "Kurnool",
-    area: "Retail",
-    accent: "#9C2B2B",
-    image: "/images/proof/asrg-traders-showroom.jpg",
+    id: "charcoal-elevation",
+    title: "Charcoal and glass elevation",
+    category: "Residential",
+    storeys: "G+3",
+    image: "/images/proof/charcoal-elevation.jpg",
+    width: 720,
+    height: 1600,
   },
   {
     id: "medical-complex",
-    title: "Medical Complex",
+    title: "Medical complex",
     category: "Commercial",
-    year: "2026",
-    location: "Kurnool",
-    area: "G+2",
-    accent: "#6B6F76",
+    storeys: "G+2",
     image: "/images/proof/medical-complex.jpg",
+    width: 720,
+    height: 1280,
   },
 ];
 
-/** Real client feedback. Abdul's review is verbatim from Justdial; the other two carry no invented names. */
-export const testimonials = [
+/** The one review on record, quoted verbatim from Justdial. */
+export const review = {
+  author: "Abdul",
+  source: "Justdial",
+  date: "Jan 2026",
+  quote:
+    "Quick service, flexible appointments, and reasonably priced work. Speedy response, cost efficient, and an easily understandable quotation. My experience with SRG Constructions was exceptional.",
+};
+
+/** Design visuals, never presented as built work. */
+export const renders: Photo[] = [
   {
-    id: "abdul",
-    owner: "Abdul",
-    project: "Justdial Review · Jan 2026",
-    year: "2026",
-    quote:
-      "Quick service, flexible appointments, and reasonably priced work. Speedy response, cost efficient, and an easily understandable quotation. My experience with SRG Constructions was exceptional.",
-    accent: "#C7853E",
-    image: "/images/proof/jeelani-mansion.jpg",
+    src: "/images/site/arch-villa-render.jpg",
+    alt: "Design render of a single-storey house with arched panels, wood cladding and a carport",
+    width: 1600,
+    height: 914,
+    stamp: "Design render · single storey",
   },
   {
-    id: "client-2",
-    owner: "Verified Client",
-    project: "Justdial Review",
-    year: "2026",
-    quote:
-      "Straightforward from quotation to handover. No surprises on cost, no delays on schedule.",
-    accent: "#7E8CA0",
-    image: "/images/proof/blue-facade-building.jpg",
+    src: "/images/site/louvre-g2-render.jpg",
+    alt: "Design render of a G+2 house with timber louvres, stone-textured column and stilt parking",
+    width: 2000,
+    height: 1466,
+    stamp: "Design render · G+2 with stilt parking",
+  },
+];
+
+/** From the company flyer: villas 94, 95 and 96 on 30×40 plots. */
+export const villaRow = { villas: ["94", "95", "96"], plot: "30 × 40" };
+
+export const interiors: Photo[] = [
+  {
+    src: "/images/proof/gallery-kitchen-fitout.jpg",
+    alt: "Finished modular kitchen with granite counter in an ASRG house",
+    width: 1512,
+    height: 1006,
+    stamp: "Kitchen fit-out",
   },
   {
-    id: "client-3",
-    owner: "Verified Client",
-    project: "Google Review",
-    year: "2026",
-    quote:
-      "Solid construction quality and a team that actually answers the phone when you call.",
-    accent: "#9A6A3C",
-    image: "/images/proof/tree-mural-villa.jpg",
+    src: "/images/proof/gallery-ceiling-lighting.jpg",
+    alt: "Finished interior corridor with a wood-panel false ceiling and lighting",
+    width: 1512,
+    height: 1006,
+    stamp: "False ceiling · interior",
   },
-] as const;
+  {
+    src: "/images/site/handover-gate.jpg",
+    alt: "Entrance gates and patterned feature wall of a finished ASRG house",
+    width: 848,
+    height: 478,
+    stamp: "Entrance · handover day",
+  },
+];
 
-export type Testimonial = (typeof testimonials)[number];
-
-export const gallery = [
-  { id: "g1", caption: "Structural lift", span: "wide", image: "/images/proof/gallery-structural-lift.jpg" },
-  { id: "g2", caption: "Custom joinery", span: "tall", image: "/images/proof/gallery-custom-joinery.jpg" },
-  { id: "g3", caption: "Kitchen fit-out", span: "", image: "/images/proof/gallery-kitchen-fitout.jpg" },
-  { id: "g4", caption: "Showcase detailing", span: "", image: "/images/proof/gallery-showcase-detailing.jpg" },
-  { id: "g5", caption: "Ceiling & lighting", span: "wide", image: "/images/proof/gallery-ceiling-lighting.jpg" },
-  { id: "g6", caption: "Handover-ready interior", span: "tall", image: "/images/proof/gallery-handover-interior.jpg" },
-] as const;
-
-export type GalleryItem = (typeof gallery)[number];
+/** Sister business, from the ASRG Traders flyer. */
+export const traders = {
+  name: "ASRG Traders",
+  what: "Paints, sanitary, hardware & electricals",
+  address: "Yelkur Estate, Nandikotkur Road, beside D-Mart, Kurnool",
+  contact: "Altaf Shaik",
+  phone: "+91 91777 75367",
+  brands: ["Asian Paints", "Berger", "Parryware", "Anchor by Panasonic"],
+  image: "/images/proof/asrg-traders-exterior.jpg",
+};
 
 export const faqs = [
   {
-    q: "What areas do you serve?",
-    a: "Kurnool and across Andhra Pradesh. For landmark projects we mobilise statewide.",
+    q: "Which areas do you build in?",
+    a: `Kurnool city and the towns around it, including ${site.location.nearbyTowns.join(", ")}.`,
   },
   {
-    q: "Do you handle design as well as construction?",
-    a: "Yes, survey, architecture, structural drawings, approvals and execution under one roof.",
+    q: "Do you take only civil or centering work?",
+    a: "Yes. Footings, structure and centering are taken on their own as well as part of a full build.",
   },
   {
-    q: "How long does a typical residential build take?",
-    a: "A standard villa runs 9–14 months depending on scope, soil and finishes. We commit to a dated schedule up front.",
+    q: "Do you build shops and commercial blocks, or only homes?",
+    a: "Both. Houses are most of the work, alongside shops and commercial buildings like the medical complex shown on this site.",
   },
   {
-    q: "What about centering and civil contracting only?",
-    a: "We take standalone centering works and civil contracts at any scale, with the same quality controls.",
+    q: "Can I see finished work before I decide?",
+    a: "Yes. Every building on this site stands in Kurnool. Call and ask to see one that matches what you want to build.",
   },
   {
-    q: "How do payments work?",
-    a: "Transparent, stage-linked milestones tied to verified progress. No surprises.",
+    q: "How do I get a quote?",
+    a: `Call ${site.phone} or send a WhatsApp message. A quote starts with a site visit, because the plot decides the foundation and the foundation decides the cost.`,
   },
   {
-    q: "Why choose ASRG Construction?",
-    a: "46 years on the ground in Kurnool, transparent stage-linked billing, a dated schedule agreed up front, and a track record of client reviews from real completed projects.",
-  },
-  {
-    q: "Do you provide turnkey construction projects?",
-    a: "Yes. From site survey and design through structure, finishing and handover, we run the full build as one accountable team rather than handing off between contractors.",
-  },
-  {
-    q: "Do you build commercial and industrial projects, or only homes?",
-    a: "Both. Commercial construction runs alongside our residential work, with scale, structure and finish tailored to the use of the building.",
-  },
-  {
-    q: "What is included in your renovation service?",
-    a: "Structural assessment, remedial works, and finishing on existing structures, carried out under the same quality controls as a new build.",
-  },
-  {
-    q: "Can I get a consultation before committing to a project?",
-    a: "Yes. Our consultation service covers site survey and strategy so you have a clear plan and budget before any construction begins.",
+    q: "Do you sell building materials too?",
+    a: "Yes. ASRG Traders on Nandikotkur Road, beside D-Mart, sells paints, sanitaryware, hardware and electricals.",
   },
 ] as const;
 

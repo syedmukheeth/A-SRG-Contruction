@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono, Noto_Sans_Telugu } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -10,28 +10,33 @@ import { WhatsAppButton } from "@/features/whatsapp";
 import { MobileActionBar } from "@/features/cta";
 import { Footer } from "@/features/footer";
 
-const display = Archivo({
-  variable: "--font-display",
+// One variable family for both voices: condensed display via the wdth axis,
+// normal width for body copy.
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
-  weight: ["600", "700", "800", "900"],
+  axes: ["wdth"],
 });
 
-const sans = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
-
-const mono = JetBrains_Mono({
-  variable: "--font-mono",
+const mono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
+});
+
+// Only used for one line (the owner's name as it appears on the flyer).
+const telugu = Noto_Sans_Telugu({
+  variable: "--font-noto-telugu",
+  subsets: ["telugu"],
+  weight: ["500"],
+  preload: false,
 });
 
 export const metadata: Metadata = siteMetadata;
 
 export const viewport: Viewport = {
-  themeColor: "#090909",
-  colorScheme: "dark",
+  themeColor: "#f2eee6",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -40,9 +45,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${sans.variable} ${mono.variable}`}
+      className={`${archivo.variable} ${mono.variable} ${telugu.variable}`}
     >
-      <body className="bg-ink text-text antialiased">
+      <body className="bg-plaster text-ink antialiased">
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <>
             <Script
@@ -73,8 +78,6 @@ export default function RootLayout({
         </LenisProvider>
         <WhatsAppButton />
         <MobileActionBar />
-        <div className="vignette" aria-hidden />
-        <div className="grain" aria-hidden />
       </body>
     </html>
   );

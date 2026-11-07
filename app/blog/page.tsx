@@ -1,13 +1,13 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Section } from "@/components/Section";
+import { PageHeader } from "@/components/PageHeader";
 import { site } from "@/lib/site";
 import { posts } from "@/lib/blog";
 import { breadcrumbNode, pageGraph } from "@/lib/schema";
 
 const url = `${site.url}/blog`;
-const title = `Construction Insights & Guides for ${site.location.city}, ${site.location.region}`;
-const description = `Guides on choosing a construction company in ${site.location.city}, civil contracting, and building in ${site.location.region} from ASRG Construction.`;
+const title = `Construction Guides for ${site.location.city}, ${site.location.region}`;
+const description = `Plain guides on hiring a builder and civil contractor in ${site.location.city} and ${site.location.region}, from ASRG Construction.`;
 
 export const metadata: Metadata = {
   title,
@@ -18,13 +18,13 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url,
     siteName: site.name,
-    title: `Insights · ${site.name}`,
+    title: `Guides · ${site.name}`,
     description,
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: title }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `Insights · ${site.name}`,
+    title: `Guides · ${site.name}`,
     description,
     images: ["/opengraph-image"],
   },
@@ -33,60 +33,52 @@ export const metadata: Metadata = {
 const jsonLd = pageGraph([
   breadcrumbNode([
     { name: "Home", url: site.url },
-    { name: "Insights", url },
+    { name: "Guides", url },
   ]),
 ]);
+
+const dateFmt = new Intl.DateTimeFormat("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 
 export default function BlogIndex() {
   return (
     <article>
-      <Section className="pt-40">
-        <div className="mx-auto max-w-[1100px]">
-          <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted">
-              <li>
-                <Link href="/" className="hover:text-copper">
-                  Home
-                </Link>
-              </li>
-              <li aria-hidden>/</li>
-              <li className="text-text">Insights</li>
-            </ol>
-          </nav>
+      <PageHeader
+        crumbs={[{ label: "Home", href: "/" }, { label: "Guides" }]}
+        marker="Guides"
+        title={
+          <>
+            Before you <span className="text-laterite">build.</span>
+          </>
+        }
+      />
 
-          <p className="eyebrow mb-6">Insights</p>
-          <h1 className="font-display text-giant uppercase leading-[0.9] text-text">
-            Construction guides
-            <br />
-            <span className="text-copper">
-              for {site.location.city}, {site.location.region}.
-            </span>
-          </h1>
-
-          <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2">
-            {posts.map((post) => (
+      <section className="px-5 py-16 md:px-10 md:py-24">
+        <ul className="mx-auto max-w-[1280px] border-t border-ink">
+          {posts.map((post) => (
+            <li key={post.slug} className="border-b border-rule">
               <Link
-                key={post.slug}
                 href={`/blog/${post.slug}`}
-                className="group block border-b border-text/10 pb-8"
+                className="group grid gap-3 py-8 md:grid-cols-[10rem_1fr_auto] md:items-baseline md:gap-8"
               >
-                <h2 className="font-display text-2xl font-bold uppercase text-text transition-colors group-hover:text-copper">
-                  {post.title}
-                </h2>
-                <p className="mt-4 text-muted">{post.excerpt}</p>
-                <span className="mt-4 inline-block font-mono text-xs uppercase tracking-[0.15em] text-copper">
-                  Read more →
+                <time dateTime={post.date} className="stamp">
+                  {dateFmt.format(new Date(post.date))}
+                </time>
+                <div>
+                  <h2 className="font-display text-[clamp(1.8rem,3.4vw,2.8rem)] leading-[0.95] text-ink group-hover:text-laterite">
+                    {post.title}
+                  </h2>
+                  <p className="mt-3 max-w-2xl text-ink-soft">{post.excerpt}</p>
+                </div>
+                <span aria-hidden className="font-mono text-lg text-laterite-deep transition-transform group-hover:translate-x-1">
+                  →
                 </span>
               </Link>
-            ))}
-          </div>
-        </div>
-      </Section>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </article>
   );
 }

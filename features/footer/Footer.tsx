@@ -1,191 +1,127 @@
 import Image from "next/image";
 import Link from "next/link";
-import { site, services } from "@/lib/site";
+import { site, services, traders, tel, whatsappHref, mapsHref } from "@/lib/site";
 
-// Deterministic star field (avoids hydration mismatch).
-const STARS = [
-  [8, 18], [16, 9], [24, 26], [33, 14], [41, 30], [52, 8], [61, 22],
-  [69, 12], [77, 28], [85, 16], [92, 24], [12, 34], [38, 6], [74, 6],
-  [88, 36], [4, 27], [47, 19], [57, 33],
-] as const;
-
-const WINDOWS = [
-  { x: 120, y: 250, w: 34, h: 30 },
-  { x: 168, y: 250, w: 34, h: 30 },
-  { x: 120, y: 200, w: 34, h: 26 },
-  { x: 168, y: 200, w: 34, h: 26 },
-  { x: 320, y: 270, w: 40, h: 44 },
-  { x: 372, y: 270, w: 40, h: 44 },
-  { x: 250, y: 300, w: 28, h: 50 }, // door
-] as const;
-
-/** Peaceful nighttime villa, lights glowing, the premium ending. */
 export function Footer() {
   return (
-    <footer className="relative w-full overflow-hidden bg-gradient-to-b from-ink to-[#06080d]">
-      {/* stars */}
-      <div className="absolute inset-x-0 top-0 h-1/2">
-        {STARS.map(([left, top], i) => (
-          <span
-            key={i}
-            className="absolute h-px w-px rounded-full bg-text/70"
-            style={{ left: `${left}%`, top: `${top}%` }}
-          />
-        ))}
-      </div>
-
-      {/* villa silhouette */}
-      <svg
-        viewBox="0 0 560 360"
-        className="relative mx-auto block w-full max-w-[1100px]"
-        fill="none"
-      >
-        {/* glow */}
-        <ellipse cx="280" cy="360" rx="320" ry="120" fill="#c7853e" opacity="0.1" />
-        {/* ground */}
-        <line x1="0" y1="360" x2="560" y2="360" stroke="#1e1e1e" strokeWidth="2" />
-        {/* villa mass */}
-        <path
-          d="M90 360 V180 H230 V120 H360 V200 H470 V360 Z"
-          fill="#0b0d12"
-          stroke="#1b1f27"
-          strokeWidth="1.5"
-        />
-        <path d="M70 184 L160 120 L250 184" fill="#0b0d12" stroke="#1b1f27" strokeWidth="1.5" />
-        {/* glowing windows */}
-        <g>
-          {WINDOWS.map((w, i) => (
-            <rect
-              key={i}
-              x={w.x}
-              y={w.y}
-              width={w.w}
-              height={w.h}
-              rx="2"
-              fill="#f3c98b"
-              className="footer-window"
-              style={{ animationDelay: `${i * 0.4}s` }}
-            />
-          ))}
-        </g>
-      </svg>
-
-      {/* nav + NAP + legal */}
-      <div className="relative mx-auto grid max-w-[1300px] gap-12 px-6 pb-14 pt-10 md:grid-cols-[1.2fr_0.9fr_0.9fr] md:px-12">
-        {/* Name / Address / Phone, rendered sitewide and marked up with
-            microdata. A consistent NAP block on every page is the plainest
-            local-search signal there is, and it matches the Organization
-            JSON-LD emitted from the root layout exactly. */}
-        <div itemScope itemType="https://schema.org/GeneralContractor">
-          <div className="flex items-center gap-3">
-            <span className="relative h-10 w-10 overflow-hidden rounded-full border border-copper/30">
-              <Image
-                src="/images/brand/logo-mark-round.png"
-                alt={site.name}
-                fill
-                sizes="40px"
-                className="object-cover"
-              />
-            </span>
-            <p
-              itemProp="name"
-              className="font-display text-2xl font-bold uppercase text-text"
-            >
-              {site.name}
-              <span className="text-copper">.</span>
-            </p>
-          </div>
-          <p className="mt-3 max-w-xs text-sm text-muted">{site.tagline}</p>
-
-          <address
-            itemProp="address"
-            itemScope
-            itemType="https://schema.org/PostalAddress"
-            className="mt-6 space-y-1 font-mono text-xs not-italic leading-relaxed text-muted"
-          >
-            <span itemProp="streetAddress" className="block">
-              {site.location.address}
-            </span>
-            <span className="block">
-              <span itemProp="addressLocality">{site.location.city}</span>,{" "}
-              <span itemProp="addressRegion">{site.location.region}</span>,{" "}
-              <span itemProp="addressCountry">India</span>
-            </span>
-          </address>
-
-          <div className="mt-4 space-y-1 font-mono text-xs">
-            <a
-              href={`tel:${site.phone.replace(/\s+/g, "")}`}
-              itemProp="telephone"
-              className="block text-muted transition-colors hover:text-copper"
-            >
-              {site.phone}
-            </a>
-            <a
-              href={`mailto:${site.email}`}
-              itemProp="email"
-              className="block text-muted transition-colors hover:text-copper"
-            >
-              {site.email}
-            </a>
-          </div>
-
-          <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-muted/70">
-            Mon–Sat · 9:00–19:00
-          </p>
+    <footer id="contact" className="relative w-full bg-ink text-plaster">
+      <div className="mx-auto max-w-[1440px] px-5 pb-10 pt-20 md:px-10 md:pt-28">
+        <p className="marker text-ember mb-6">Building in {site.location.city}?</p>
+        <a
+          href={tel(site.phone)}
+          className="font-display block text-[clamp(3rem,11vw,9.5rem)] leading-[0.85] text-plaster transition-colors hover:text-ember"
+        >
+          {site.phone.replace("+91 ", "")}
+        </a>
+        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-sm">
+          <a href={tel(site.phoneAlt)} className="text-plaster/80 hover:text-ember">
+            Also {site.phoneAlt}
+          </a>
+          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="text-plaster/80 hover:text-ember">
+            WhatsApp →
+          </a>
+          <a href={`mailto:${site.email}`} className="text-plaster/80 hover:text-ember">
+            {site.email}
+          </a>
         </div>
 
-        <nav aria-label="Footer">
-          <p className="eyebrow mb-5">Explore</p>
-          <ul className="space-y-3 font-mono text-xs uppercase tracking-[0.18em] text-muted">
-            {[
-              { href: "/best-construction-in-kurnool", label: `Best construction in ${site.location.city}` },
-              { href: "/services", label: "All services" },
-              { href: "/#projects", label: "Delivered work" },
-              { href: "/#process", label: "Our process" },
-              { href: "/blog", label: "Insights" },
-              { href: "/#contact", label: "Contact" },
-            ].map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} className="transition-colors hover:text-copper">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div className="mt-20 grid gap-12 border-t border-plaster/15 pt-12 md:grid-cols-2 lg:grid-cols-4">
+          {/* NAP block with microdata, matching the root Organization JSON-LD. */}
+          <div itemScope itemType="https://schema.org/GeneralContractor">
+            <div className="flex items-center gap-3">
+              <span className="relative h-10 w-10 overflow-hidden rounded-full">
+                <Image src="/images/brand/logo-mark-round.png" alt="" fill sizes="40px" className="object-cover" />
+              </span>
+              <p itemProp="name" className="font-display text-2xl leading-none">
+                {site.name}
+              </p>
+            </div>
+            <p className="mt-4 text-sm text-plaster/70">
+              {site.owner}, {site.ownerTitle.toLowerCase()}. Since {site.established}.
+            </p>
+            <address
+              itemProp="address"
+              itemScope
+              itemType="https://schema.org/PostalAddress"
+              className="mt-5 text-sm not-italic leading-relaxed text-plaster/80"
+            >
+              <span itemProp="streetAddress" className="block">
+                {site.location.address}
+              </span>
+              <span className="block">
+                <span itemProp="addressLocality">{site.location.city}</span>,{" "}
+                <span itemProp="addressRegion">{site.location.region}</span>
+              </span>
+            </address>
+            <a href={tel(site.phone)} itemProp="telephone" className="mt-3 block font-mono text-sm text-plaster/80 hover:text-ember">
+              {site.phone}
+            </a>
+            <a href={mapsHref} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-mono text-xs uppercase tracking-[0.08em] text-ember hover:underline">
+              Open in Maps →
+            </a>
+          </div>
 
-        <nav aria-label="Services">
-          <p className="eyebrow mb-5">Services in {site.location.city}</p>
-          <ul className="space-y-3 font-mono text-xs uppercase tracking-[0.18em] text-muted">
-            {services.map((s) => (
-              <li key={s.id}>
-                <Link
-                  href={`/services/${s.slug}`}
-                  className="transition-colors hover:text-copper"
-                >
-                  {s.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <div>
+            <p className="stamp text-plaster/60 mb-5">Materials store</p>
+            <p className="font-display text-2xl leading-none">{traders.name}</p>
+            <p className="mt-3 text-sm text-plaster/80">{traders.what}</p>
+            <p className="mt-3 text-sm leading-relaxed text-plaster/80">{traders.address}</p>
+            <a href={tel(traders.phone)} className="mt-3 block font-mono text-sm text-plaster/80 hover:text-ember">
+              {traders.contact} · {traders.phone}
+            </a>
+          </div>
+
+          <nav aria-label="Services">
+            <p className="stamp text-plaster/60 mb-5">Services in {site.location.city}</p>
+            <ul className="space-y-2.5 text-sm">
+              {services.map((s) => (
+                <li key={s.id}>
+                  <Link href={`/services/${s.slug}`} className="text-plaster/80 hover:text-ember">
+                    {s.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Footer">
+            <p className="stamp text-plaster/60 mb-5">More</p>
+            <ul className="space-y-2.5 text-sm">
+              {[
+                { href: "/#story", label: "How a building goes up" },
+                { href: "/#work", label: "Finished work" },
+                { href: "/best-construction-in-kurnool", label: `Choosing a builder in ${site.location.city}` },
+                { href: "/blog", label: "Guides" },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-plaster/80 hover:text-ember">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
       </div>
+
       {/* pb clears the sticky mobile action bar on phones */}
-      <div className="relative border-t border-text/10 px-6 pb-24 pt-6 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-muted/60 md:px-12 md:pb-6">
-        © {new Date().getFullYear()} {site.name} · {site.location.city},{" "}
-        {site.location.region} · BuildOS™
-        <br className="md:hidden" />
-        <span className="hidden md:inline"> · </span>
-        Developed by{" "}
-        <a
-          href="https://www.linkedin.com/in/syedmukheeth/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-muted/80 underline decoration-copper/40 underline-offset-2 transition-colors hover:text-copper"
-        >
-          Sampeer Studio
-        </a>
+      <div className="border-t border-plaster/15 px-5 pb-24 pt-6 md:px-10 md:pb-6">
+        <div className="stamp text-plaster/55 mx-auto flex max-w-[1440px] flex-col gap-2 md:flex-row md:justify-between">
+          <span>
+            © {new Date().getFullYear()} {site.name} · {site.location.city}, {site.location.region}
+          </span>
+          <span>
+            Site by{" "}
+            <a
+              href="https://www.linkedin.com/in/syedmukheeth/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-ember"
+            >
+              Sampeer Studio
+            </a>
+          </span>
+        </div>
       </div>
     </footer>
   );

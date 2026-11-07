@@ -1,19 +1,16 @@
 import type { MetadataRoute } from "next";
-import { site, services, projects, gallery } from "@/lib/site";
+import { site, services, projects, chapters, interiors, heroPhoto } from "@/lib/site";
 import { posts } from "@/lib/blog";
 
 const lastModified = new Date();
 
-/**
- * Delivered-work photography, surfaced as an image sitemap. These files are
- * only reachable through client-rendered galleries, so without this Google has
- * no reliable path to them and the whole proof library stays out of Image
- * search — where "construction company Kurnool" gets a lot of its browsing.
- */
+/** Real site and finished-work photography, surfaced for Image search. */
 const proofImages = [
-  ...projects.map((p) => `${site.url}${p.image}`),
-  ...gallery.map((g) => `${site.url}${g.image}`),
-];
+  heroPhoto.src,
+  ...chapters.flatMap((c) => c.photos.map((p) => p.src)),
+  ...projects.map((p) => p.image),
+  ...interiors.map((p) => p.src),
+].map((src) => `${site.url}${src}`);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

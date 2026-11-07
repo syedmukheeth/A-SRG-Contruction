@@ -1,16 +1,11 @@
-import { site, services, projects, type Service } from "./site";
+import { site, services, projects, traders, type Service } from "./site";
 
 const orgId = `${site.url}/#organization`;
 const websiteId = `${site.url}/#website`;
 
-/** Verified off-site profiles only; unset entries never reach the markup. */
-const sameAs = Object.values(site.profiles).filter(Boolean);
+const sameAs = site.profiles;
 
-/**
- * Multiple real project photos, not just the founder portrait. Google's
- * local-business guidance asks for several images per entity, and these are the
- * same shots the site already serves, so nothing new has to be hosted.
- */
+/** Several real project photos per entity, per Google's local-business guidance. */
 const orgImages = [
   `${site.url}${site.ownerImage}`,
   ...projects.slice(0, 6).map((p) => `${site.url}${p.image}`),
@@ -39,20 +34,15 @@ export function organizationNode() {
         telephone: site.phone,
         email: site.email,
         areaServed: site.location.country,
-        availableLanguage: ["en", "te", "ur", "hi"],
       },
       {
         "@type": "ContactPoint",
         contactType: "customer support",
         telephone: site.phoneAlt,
         areaServed: site.location.country,
-        availableLanguage: ["en", "te", "ur", "hi"],
       },
     ],
-    priceRange: "₹₹",
-    currenciesAccepted: "INR",
-    paymentAccepted: "Cash, Bank Transfer, UPI, Cheque",
-    foundingDate: String(new Date().getFullYear() - site.yearsOfExperience),
+    foundingDate: String(site.established),
     founder: {
       "@type": "Person",
       name: site.owner,
@@ -89,23 +79,21 @@ export function organizationNode() {
       addressRegion: site.location.region,
       addressCountry: site.location.country,
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: site.location.geo.latitude,
-      longitude: site.location.geo.longitude,
+    // No aggregateRating/review on purpose: Google treats self-published reviews
+    // as self-serving and can disqualify the whole markup.
+    subOrganization: {
+      "@type": "HardwareStore",
+      name: traders.name,
+      description: traders.what,
+      telephone: traders.phone,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: traders.address,
+        addressLocality: site.location.city,
+        addressRegion: site.location.region,
+        addressCountry: site.location.country,
+      },
     },
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      opens: "09:00",
-      closes: "19:00",
-    },
-    // No aggregateRating/review here on purpose. Google treats reviews a business
-    // publishes about itself as self-serving and disqualifies the markup — at best
-    // ignored, at worst a structured-data manual action that costs the FAQ and
-    // sitelink results too. Ratings belong on the Google Business Profile and
-    // Justdial listing, which feed the map pack directly. Testimonials stay on the
-    // page as visible copy.
     knowsAbout: [
       "Civil Contracting",
       "Centering Works",

@@ -1,33 +1,20 @@
-import Link from "next/link";
-import { site } from "@/lib/site";
+import { Button } from "@/components/ui/Button";
 
 export default function NotFound() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center px-6 text-center">
-      <div className="blueprint-grid absolute inset-0 opacity-40" />
-      <p className="eyebrow relative mb-6">404</p>
-      <h1 className="relative font-display text-giant uppercase leading-[0.9] text-text">
-        Nothing built
-        <br />
-        <span className="text-copper">here yet.</span>
-      </h1>
-      <p className="relative mt-8 max-w-md text-muted">
-        That page doesn&apos;t exist. Head back to {site.name}&apos;s homepage,
-        or browse what we build.
-      </p>
-      <div className="relative mt-10 flex flex-col items-center gap-5 sm:flex-row">
-        <Link
-          href="/"
-          className="rounded-full bg-copper px-8 py-4 font-mono text-xs uppercase tracking-[0.22em] text-ink transition-colors hover:bg-text"
-        >
-          Return home
-        </Link>
-        <Link
-          href="/services"
-          className="rounded-full border border-text/25 px-8 py-4 font-mono text-xs uppercase tracking-[0.22em] text-text transition-colors hover:text-copper"
-        >
-          View services
-        </Link>
+    <div className="flex min-h-[80vh] w-full flex-col justify-center px-5 pb-20 pt-32 md:px-10">
+      <div className="mx-auto w-full max-w-[1280px]">
+        <p className="marker">404</p>
+        <h1 className="font-display mt-6 max-w-[12ch] text-display text-ink">
+          Nothing built <span className="text-laterite">here yet.</span>
+        </h1>
+        <p className="mt-6 max-w-md text-lg text-ink-soft">That page doesn&apos;t exist.</p>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Button href="/">Back to the homepage</Button>
+          <Button href="/services" variant="line">
+            Services
+          </Button>
+        </div>
       </div>
     </div>
   );
