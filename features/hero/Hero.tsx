@@ -45,8 +45,6 @@ export function Hero() {
           <div aria-hidden className="hero-shade absolute -inset-1" />
         </div>
 
-        {/* Viewfinder corners frame the photo as the subject. */}
-        <span aria-hidden className="hero-corners pointer-events-none absolute inset-x-6 bottom-6 top-24 hidden md:block lg:inset-x-10 lg:bottom-10 lg:top-28" />
         <div aria-hidden className="hero-veil absolute -inset-1 bg-night" />
       </div>
 

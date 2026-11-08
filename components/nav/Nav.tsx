@@ -38,6 +38,8 @@ export function Nav() {
   const activeSection = onHome ? active : null;
   const dark = darkAt?.path === pathname ? darkAt.dark : onHome;
   const onDark = dark && !open;
+  // The hero carries its own Call button; a second one would sit on Jeelani's photo.
+  const hideCall = onHome && !scrolled && !open;
 
   /* Scroll state, tone and read-progress rail. Dark-section bounds are cached
      and only re-measured on resize/refresh, so a scroll costs no layout read. */
@@ -190,9 +192,12 @@ export function Nav() {
         <div className="flex items-center gap-3">
           <a
             href={tel(site.phone)}
+            aria-hidden={hideCall || undefined}
+            tabIndex={hideCall ? -1 : undefined}
             className={cn(
-              "hidden items-center gap-2 px-4 py-2.5 font-mono text-xs uppercase tracking-[0.06em] transition-colors sm:inline-flex",
+              "hidden items-center gap-2 px-4 py-2.5 font-mono text-xs uppercase tracking-[0.06em] transition-[color,background-color,opacity] duration-300 sm:inline-flex",
               onDark ? "bg-plaster text-ink hover:bg-ember hover:text-night" : "bg-ink text-plaster hover:bg-laterite",
+              hideCall && "pointer-events-none opacity-0",
             )}
           >
             Call {site.phone.replace("+91 ", "")}

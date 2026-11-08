@@ -235,21 +235,6 @@ body {
   opacity: 0.12;
 }
 
-/* Viewfinder corners: four short L-brackets around the photo. */
-.hero-corners {
-  --c: rgb(242 238 230 / 0.55);
-  --l: 22px;
-  background:
-    linear-gradient(var(--c), var(--c)) top left / var(--l) 1px,
-    linear-gradient(var(--c), var(--c)) top left / 1px var(--l),
-    linear-gradient(var(--c), var(--c)) top right / var(--l) 1px,
-    linear-gradient(var(--c), var(--c)) top right / 1px var(--l),
-    linear-gradient(var(--c), var(--c)) bottom left / var(--l) 1px,
-    linear-gradient(var(--c), var(--c)) bottom left / 1px var(--l),
-    linear-gradient(var(--c), var(--c)) bottom right / var(--l) 1px,
-    linear-gradient(var(--c), var(--c)) bottom right / 1px var(--l);
-  background-repeat: no-repeat;
-}
 
 /* ---- Logo draw-on: each stroke has pathLength=1 ---- */
 @keyframes logo-draw {
