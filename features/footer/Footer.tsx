@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Mark } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/Button";
 import { site, services, traders, tel, whatsappHref, mapsHref } from "@/lib/site";
+import { FooterMotion } from "./FooterMotion";
 
 const studio = {
   website: "https://sampeer-studio.vercel.app/",
@@ -120,32 +121,55 @@ export function Footer() {
       </div>
 
       {/* pb clears the sticky mobile action bar on phones */}
-      <div className="border-t border-plaster/15 px-5 pb-28 pt-8 md:px-10 md:pb-8">
-        <div className="mx-auto flex max-w-[1440px] flex-col gap-8 xl:flex-row xl:items-center xl:justify-between">
-          <div className="flex items-center gap-3">
-            <Mark className="h-7 w-7 text-ember" detail={false} />
-            <span className="stamp text-plaster/55">
-              © {new Date().getFullYear()} {site.name} · {site.location.city}, {site.location.region}
-            </span>
+      <div className="border-t border-plaster/15 px-5 pb-28 pt-10 md:px-10 md:pb-10 md:pt-14">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-start gap-4">
+              <Mark className="mt-1 h-9 w-9 shrink-0 text-ember" detail={false} />
+              <div>
+                <p className="font-display text-2xl leading-none text-plaster">{site.name}</p>
+                <p className="stamp mt-2 text-plaster/55">
+                  © {new Date().getFullYear()} · {site.location.city}, {site.location.region} · Since {site.established}
+                </p>
+              </div>
+            </div>
+            <a
+              href="#main"
+              className="group inline-flex min-h-11 items-center gap-2 self-start font-mono text-xs uppercase tracking-[0.08em] text-plaster/75 transition-colors hover:text-ember"
+            >
+              Back to top
+              <span aria-hidden className="transition-transform duration-200 group-hover:-translate-y-1">
+                ↑
+              </span>
+            </a>
           </div>
 
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-7">
-            <p className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
+          <div aria-hidden className="@container mt-12 overflow-hidden md:mt-16">
+            <p
+              data-footer-mark
+              className="font-display whitespace-nowrap text-[12.4cqw] leading-[0.82] text-plaster will-change-transform"
+            >
+              ASRG <span className="text-ember">Construction</span>
+            </p>
+          </div>
+
+          <div className="mt-6 flex flex-col items-center gap-5 border-t border-plaster/15 pt-7 md:mt-8 lg:flex-row lg:justify-center lg:gap-7">
+            <p className="flex items-baseline gap-3 whitespace-nowrap">
               <span className="stamp text-plaster/55">Created by</span>
-              <span className="credit-mark whitespace-nowrap font-serif text-[1.7rem] italic leading-none text-plaster sm:text-[1.85rem]">
+              <span className="credit-mark font-serif text-[1.7rem] italic leading-none text-plaster md:text-[1.95rem]">
                 SAMPeer Studio
               </span>
             </p>
-            <span aria-hidden className="hidden h-12 w-px bg-plaster/15 lg:block" />
-            <div className="flex flex-wrap gap-3">
-              <Button href={studio.website} className="py-3.5">
+            <span aria-hidden className="hidden h-10 w-px bg-plaster/15 lg:block" />
+            <div className="grid w-full max-w-sm grid-cols-2 gap-3 sm:flex sm:w-auto sm:max-w-none">
+              <Button href={studio.website} className="justify-center py-3.5">
                 <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4 fill-none stroke-current" strokeWidth={1.6}>
                   <circle cx="12" cy="12" r="9" />
                   <path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z" />
                 </svg>
                 Website
               </Button>
-              <Button href={studio.instagram} variant="light" className="py-3.5">
+              <Button href={studio.instagram} variant="light" className="justify-center py-3.5">
                 <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4 fill-none stroke-current" strokeWidth={1.6}>
                   <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
                   <circle cx="12" cy="12" r="4" />
@@ -157,6 +181,8 @@ export function Footer() {
           </div>
         </div>
       </div>
+
+      <FooterMotion />
     </footer>
   );
 }
