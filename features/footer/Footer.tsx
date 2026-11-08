@@ -34,17 +34,26 @@ export function Footer() {
         >
           {site.phone.replace("+91 ", "")}
         </a>
-        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
-          <a href={tel(site.phoneAlt)} className={contact}>
-            Also {site.phoneAlt}
-          </a>
-          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className={contact}>
-            WhatsApp →
-          </a>
-          <a href={`mailto:${site.email}`} className={contact}>
-            {site.email}
-          </a>
-        </div>
+        <dl className="mt-10 grid max-w-4xl gap-6 sm:grid-cols-3 sm:gap-8">
+          {[
+            { term: "WhatsApp, same number", href: whatsappHref, value: "Send a message →", external: true },
+            { term: "Second line", href: tel(site.phoneAlt), value: site.phoneAlt },
+            { term: "Email", href: `mailto:${site.email}`, value: site.email },
+          ].map((c) => (
+            <div key={c.term} className="border-t border-plaster/15 pt-4">
+              <dt className="stamp text-plaster/55">{c.term}</dt>
+              <dd className="mt-2">
+                <a
+                  href={c.href}
+                  {...(c.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className={`${contact} [overflow-wrap:anywhere]`}
+                >
+                  {c.value}
+                </a>
+              </dd>
+            </div>
+          ))}
+        </dl>
 
         <div className="mt-20 grid gap-x-8 gap-y-12 border-t border-plaster/15 py-14 sm:grid-cols-2 lg:grid-cols-4">
           {/* NAP block with microdata, matching the root Organization JSON-LD. */}

@@ -9,6 +9,7 @@ import { site, tel } from "@/lib/site";
 import { EASE } from "@/lib/motion";
 import { ScrollTrigger } from "@/lib/gsap";
 import { Logo } from "@/components/brand/Logo";
+import { scrollToTop } from "@/components/providers/LenisProvider";
 
 const LINKS = [
   { label: "The build", href: "/#story", section: "story" },
@@ -148,7 +149,12 @@ export function Nav() {
           href="/"
           aria-label={`${site.name}, home`}
           className={cn("transition-colors", onDark ? "text-plaster" : "text-ink")}
-          onClick={() => setOpen(false)}
+          onClick={(e) => {
+            setOpen(false);
+            if (!onHome) return;
+            e.preventDefault();
+            scrollToTop();
+          }}
         >
           <Logo markClassName={onDark ? "text-ember" : "text-laterite"} />
         </Link>
