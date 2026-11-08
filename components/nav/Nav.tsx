@@ -39,8 +39,6 @@ export function Nav() {
   const activeSection = onHome ? active : null;
   const dark = darkAt?.path === pathname ? darkAt.dark : onHome;
   const onDark = dark && !open;
-  // The hero carries its own Call button; a second one would sit on Jeelani's photo.
-  const hideCall = onHome && !scrolled && !open;
 
   /* Scroll state, tone and read-progress rail. Dark-section bounds are cached
      and only re-measured on resize/refresh, so a scroll costs no layout read. */
@@ -195,43 +193,28 @@ export function Nav() {
           })}
         </div>
 
-        <div className="flex items-center gap-3">
-          <a
-            href={tel(site.phone)}
-            aria-hidden={hideCall || undefined}
-            tabIndex={hideCall ? -1 : undefined}
-            className={cn(
-              "hidden items-center gap-2 px-4 py-2.5 font-mono text-xs uppercase tracking-[0.06em] transition-[color,background-color,opacity] duration-300 sm:inline-flex",
-              onDark ? "bg-plaster text-ink hover:bg-ember hover:text-night" : "bg-ink text-plaster hover:bg-laterite",
-              hideCall && "pointer-events-none opacity-0",
-            )}
-          >
-            Call {site.phone.replace("+91 ", "")}
-          </a>
-
-          <button
-            type="button"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            aria-controls="mobile-nav-panel"
-            onClick={() => setOpen((v) => !v)}
-            className={cn(
-              "flex h-11 w-11 flex-col items-center justify-center gap-[6px] border lg:hidden",
-              onDark ? "border-plaster/30" : "border-ink/25",
-            )}
-          >
-            {[open && "translate-y-[4px] rotate-45", open && "-translate-y-[4px] -rotate-45"].map((cls, i) => (
-              <span
-                key={i}
-                className={cn(
-                  "block h-0.5 w-5 transition-transform duration-300",
-                  onDark ? "bg-plaster" : "bg-ink",
-                  cls,
-                )}
-              />
-            ))}
-          </button>
-        </div>
+        <button
+          type="button"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-nav-panel"
+          onClick={() => setOpen((v) => !v)}
+          className={cn(
+            "flex h-11 w-11 flex-col items-center justify-center gap-[6px] border lg:hidden",
+            onDark ? "border-plaster/30" : "border-ink/25",
+          )}
+        >
+          {[open && "translate-y-[4px] rotate-45", open && "-translate-y-[4px] -rotate-45"].map((cls, i) => (
+            <span
+              key={i}
+              className={cn(
+                "block h-0.5 w-5 transition-transform duration-300",
+                onDark ? "bg-plaster" : "bg-ink",
+                cls,
+              )}
+            />
+          ))}
+        </button>
       </nav>
 
       <span aria-hidden className="pointer-events-none absolute inset-x-0 top-18 block h-0.5">
