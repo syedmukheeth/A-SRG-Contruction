@@ -75,7 +75,8 @@ export function Footer() {
                 {site.location.address}
               </span>
               <span itemProp="addressLocality">{site.location.city}</span>,{" "}
-              <span itemProp="addressRegion">{site.location.region}</span>
+              <span itemProp="addressRegion">{site.location.region}</span>{" "}
+              <span itemProp="postalCode">{site.location.postalCode}</span>
             </address>
             <a href={tel(site.phone)} itemProp="telephone" className={`${contact} mt-4 block`}>
               {site.phone}

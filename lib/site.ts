@@ -27,7 +27,17 @@ export const site = {
   description: `ASRG Construction is Jeelani Shaik's civil contracting firm in Kurnool, Andhra Pradesh: houses, shops and multi-storey blocks, from footings to handover, for ${yearsOfExperience} years.`,
   yearsOfExperience,
   established,
-  url: "https://asrgcontruction.com",
+  /**
+   * The www host is the one the server answers on; the bare domain 308s to it.
+   * Canonicals, sitemap and schema must name the host that returns 200, or
+   * Google indexes the site under both and splits its signals.
+   */
+  url: "https://www.asrgcontruction.com",
+  /**
+   * Google Search Console "HTML tag" token (the `content` value only). Public
+   * by nature: it is printed in every page's <head>. Empty until verified.
+   */
+  googleSiteVerification: "" as string,
   email: "jelanisrg@gmail.com",
   phone: "+91 93962 86289",
   phoneAlt: "+91 95056 37863",
@@ -52,6 +62,8 @@ export const site = {
     country: "IN",
     /** Street only; city and region are their own fields. */
     address: "Netaji Talkies Road, Gafooria Masjid Line",
+    /** As printed on the business's Google Maps listing. */
+    postalCode: "518004",
     nearbyTowns: ["Nandyal", "Adoni", "Dhone", "Yemmiganur", "Nandikotkur"],
   },
 } as const;
@@ -205,6 +217,7 @@ export const services = [
     id: "residential",
     slug: "residential-construction",
     title: "Residential Construction",
+    seoTitle: "House Construction & Home Builders in Kurnool",
     summary: "Independent houses, duplexes and multi-storey family homes, built from footings to handover.",
     image: "/images/proof/jeelani-mansion.jpg",
   },
@@ -212,6 +225,7 @@ export const services = [
     id: "commercial",
     slug: "commercial-construction",
     title: "Commercial Construction",
+    seoTitle: "Commercial Building Contractors in Kurnool",
     summary: "Shops and commercial blocks with the larger spans and heavier services they need.",
     image: "/images/proof/medical-complex.jpg",
   },
@@ -219,6 +233,7 @@ export const services = [
     id: "civil",
     slug: "civil-contracting",
     title: "Civil Contracting",
+    seoTitle: "Civil Contractors in Kurnool",
     summary: "Footings, columns, beams and slabs: the structural work everything else stands on.",
     image: "/images/site/crew-slab-pour.jpg",
   },
@@ -226,6 +241,7 @@ export const services = [
     id: "centering",
     slug: "centering-works",
     title: "Centering Works",
+    seoTitle: "Centering & Shuttering Contractors in Kurnool",
     summary: "Formwork and shuttering for slabs, beams and columns, as part of a build or on its own.",
     image: "/images/site/column-cages.jpg",
   },
@@ -233,6 +249,7 @@ export const services = [
     id: "renovation",
     slug: "renovation",
     title: "Renovation",
+    seoTitle: "House Renovation & Remodelling in Kurnool",
     summary: "Repair and refit of existing buildings, starting from what the structure actually needs.",
     image: "/images/proof/gallery-ceiling-lighting.jpg",
   },
@@ -240,6 +257,7 @@ export const services = [
     id: "consultation",
     slug: "consultation",
     title: "Consultation",
+    seoTitle: "Construction Consultation & Site Visit in Kurnool",
     summary: "A site visit and a straight answer on scope and budget before you commit to anything.",
     image: "/images/site/arch-villa-render.jpg",
   },
@@ -439,6 +457,18 @@ export const faqs = [
   {
     q: "Do you sell building materials too?",
     a: "Yes. ASRG Traders on Nandikotkur Road, beside D-Mart, sells paints, sanitaryware, hardware and electricals.",
+  },
+  {
+    q: "Do you build duplex houses and villas in Kurnool?",
+    a: "Yes. Independent houses, duplexes, villas and multi-storey family homes are most of what ASRG Construction builds in Kurnool, from footings to handover.",
+  },
+  {
+    q: "Who runs ASRG Construction?",
+    a: `${site.owner}, a civil contractor who has been building in ${site.location.city} since ${site.established}.`,
+  },
+  {
+    q: "Where is ASRG Construction in Kurnool?",
+    a: `On ${site.location.address}, ${site.location.city}, ${site.location.region}. Call ${site.phone} to fix a time to meet.`,
   },
 ] as const;
 

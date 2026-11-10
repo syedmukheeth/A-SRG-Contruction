@@ -1,4 +1,4 @@
-import { site, services, projects, traders, type Service } from "./site";
+import { site, services, projects, traders, mapsHref, type Service } from "./site";
 
 const orgId = `${site.url}/#organization`;
 const websiteId = `${site.url}/#website`;
@@ -77,8 +77,10 @@ export function organizationNode() {
       streetAddress: site.location.address,
       addressLocality: site.location.city,
       addressRegion: site.location.region,
+      postalCode: site.location.postalCode,
       addressCountry: site.location.country,
     },
+    hasMap: mapsHref,
     // No aggregateRating/review on purpose: Google treats self-published reviews
     // as self-serving and can disqualify the whole markup.
     subOrganization: {

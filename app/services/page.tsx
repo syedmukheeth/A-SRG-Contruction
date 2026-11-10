@@ -5,8 +5,8 @@ import { site } from "@/lib/site";
 import { breadcrumbNode, pageGraph } from "@/lib/schema";
 
 const url = `${site.url}/services`;
-const title = `Construction Services in ${site.location.city}, ${site.location.region}`;
-const description = `What ASRG Construction builds in ${site.location.city}: residential and commercial construction, civil contracting, centering works, renovation and consultation.`;
+const title = `Construction Services & Building Contractors in ${site.location.city}`;
+const description = `What ASRG Construction builds in ${site.location.city}, ${site.location.region}: house and commercial construction, civil contracting, centering works, renovation and consultation.`;
 
 export const metadata: Metadata = {
   title,

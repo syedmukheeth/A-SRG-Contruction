@@ -43,7 +43,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
-      lang="en"
+      lang="en-IN"
       className={`${archivo.variable} ${mono.variable} ${telugu.variable}`}
     >
       <body className="bg-plaster text-ink antialiased">

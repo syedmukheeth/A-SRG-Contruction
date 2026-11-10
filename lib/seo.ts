@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { site, services, type Service } from "./site";
 import { organizationNode, websiteNode, pageGraph } from "./schema";
 
-const titleDefault = "ASRG Construction Kurnool | Best Construction Company in Andhra Pradesh";
-const ogDescription = "Best Construction Company in Kurnool, Andhra Pradesh";
+export const titleDefault = "ASRG Construction Kurnool | Construction Company & Builders";
+const ogDescription = "Construction company and builders in Kurnool, Andhra Pradesh";
+
+const { city } = site.location;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -41,7 +43,40 @@ export const metadata: Metadata = {
     "construction company near me Kurnool",
     "civil contractor Nandyal",
     "building contractors Adoni",
-    ...services.map((s) => `${s.title} Kurnool`),
+    "ASR Construction Kurnool",
+    "ASR Constructions Kurnool",
+    "ASRG Construction Jeelani",
+    "Jeelani Shaik civil contractor",
+    `construction company in ${city}`,
+    `builders in ${city}`,
+    `house construction in ${city}`,
+    `home builders ${city}`,
+    `house builders in ${city}`,
+    `building contractors in ${city}`,
+    `civil contractors in ${city}`,
+    `civil contractor ${city}`,
+    `construction contractors in ${city}`,
+    `villa construction ${city}`,
+    `duplex house construction ${city}`,
+    `independent house construction ${city}`,
+    `commercial building contractors ${city}`,
+    `shop construction ${city}`,
+    `house renovation ${city}`,
+    `home remodelling ${city}`,
+    `centering contractors ${city}`,
+    `shuttering contractors ${city}`,
+    `slab centering work ${city}`,
+    `construction consultation ${city}`,
+    `best house construction company in ${city}`,
+    `top civil contractors in ${city}`,
+    `trusted builders in ${city}`,
+    `construction company in ${city} Andhra Pradesh`,
+    ...site.location.nearbyTowns.flatMap((town) => [
+      `construction company in ${town}`,
+      `builders in ${town}`,
+    ]),
+    ...services.map((s) => `${s.title} ${city}`),
+    ...services.map((s) => s.seoTitle),
   ],
   authors: [{ name: site.owner }],
   creator: site.owner,
@@ -84,7 +119,7 @@ export const metadata: Metadata = {
   },
   category: "construction",
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    google: site.googleSiteVerification || process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
     other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
       ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
       : undefined,
@@ -96,7 +131,8 @@ export const rootJsonLd = pageGraph([organizationNode(), websiteNode()]);
 
 /** Shared metadata builder for each /services/[slug] page. */
 export function buildServiceMetadata(service: Service): Metadata {
-  const title = `${service.title} in ${site.location.city}, ${site.location.region}`;
+  // Search phrasing in the <title>; the page's own H1 keeps the plain service name.
+  const title = service.seoTitle;
   const description = `${service.title} in ${site.location.city} by ASRG Construction. ${service.summary} ${site.yearsOfExperience} years of building in ${site.location.city}.`;
   const url = `${site.url}/services/${service.slug}`;
 

@@ -10,12 +10,15 @@ import { Traders } from "@/features/traders";
 import { Faq } from "@/features/faq";
 import { site, faqs } from "@/lib/site";
 import { breadcrumbNode, faqNode, pageGraph } from "@/lib/schema";
+import { titleDefault } from "@/lib/seo";
 
-const title = `ASRG Construction Kurnool | Construction Company & Civil Contractor since ${site.established}`;
+const title = titleDefault;
+// Written for the search result: who, what, where, since when, how to reach.
+const description = `${site.name}: construction company and builders in ${site.location.city}, ${site.location.region} since ${site.established}. House construction, commercial buildings, civil and centering work. Call ${site.phone}.`;
 
 export const metadata: Metadata = {
   title: { absolute: title },
-  description: site.description,
+  description,
   alternates: { canonical: site.url },
   openGraph: {
     type: "website",
@@ -23,13 +26,13 @@ export const metadata: Metadata = {
     url: site.url,
     siteName: site.name,
     title,
-    description: site.description,
+    description,
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: site.name }],
   },
   twitter: {
     card: "summary_large_image",
     title,
-    description: site.description,
+    description,
     images: ["/opengraph-image"],
   },
 };
